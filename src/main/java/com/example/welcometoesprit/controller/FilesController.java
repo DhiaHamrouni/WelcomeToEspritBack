@@ -5,9 +5,7 @@ import com.example.welcometoesprit.entities.FileEntity;
 import com.example.welcometoesprit.entities.ResponseFile;
 import com.example.welcometoesprit.entities.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,6 +24,7 @@ public class FilesController extends BaseController<FileEntity,Long>{
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
+        System.out.println(""+file.getName()+"-"+file.getContentType());
         try {
             storageService.store(file);
 
@@ -63,5 +62,20 @@ public class FilesController extends BaseController<FileEntity,Long>{
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
                 .body(fileDB.getData());
+    }
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
+        FileEntity file = storageService.getFile(id);
+
+        // Set content type based on file extension
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(file.getContentType()));
+
+        // Set download filename
+        headers.setContentDisposition(ContentDisposition.builder("attachment")
+                .filename(file.getName()).build());
+
+        // Return file contents as byte array
+        return new ResponseEntity<>(file.getData(), headers, HttpStatus.OK);
     }
 }

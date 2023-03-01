@@ -16,6 +16,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,7 +25,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.net.ssl.SSLEngineResult;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +45,10 @@ public class AuthenticationService {
 
   private final JavaMailSender emailSender;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  private final List<String> liste=new ArrayList<>(Arrays.asList("Your account is not yet registered, Create an Account or verify your email first"));
+  private final List<String> liste2=new ArrayList<>(Arrays.asList("Account Created!"));
+
+  public AuthenticationResponse  register(RegisterRequest request) {
     User user =            new User(
             request.getFirstname(),
             request.getLastname(),
@@ -62,9 +70,9 @@ public class AuthenticationService {
     saveUserToken(savedUser, jwtToken);
     String link = "http://localhost:9090/api/v1/auth/registration/confirm?token=" + confirmToken;
       emailSenderr.sendEmailTemplate(request.getEmail(),buildEmail(request.getFirstname(), link));
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+    return  AuthenticationResponse.builder()
+            .token(jwtToken)
+            .build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -76,12 +84,23 @@ public class AuthenticationService {
     );
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
-    var jwtToken = jwtService.generateToken(user);
-    revokeAllUserTokens(user);
-    saveUserToken(user, jwtToken);
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+    if (user==null){
+      AuthenticationResponse.builder().errors(liste).build();
+    }
+    else {
+      var jwtToken = jwtService.generateToken(user);
+      revokeAllUserTokens(user);
+      saveUserToken(user, jwtToken);
+      if (user.getEnabled()==true) {
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+      }
+      else {
+        return AuthenticationResponse.builder().errors(liste).build();
+      }
+    }
+    return AuthenticationResponse.builder().errors(liste).build();
   }
 
   private void saveUserToken(User user, String jwtToken) {
