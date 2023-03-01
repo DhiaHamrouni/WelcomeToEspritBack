@@ -1,17 +1,8 @@
 package com.example.welcometoesprit.auth;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -22,18 +13,8 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
-          @Valid @RequestBody RegisterRequest request, BindingResult result
-          ) {
-    if (result.hasErrors()) {
-      List<String> errors = result.getAllErrors()
-              .stream()
-              .map(DefaultMessageSourceResolvable::getDefaultMessage)
-              .collect(Collectors.toList());
-      return ResponseEntity.badRequest()
-              .body(AuthenticationResponse.builder()
-                      .errors(errors)
-                      .build());
-    }
+      @RequestBody RegisterRequest request
+  ) {
     return ResponseEntity.ok(service.register(request));
   }
   @PostMapping("/authenticate")
@@ -41,6 +22,10 @@ public class AuthenticationController {
       @RequestBody AuthenticationRequest request
   ) {
     return ResponseEntity.ok(service.authenticate(request));
+  }
+  @GetMapping(path = "/registration/confirm")
+  public String confirm(@RequestParam("token") String token) {
+    return service.confirmToken(token);
   }
 
 
