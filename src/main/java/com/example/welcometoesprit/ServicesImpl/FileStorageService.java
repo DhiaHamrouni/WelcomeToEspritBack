@@ -23,7 +23,6 @@ public class FileStorageService extends BaseServiceImp<FileEntity,Long> implemen
     public FileEntity store(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         FileEntity FileDB = new FileEntity(fileName, file.getContentType(), file.getBytes());
-
         return fileDBRepository.save(FileDB);
     }
 
