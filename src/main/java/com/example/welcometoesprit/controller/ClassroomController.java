@@ -7,10 +7,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-@PreAuthorize("hasRole('ROLE_TEACHER')")
-
 @RestController
-@RequestMapping("/teacher/classroom")
+@RequestMapping("/classroom")
 @CrossOrigin("*")
 public class ClassroomController extends BaseController<Classroom,Integer>{
 
