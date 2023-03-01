@@ -21,7 +21,7 @@ public class Realisation implements Serializable {
     private String nomEquipe;
 
     @OneToOne
-    private FileInfo video;
+    private FileEntity video;
 
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "realisation")
     List<User> groupe;
