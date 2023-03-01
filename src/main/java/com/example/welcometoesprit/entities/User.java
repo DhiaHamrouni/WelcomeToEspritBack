@@ -30,6 +30,16 @@ public class User implements UserDetails {
   private String username;
   private String email;
   private String password;
+  private Boolean locked=false;
+  private Boolean enabled=false;
+
+  public User(String firstname, String lastname, String email, String password, Role role) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -61,7 +71,7 @@ public class User implements UserDetails {
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)
-  private Set<FileInfo> files;
+  private Set<FileEntity> files;
 
   @ManyToOne
   Classroom classroom;

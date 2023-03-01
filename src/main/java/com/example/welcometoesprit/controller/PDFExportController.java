@@ -20,7 +20,7 @@ public class PDFExportController {
         this.pdfGeneratorService = pdfGeneratorService;
     }
 
-   /* @GetMapping("/pdf/generate")
+    @GetMapping("/pdf/generate")
     public void generatePDF(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
@@ -31,6 +31,6 @@ public class PDFExportController {
         response.setHeader(headerKey, headerValue);
 
         this.pdfGeneratorService.export(response);
-    }*/
+    }
 
 }
