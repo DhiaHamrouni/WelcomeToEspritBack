@@ -14,6 +14,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -22,21 +26,27 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final List<String> stringList= Arrays.asList("User Exists Already");
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = User.builder()
+
+    User user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.USER)
+        .role(Role.STUDENT)
         .build();
-    var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    saveUserToken(savedUser, jwtToken);
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+    if (repository.findByEmail(user.getEmail()).isEmpty()){
+      var savedUser = repository.save(user);
+      var jwtToken = jwtService.generateToken(user);
+      saveUserToken(savedUser, jwtToken);
+      return AuthenticationResponse.builder()
+              .token(jwtToken)
+              .build();
+    }
+    System.out.println(user.getId());
+    return AuthenticationResponse.builder().errors(stringList).build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
