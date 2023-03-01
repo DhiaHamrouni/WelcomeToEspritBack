@@ -26,7 +26,7 @@ public class Offre implements Serializable {
 
 
     @OneToOne
-    private FileInfo Doc;
+    private FileEntity Doc;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<CondidatOffre> condidatOffres;
     @ManyToOne
