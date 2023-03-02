@@ -21,7 +21,7 @@ public class CondidatOffre implements Serializable {
     private String Email;
 
     @OneToOne
-    private FileInfo CV_motiv;
+    private FileEntity CV_motiv;
     @ManyToMany(mappedBy = "condidatOffres" , cascade = CascadeType.ALL)
     private Set<Offre> offres;
     @OneToOne

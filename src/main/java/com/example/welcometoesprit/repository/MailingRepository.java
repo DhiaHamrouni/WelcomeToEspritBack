@@ -9,4 +9,5 @@ import java.util.List;
 public interface MailingRepository extends BaseRepository<Mailingcontent,Integer> {
 
     List<Mailingcontent> getAllByToEmail(String email);
+
 }
