@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.ServicesImpl;
 
+import com.example.welcometoesprit.ServiceInterface.UserServiceInterface;
 import com.example.welcometoesprit.entities.ConfirmationToken;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.MailingRepository;
@@ -14,14 +15,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @Slf4j
 @AllArgsConstructor
-public class UserServiceImp  implements UserDetailsService {
+public class UserServiceImp extends BaseServiceImp<User,Integer>  implements UserDetailsService,UserServiceInterface {
     private final static  String USER_NOT_FOUND_MSG ="user with email %s not found";
 
     private JavaMailSender javaMailSender;
@@ -34,7 +38,7 @@ public class UserServiceImp  implements UserDetailsService {
     private  ConfirmationTokenService confirmationTokenService;
 
     @Autowired
-    UserRepository usersRepository ;
+    private UserRepository usersRepository ;
 
 
 
@@ -82,6 +86,19 @@ public class UserServiceImp  implements UserDetailsService {
         return usersRepository.enableAppUser(email);
     }
 
+    public void saveUsersToDatabase(MultipartFile file){
+        if(ExcelUploadService.isValidExcelFile(file)){
+            try {
+                List<User> users = ExcelUploadService.getUsersDataFromExcel(file.getInputStream());
+                this.usersRepository.saveAll(users);
+            } catch (IOException e) {
+                throw new IllegalArgumentException("The file is not a valid excel file");
+            }
+        }
+    }
 
+    public List<User> getUsers(){
+        return usersRepository.findAll();
+    }
 
 }
