@@ -10,7 +10,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table( name = "Publication")
@@ -21,6 +20,18 @@ public class Publication implements Serializable {
     private Integer idPublication; // Clé primaire
     private String sujet ;
     private  String contenu;
+
+    @Override
+    public String toString() {
+        return "Publication{" +
+                "idPublication=" + idPublication +
+                ", sujet='" + sujet + '\'' +
+                ", contenu='" + contenu + '\'' +
+                ", publierPar=" + publierPar +
+                ", likerPar=" + likerPar +
+                ", listOfComments=" + listOfComments +
+                '}';
+    }
 
     @ManyToOne
     User publierPar;
