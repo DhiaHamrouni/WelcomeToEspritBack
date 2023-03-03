@@ -2,10 +2,7 @@ package com.example.welcometoesprit.entities;
 
 import com.example.welcometoesprit.token.Token;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +11,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "_user")
 public class User implements UserDetails {
 
@@ -39,6 +37,32 @@ public class User implements UserDetails {
     this.email = email;
     this.password = password;
     this.role = role;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+            "id=" + id +
+            ", firstname='" + firstname + '\'' +
+            ", lastname='" + lastname + '\'' +
+            ", username='" + username + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", locked=" + locked +
+            ", enabled=" + enabled +
+            ", role=" + role +
+            ", tokens=" + tokens +
+            ", event=" + event +
+            ", event2=" + event2 +
+            ", listOfComplaints=" + listOfComplaints +
+            ", listOfPublication=" + listOfPublication +
+            ", listPublicationLikee=" + listPublicationLikee +
+            ", realisation=" + realisation +
+            ", interviewStudent=" + interviewStudent +
+            ", InterviewEvaluators=" + InterviewEvaluators +
+            ", files=" + files +
+            ", classroom=" + classroomSet +
+            '}';
   }
 
   @Enumerated(EnumType.STRING)
@@ -73,9 +97,8 @@ public class User implements UserDetails {
   @OneToMany(cascade = CascadeType.ALL)
   private Set<FileEntity> files;
 
-  @ManyToOne
-  Classroom classroom;
-
+  @ManyToMany(cascade= CascadeType.ALL)
+  private Set<Classroom> classroomSet;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority(role.name()));

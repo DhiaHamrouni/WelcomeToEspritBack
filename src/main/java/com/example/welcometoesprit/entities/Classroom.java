@@ -21,7 +21,7 @@ public class Classroom implements Serializable {
     private Integer numero;
     private Integer etage;
 
-    @OneToMany(cascade= CascadeType.ALL, mappedBy = "classroom")
+    @ManyToMany(cascade= CascadeType.ALL, mappedBy = "classroomSet")
     List<User> listOfStudent;
 
     @ManyToOne
