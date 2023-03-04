@@ -2,6 +2,7 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.OffreServiceImp;
 import com.example.welcometoesprit.entities.Comment;
+import com.example.welcometoesprit.entities.CondidatOffre;
 import com.example.welcometoesprit.entities.Offre;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +19,8 @@ import java.util.List;
 public class OffreController extends BaseController<Offre,Integer>{
     
     OffreServiceImp offreServiceImp;
-
+    @GetMapping("/stats")
+    public String stats(){
+        return offreServiceImp.statsoffers();
+    }
 }

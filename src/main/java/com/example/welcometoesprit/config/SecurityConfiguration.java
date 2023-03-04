@@ -32,6 +32,7 @@ public class SecurityConfiguration {
             .requestMatchers("/api/v1/auth/**")
           .permitAll()
             .requestMatchers("/candidatoffre/**").permitAll()
+            .requestMatchers("/offre/stats").permitAll()
             .requestMatchers("/offre/add").hasAuthority("ADMIN")
             .requestMatchers("/offre/delete").hasAuthority("ADMIN")
             .anyRequest()
