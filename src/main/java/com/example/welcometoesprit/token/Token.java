@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.token;
 
+import com.example.welcometoesprit.entities.CondidatOffre;
 import com.example.welcometoesprit.entities.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,4 +42,7 @@ public class Token {
   @ManyToOne
   @JoinColumn(name = "user_id")
   public User user;
+  @ManyToOne
+  @JoinColumn(name = "idOffre")
+  public CondidatOffre condidatOffre;
 }
