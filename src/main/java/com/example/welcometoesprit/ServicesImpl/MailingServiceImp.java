@@ -2,6 +2,7 @@ package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.MailingServiceInterface;
 import com.example.welcometoesprit.entities.Mailingcontent;
+import com.example.welcometoesprit.entities.NiveauSuivant;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.MailingRepository;
 import com.example.welcometoesprit.repository.UserRepository;
@@ -60,6 +61,29 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
     }
 
     @Override
+    public void sendMailToAdministrationLevel(Integer idUser, NiveauSuivant niveauSuivant) {
+        User user = appUserRepository.findById(idUser).get();
+        String toEmail="nour.ajimi.2000@gmail.com";
+        String Subject="Next level to study";
+        String body="Hi , I am "+ user.getFirstname()+user.getLastname()+" i want to choose a next level according " +
+                "to my skills which is the level "+ niveauSuivant +" i hope you can accept my request" ;
+
+        SimpleMailMessage message =  new SimpleMailMessage();
+        message.setFrom("mahdi.fersi@esprit.tn");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(Subject);
+
+        javaMailSender.send(message);
+
+        Mailingcontent mailingcontent= new Mailingcontent();
+        mailingcontent.setBody(body);
+        mailingcontent.setSubject(Subject);
+        mailingcontent.setToEmail(toEmail);
+        mailingRepository.save(mailingcontent);
+    }
+
+    /*@Override
     public void sendMailStudentConfirmation(User user) {
         String toEmail= user.getEmail();
         String Subject = "Confirmation Mail";
@@ -67,7 +91,7 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
                 "this is an automatic confirmation mail for your account registration ";
         sendEmail(toEmail,Subject,body);
     }
-
+    */
     @Override
     public void sendEmaill(SimpleMailMessage message) {
 
