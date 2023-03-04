@@ -30,6 +30,8 @@ public class User implements UserDetails {
   private String password;
   private Boolean locked=false;
   private Boolean enabled=false;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   public User(String firstname, String lastname, String email, String password, Role role) {
     this.firstname = firstname;
@@ -65,8 +67,7 @@ public class User implements UserDetails {
             '}';
   }
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
+
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
