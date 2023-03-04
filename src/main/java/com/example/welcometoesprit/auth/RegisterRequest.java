@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.auth;
 
+import com.example.welcometoesprit.entities.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,5 +26,7 @@ public class RegisterRequest {
   private String password;
   @NotBlank(message = "Username is required")
   private String username;
+
+  private Role role=Role.ADMIN;
 
 }
