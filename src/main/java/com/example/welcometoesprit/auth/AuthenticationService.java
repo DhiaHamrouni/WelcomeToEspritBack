@@ -54,8 +54,8 @@ public class AuthenticationService {
             request.getLastname(),
             request.getEmail(),
             request.getPassword(),
-            Role.STUDENT
-    );
+            request.getRole()
+            );
     String confirmToken = appUserService.signUpUser(user);
 
 //    var user = User.builder()
@@ -84,22 +84,16 @@ public class AuthenticationService {
     );
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
-    if (user==null){
-      AuthenticationResponse.builder().errors(liste).build();
-    }
-    else {
+
       var jwtToken = jwtService.generateToken(user);
       revokeAllUserTokens(user);
       saveUserToken(user, jwtToken);
-      if (user.getEnabled()==true) {
+      if (user.getEnabled()) {
+        System.out.println(user.getRole());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
       }
-      else {
-        return AuthenticationResponse.builder().errors(liste).build();
-      }
-    }
     return AuthenticationResponse.builder().errors(liste).build();
   }
 
@@ -139,6 +133,7 @@ public class AuthenticationService {
     LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
     if (expiredAt.isBefore(LocalDateTime.now())) {
+      confirmationTokenService.expiredAt(confirmationToken);
       throw new IllegalStateException("token expired");
     }
 
