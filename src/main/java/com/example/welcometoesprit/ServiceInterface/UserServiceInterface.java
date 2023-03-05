@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface UserServiceInterface extends BaseServiceInterface<User,Integer>{
 
@@ -21,13 +22,13 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
 
     public NiveauActuel addNiveauActuel(Integer idUser,User user);
 
-    Integer assignStudentToEvaluator(Integer idStudent,LocalDateTime dateInterview); //return type id Evaluator
+    public Integer assignStudentToEvaluator(Integer idStudent,LocalDateTime dateInterview); //return type id Evaluator
 
-    Integer assignStudentToClassroom(Integer idStudent,Integer idEvaluator); // return type id Classroom where the interview will take place
+    public Integer assignStudentToClassroom(Integer idStudent,Integer idEvaluator); // return type id Classroom where the interview will take place
 
-    String assignStudentToInterview(Integer idStudent,LocalDateTime dateInterview); //return "check your email for further details about your interview"
+    public String assignStudentToInterview(Integer idStudent,LocalDateTime dateInterview); //return "check your email for further details about your interview"
 
-
+    public List<User> getStudents();
 
 
 }

@@ -19,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -187,5 +189,24 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         return null;
     }
 
+    public List<User> getStudents() {
+        return usersRepository.findByRole(Role.STUDENT);
+    }
+
+    public Map<String, Integer> getStudentsCountByLevel() {
+        Map<String, Integer> levelCountMap = new HashMap<>();
+        List<User> students = usersRepository.findByRole(Role.STUDENT);
+
+        for (User student : students) {
+            NiveauActuel niveauActuel =student.getNiveauActuel();
+            String level = niveauActuel.name();
+            if (levelCountMap.containsKey(level)) {
+                levelCountMap.put(level, levelCountMap.get(level) + 1);
+            } else {
+                levelCountMap.put(level, 1);
+            }
+        }
+        return levelCountMap;
+    }
 
 }

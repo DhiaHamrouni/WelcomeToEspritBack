@@ -53,4 +53,10 @@ public class UserController extends BaseController<User,Integer>   {
     public NiveauActuel addActualLevel(@PathVariable Integer idUser, @RequestBody User user){
         return userService.addNiveauActuel(idUser,user);
     }
+
+    @GetMapping("/countStudentsBylevel")
+    public ResponseEntity<Map<String, Integer>> getStudentsCountByLevel() {
+        Map<String, Integer> levelCountMap = userService.getStudentsCountByLevel();
+        return ResponseEntity.ok(levelCountMap);
+    }
 }
