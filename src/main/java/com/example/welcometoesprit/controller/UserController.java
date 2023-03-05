@@ -46,9 +46,8 @@ public class UserController extends BaseController<User,Integer>   {
     }
 
     @PutMapping("/refuseLevelSuggestion/{idUser}")
-    public void refuseNextLevel(@PathVariable Integer idUser){
-        NiveauSuivant niveauSouhaite =NiveauSuivant.A4;
-        userService.refuseNextLevel(idUser,niveauSouhaite);
+    public void refuseNextLevel(@PathVariable Integer idUser,@RequestBody User user){
+        userService.refuseNextLevel(idUser,user);
     }
     @PutMapping("/addActualLevel/{idUser}")
     public NiveauActuel addActualLevel(@PathVariable Integer idUser, @RequestBody User user){

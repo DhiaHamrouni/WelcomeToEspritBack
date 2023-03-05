@@ -141,7 +141,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
             user.setNiveauSuivant(niveauSuivant);
         }else{
             niveauSuivant=NiveauSuivant.A1;
-            log.info("last else");
+            log.info("last else in niveau suggestion function");
             user.setNiveauSuivant(niveauSuivant);
         }
         usersRepository.save(user);
@@ -155,11 +155,12 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     }
     */
     @Override
-    public void refuseNextLevel(Integer idUser, NiveauSuivant niveauSouhaite) {
-        User user = usersRepository.findById(idUser).get();
-        mailingServiceImp.sendMailToAdministrationLevel(idUser,niveauSouhaite);
-        user.setNiveauSuivant(niveauSouhaite);
-        usersRepository.save(user);
+    public void refuseNextLevel(Integer idUser, User user) {
+
+        User user1 = usersRepository.findById(idUser).get();
+        mailingServiceImp.sendMailToAdministrationLevel(idUser,user.getNiveauSuivant());
+        user1.setNiveauSuivant(user.getNiveauSuivant());
+        usersRepository.save(user1);
     }
 
     @Override

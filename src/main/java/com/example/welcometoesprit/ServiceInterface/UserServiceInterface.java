@@ -15,7 +15,7 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
 
     //public NiveauSuivant showNextLevel(Integer idUser);
 
-    public void refuseNextLevel(Integer idUser,NiveauSuivant niveauSouhaite);
+    public void refuseNextLevel(Integer idUser,User user);
 
     public NiveauActuel addNiveauActuel(Integer idUser,User user);
 }

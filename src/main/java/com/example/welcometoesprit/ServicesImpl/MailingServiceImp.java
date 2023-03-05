@@ -65,8 +65,10 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
         User user = appUserRepository.findById(idUser).get();
         String toEmail="nour.ajimi.2000@gmail.com";
         String Subject="Next level to study";
-        String body="Hi , I am "+ user.getFirstname()+user.getLastname()+" i want to choose a next level according " +
-                "to my skills which is the level "+ niveauSuivant +" i hope you can accept my request" ;
+        String body="Hi , I am "+ user.getFirstname()+" " +user.getLastname()+"i am currently studying at " + user.getNiveauActuel()
+                +" i want to choose a next level according " +
+                "to my skills which is the level "+ niveauSuivant +
+                " i hope you can accept my request" ;
 
         SimpleMailMessage message =  new SimpleMailMessage();
         message.setFrom("mahdi.fersi@esprit.tn");
