@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,14 +24,17 @@ public class SecurityConfiguration {
   private final LogoutHandler logoutHandler;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
     http
         .csrf()
         .disable()
         .authorizeHttpRequests()
-        .requestMatchers("/api/v1/auth/**")
+            .requestMatchers("/api/v1/auth/**")
           .permitAll()
-        .anyRequest()
+            .requestMatchers("/candidatoffre/**").permitAll()
+            .requestMatchers("/offre/add").hasAuthority("ADMIN")
+            .requestMatchers("/offre/delete").hasAuthority("ADMIN")
+            .anyRequest()
           .authenticated()
         .and()
           .sessionManagement()

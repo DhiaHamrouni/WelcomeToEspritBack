@@ -27,8 +27,6 @@ public abstract class BaseController<T, id> {
     public ResponseEntity<T> add(@RequestBody T e){
         System.out.println(e);
         return ResponseEntity.ok(this.baseService.add(e));
-
-
     }
 
 

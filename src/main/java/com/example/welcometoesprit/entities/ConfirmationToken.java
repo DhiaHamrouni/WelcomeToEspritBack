@@ -40,6 +40,9 @@ public class ConfirmationToken {
 
     private User appUser;
 
+    @ManyToOne
+    private CondidatOffre condidatOffre;
+
     public ConfirmationToken(String token,
                              LocalDateTime createdAt,
                              LocalDateTime expiresAt,
@@ -48,5 +51,14 @@ public class ConfirmationToken {
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
         this.appUser = appUser;
+    }
+    public ConfirmationToken(String token,
+                             LocalDateTime createdAt,
+                             LocalDateTime expiresAt,
+                             CondidatOffre condidatOffre) {
+        this.token = token;
+        this.createdAt = createdAt;
+        this.expiresAt = expiresAt;
+        this.condidatOffre=condidatOffre;
     }
 }
