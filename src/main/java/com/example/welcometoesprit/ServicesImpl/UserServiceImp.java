@@ -172,5 +172,20 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
 
     }
 
+    @Override
+    public Integer assignStudentToEvaluator(Integer idStudent, LocalDateTime dateInterview) {
+        return null;
+    }
+
+    @Override
+    public Integer assignStudentToClassroom(Integer idStudent, Integer idEvaluator) {
+        return null;
+    }
+
+    @Override
+    public String assignStudentToInterview(Integer idStudent, LocalDateTime dateInterview) {
+        return null;
+    }
+
 
 }

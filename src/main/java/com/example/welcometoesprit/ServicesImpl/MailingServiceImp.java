@@ -123,4 +123,9 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
             throw new IllegalStateException("failed to send emaill");
         }
     }
+
+    @Override
+    public void sendMailInterviewDetailsToStudent(Integer idStudent) {
+
+    }
 }
