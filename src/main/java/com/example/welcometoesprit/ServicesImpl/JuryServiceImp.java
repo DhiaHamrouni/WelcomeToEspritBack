@@ -18,17 +18,22 @@ public class JuryServiceImp extends BaseServiceImp<Jury,Integer> {
 
     public Jury AddandAssign(Jury jury,Integer idrdv){
         RDV_offre rdv=rdvoffreServiceImp.retrieve(idrdv);
-        List<Jury> juryList=rdv.getJuries();
-        for (Jury element : juryList){
-            for (RDV_offre rdv_offre:element.getRdvOffreList()){
-                if (rdv_offre.equals(rdv)){
-                    throw new IllegalStateException("jurer already assigned to this appointment");
+        List<RDV_offre> rdvOffreList=jury.getRdvOffreList();
+        List<Jury> juries=rdv.getJuries();
+        if (rdvOffreList.contains(rdv)){
+            throw new IllegalStateException("juror already assigned to this appointment");
+        }
+        else {
+            for (RDV_offre element:rdvOffreList) {
+                if (element.getSchedule().equals(rdv.getSchedule())) {
+                    throw new IllegalStateException("juror already has another appointment at this time" + element.getSchedule());
                 }
             }
+            rdvOffreList.add(rdv);
+            jury.setRdvOffreList(rdvOffreList);
+            juries.add(jury);
+            juryRepository.save(jury);
+            return jury;
         }
-        juryList.add(jury);
-        rdv.setJuries(juryList);
-        juryRepository.save(jury);
-        return jury;
     }
 }
