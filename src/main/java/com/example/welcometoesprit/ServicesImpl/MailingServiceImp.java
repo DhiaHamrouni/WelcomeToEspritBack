@@ -15,6 +15,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private TemplateEngine templateEngine;
     @Autowired
     MailingRepository mailingRepository;
     @Autowired
@@ -122,6 +126,21 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
         catch (MessagingException e)  {
             throw new IllegalStateException("failed to send emaill");
         }
+    }
+
+    public void sendWelcomeEmail(String to, String subject, String message) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+        messageHelper.setSubject(subject);
+        messageHelper.setTo(to);
+
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("message", message);
+        String content = templateEngine.process("welcomeMail", context);
+
+        messageHelper.setText(content, true);
+        javaMailSender.send(mimeMessage);
     }
 
     @Override

@@ -17,6 +17,7 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
   User findByUsername(String Username);
 
+
   Optional<User> findByEmail(String email);
   @Transactional
   @Modifying
