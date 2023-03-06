@@ -33,6 +33,11 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @Enumerated(EnumType.STRING)
+  private NiveauActuel niveauActuel;
+  @Enumerated(EnumType.STRING)
+  private NiveauSuivant niveauSuivant;
+
   public User(String firstname, String lastname, String email, String password, Role role) {
     this.firstname = firstname;
     this.lastname = lastname;
