@@ -56,7 +56,7 @@ public class SmsServiceImp implements SmsServiceInterface {
         return message.getStatus().toString();
     }
 
-    @Scheduled(fixedRate = 86400000) // execute once per day
+    /*@Scheduled(fixedRate = 86400000) // execute once per day
     @Override
     public void sendSmsReminders() {
         List<Interview> upcomingInterviews = interviewRepository.findByDateInterviewIsBetween(
@@ -73,5 +73,5 @@ public class SmsServiceImp implements SmsServiceInterface {
                 sendSms(user.getNumTel(), smsMessage);
             }
         }
-    }
+    }*/
 }

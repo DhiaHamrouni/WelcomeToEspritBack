@@ -4,5 +4,5 @@ public interface SmsServiceInterface {
 
     public String sendSms(String smsNumber,String smsMessage);
 
-    public void sendSmsReminders();
+    //public void sendSmsReminders();
     }
