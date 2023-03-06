@@ -38,6 +38,8 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private NiveauSuivant niveauSuivant;
 
+  private String numTel;
+
   public User(String firstname, String lastname, String email, String password, Role role) {
     this.firstname = firstname;
     this.lastname = lastname;
