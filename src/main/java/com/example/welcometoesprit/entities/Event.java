@@ -21,6 +21,7 @@ public class Event implements Serializable {
     @Column(name = "idEvent")
     private Integer idEvent; // Clé primaire
     private String location;
+    private String eventName;
     private String tools;
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "MM/dd/yyyy")

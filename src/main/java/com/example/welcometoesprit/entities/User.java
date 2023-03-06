@@ -52,23 +52,7 @@ public class User implements UserDetails {
             "id=" + id +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
-            ", username='" + username + '\'' +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            ", locked=" + locked +
-            ", enabled=" + enabled +
             ", role=" + role +
-            ", tokens=" + tokens +
-            ", event=" + event +
-            ", event2=" + event2 +
-            ", listOfComplaints=" + listOfComplaints +
-            ", listOfPublication=" + listOfPublication +
-            ", listPublicationLikee=" + listPublicationLikee +
-            ", realisation=" + realisation +
-            ", interviewStudent=" + interviewStudent +
-            ", InterviewEvaluators=" + InterviewEvaluators +
-            ", files=" + files +
-            ", classroom=" + classroomSet +
             '}';
   }
 
