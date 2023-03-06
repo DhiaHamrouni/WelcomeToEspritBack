@@ -28,5 +28,8 @@ public class Jury implements Serializable{
     private List<RDV_offre> rdvOffreList;
     @OneToOne
     private FileEntity CriteriaGrid;
+    @OneToOne(mappedBy = "jury")
+    Result result;
+
 
 }

@@ -23,6 +23,9 @@ public class JuryServiceImp extends BaseServiceImp<Jury,Integer> {
         if (rdvOffreList.contains(rdv)){
             throw new IllegalStateException("juror already assigned to this appointment");
         }
+        if (juries.size()>=3){
+            throw new IllegalStateException("this RDV already has a jury");
+        }
         else {
             for (RDV_offre element:rdvOffreList) {
                 if (element.getSchedule().equals(rdv.getSchedule())) {

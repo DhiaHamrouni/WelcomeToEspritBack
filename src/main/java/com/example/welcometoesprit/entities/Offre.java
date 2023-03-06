@@ -35,5 +35,8 @@ public class Offre implements Serializable {
     @ManyToOne
     Departement departement;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Result> resultList;
+
 
     }

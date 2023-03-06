@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,10 +88,30 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     }
 
     public void saveUsersToDatabase(MultipartFile file){
+        List<String> emails=new ArrayList<>();
+        List<String> emails2=new ArrayList<>();
+        //intilize l1
+        for (User element:usersRepository.findAll()){
+            emails2.add(element.getEmail());
+        }
+        System.out.println(emails2.size());
         if(ExcelUploadService.isValidExcelFile(file)){
             try {
                 List<User> users = ExcelUploadService.getUsersDataFromExcel(file.getInputStream());
-                this.usersRepository.saveAll(users);
+                //initilize l2
+                for (User element:users){
+                    emails.add(element.getEmail());
+                }
+                for (String element:emails){
+                    if (emails2.contains(element)){
+                        emails.remove(element);
+                    }
+                }
+                for (User element:users){
+                    if (emails.contains(element.getEmail())){
+                        usersRepository.save(element);
+                    }
+                }
             } catch (IOException e) {
                 throw new IllegalArgumentException("The file is not a valid excel file");
             }
