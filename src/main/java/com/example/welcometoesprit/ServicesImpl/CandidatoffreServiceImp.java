@@ -38,8 +38,6 @@ public class CandidatoffreServiceImp extends BaseServiceImp<CondidatOffre,Intege
             throw new IllegalStateException(ENTITY_ALREADY_EXISTS_MSG);
         }*/
         for (CondidatOffre element : condidatOffreList){
-            System.out.println(element.getEmail());
-            System.out.println(condidatOffre.getEmail());
             if (element.getEmail().equals(condidatOffre.getEmail())){
                 throw new IllegalStateException(ENTITY_ALREADY_EXISTS_MSG);
             }
