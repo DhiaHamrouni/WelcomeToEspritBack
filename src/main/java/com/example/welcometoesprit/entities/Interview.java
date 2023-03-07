@@ -28,11 +28,11 @@ public class Interview  implements Serializable {
     private Integer InterviewScore;
     private String Deliberation; // not sure if string
 
-    @OneToOne
+    @OneToOne(mappedBy = "interviewStudent")
     private User student;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<User> evaluators;
+    @ManyToOne
+    private User evaluator;
 
     @ManyToOne
     private Classroom classroom;

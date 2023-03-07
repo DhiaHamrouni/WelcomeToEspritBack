@@ -1,13 +1,16 @@
 package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.InterviewServiceInterface;
+import com.example.welcometoesprit.entities.Classroom;
 import com.example.welcometoesprit.entities.Interview;
 import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
+import com.example.welcometoesprit.repository.ClassroomRepository;
 import com.example.welcometoesprit.repository.InterviewRepository;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.hibernate.validator.constraints.ModCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -17,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> implements InterviewServiceInterface {
@@ -28,7 +34,10 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
     private JavaMailSender javaMailSender;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ClassroomRepository classroomRepository;
 
+    @Override
     public void sendInterviewDetails(Integer idUser) {
         User user = userRepository.findById(idUser).get();
         if ((user.getRole() == Role.STUDENT)&&(user.getInterviewStudent().getIdInterview()!=null)) {
@@ -57,7 +66,8 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         }
     }
 
-    private String getEmailContent(String userName, LocalDate interviewDate, String interviewTime,String interviewClass,String bloc) {
+    @Override
+    public String getEmailContent(String userName, LocalDate interviewDate, String interviewTime,String interviewClass,String bloc) {
         String htmlTemplate = "";
         try {
             Resource resource = new ClassPathResource("templates/mailInterview.html");
@@ -74,5 +84,30 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         return htmlContent;
     }
 
+
+    @Override
+    public String assignInterviewToStudent(Integer idStudent, LocalDateTime dateInterview) {
+        User student = userRepository.findById(idStudent).get();
+        List<User> teachers = userRepository.findByRole(Role.TEACHER);
+        for ( User teacher : teachers){
+            Set<Interview> interviews = teacher.getInterviewEvaluators();
+            for (Interview interview : interviews){
+                if((interview.getDateInterview()!=dateInterview)&&(interview.getDateInterview().getHour()!=dateInterview.getHour())){
+                    student.setInterviewStudent(interview);
+                    teacher.setInterviewStudent(interview);
+                    Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
+                    student.getInterviewStudent().setClassroom(classroom);
+                    interview.setEvaluator(teacher);
+                    sendInterviewDetails(idStudent);
+                    userRepository.save(student);
+                    userRepository.save(teacher);
+                    interviewRepository.save(interview);
+                    return "interview validated";
+
+                }
+            }
+        }
+        return "interview not validated";
+    }
 
 }

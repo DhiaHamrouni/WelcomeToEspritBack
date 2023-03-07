@@ -115,8 +115,4 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
         }
     }
 
-    @Override
-    public void sendMailInterviewDetailsToStudent(Integer idStudent) {
-
-    }
 }

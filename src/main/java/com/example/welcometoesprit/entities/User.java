@@ -99,7 +99,7 @@ public class User implements UserDetails {
   @OneToOne
   Interview interviewStudent;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)

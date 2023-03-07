@@ -18,29 +18,17 @@ public class InterviewController extends BaseController<Interview,Integer>{
     @Autowired
     InterviewServiceImp interviewServiceImp;
 
-    /*@GetMapping("/sendEmailToStudent")
-    public String sendInterviewEmail() {
-        // Create a sample user object
-        User user = new User();
-        user.setFirstname("Nour Ajimi");
-        user.setEmail("nour.ajimi.2000@gmail.com");
-        user.setRole(Role.STUDENT);
-        Interview interview = new Interview();
-        interview.setDateInterview(LocalDateTime.now());
-        //interview.setClassroom();
-        user.setInterviewStudent(interview);
-
-        // Call the sendInterviewDetails method to send the email
-        interviewServiceImp.sendInterviewDetails(user);
-
-        return "Interview email sent!";
-    }*/
-
 
     @GetMapping("/sendMailToStudent/{idUser}")
     public String sendMailInterviewDetails(@PathVariable Integer idUser){
         interviewServiceImp.sendInterviewDetails(idUser);
         return "Interview email sent!";
 
+    }
+
+    @PutMapping("assignInterviewToStudent/{idStudent}")
+    public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
+        LocalDateTime localDateTime = interview.getDateInterview();
+        return interviewServiceImp.assignInterviewToStudent(idStudent,localDateTime);
     }
 }

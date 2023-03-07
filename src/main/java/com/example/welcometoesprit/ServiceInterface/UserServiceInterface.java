@@ -22,12 +22,6 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
 
     public NiveauActuel addNiveauActuel(Integer idUser,User user);
 
-    public Integer assignStudentToEvaluator(Integer idStudent,LocalDateTime dateInterview); //return type id Evaluator
-
-    public Integer assignStudentToClassroom(Integer idStudent,Integer idEvaluator); // return type id Classroom where the interview will take place
-
-    public String assignStudentToInterview(Integer idStudent,LocalDateTime dateInterview); //return "check your email for further details about your interview"
-
     public List<User> getStudents();
 
 
