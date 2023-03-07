@@ -5,10 +5,7 @@ import com.example.welcometoesprit.entities.Interview;
 import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +18,7 @@ public class InterviewController extends BaseController<Interview,Integer>{
     @Autowired
     InterviewServiceImp interviewServiceImp;
 
-    @GetMapping("/sendEmailToStudent")
+    /*@GetMapping("/sendEmailToStudent")
     public String sendInterviewEmail() {
         // Create a sample user object
         User user = new User();
@@ -37,5 +34,13 @@ public class InterviewController extends BaseController<Interview,Integer>{
         interviewServiceImp.sendInterviewDetails(user);
 
         return "Interview email sent!";
+    }*/
+
+
+    @GetMapping("/sendMailToStudent/{idUser}")
+    public String sendMailInterviewDetails(@PathVariable Integer idUser){
+        interviewServiceImp.sendInterviewDetails(idUser);
+        return "Interview email sent!";
+
     }
 }

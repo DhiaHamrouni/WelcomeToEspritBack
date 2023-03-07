@@ -5,12 +5,15 @@ import com.example.welcometoesprit.entities.NiveauActuel;
 import com.example.welcometoesprit.entities.NiveauSuivant;
 import com.example.welcometoesprit.entities.ResponseMessage;
 import com.example.welcometoesprit.entities.User;
+import com.example.welcometoesprit.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -19,6 +22,9 @@ import java.util.Map;
 public class UserController extends BaseController<User,Integer>   {
     @Autowired
     private UserServiceImp userService;
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/upload-users-data")
     public ResponseEntity<?> uploadUsersData(@RequestParam("file") MultipartFile file){
         this.userService.saveUsersToDatabase(file);
@@ -59,9 +65,6 @@ public class UserController extends BaseController<User,Integer>   {
         Map<String, Integer> levelCountMap = userService.getStudentsCountByLevel();
         return ResponseEntity.ok(levelCountMap);
     }
-
-
-
 
 
 

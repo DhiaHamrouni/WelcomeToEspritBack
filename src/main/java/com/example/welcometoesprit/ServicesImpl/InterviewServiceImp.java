@@ -5,6 +5,7 @@ import com.example.welcometoesprit.entities.Interview;
 import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.InterviewRepository;
+import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +26,22 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private UserRepository userRepository;
 
-    public void sendInterviewDetails(User user) {
-        if (user.getRole() == Role.STUDENT) {
+    public void sendInterviewDetails(Integer idUser) {
+        User user = userRepository.findById(idUser).get();
+        if ((user.getRole() == Role.STUDENT)&&(user.getInterviewStudent().getIdInterview()!=null)) {
             Interview interview = user.getInterviewStudent();
             LocalDate interviewDate = interview.getDateInterview().toLocalDate();
             String interviewTime = String.valueOf(interview.getDateInterview().getHour());
-            //String interviewLocation = interview.getClassroom().getNumero().toString();
+            Integer classroom = (interview.getClassroom().getNumero()+interview.getClassroom().getEtage()*100);
+            String bloc = interview.getClassroom().getBloc().getNomBloc();
+            String interviewClass = classroom.toString();
             String userEmail = user.getEmail();
             String userName = user.getFirstname();
 
-            String emailContent = getEmailContent(userName, interviewDate, interviewTime);
+            String emailContent = getEmailContent(userName, interviewDate,interviewTime,interviewClass,bloc);
 
             try {
                 MimeMessage message = javaMailSender.createMimeMessage();
@@ -51,7 +57,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         }
     }
 
-    private String getEmailContent(String userName, LocalDate interviewDate, String interviewTime) {
+    private String getEmailContent(String userName, LocalDate interviewDate, String interviewTime,String interviewClass,String bloc) {
         String htmlTemplate = "";
         try {
             Resource resource = new ClassPathResource("templates/mailInterview.html");
@@ -60,9 +66,11 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
             e.printStackTrace();
         }
         String htmlContent = htmlTemplate
-                .replace("[user name]", userName)
-                .replace("[interview date and time]", interviewDate.toString() + " at " + interviewTime);
-                //.replace("[interview location]", interviewLocation);
+                .replace("[student name]", userName)
+                .replace("[interview date]", interviewDate.toString() + " at " + interviewTime)
+                .replace("[interview time]", interviewTime)
+                .replace("[interview location]", interviewClass)
+                .replace("[interview bloc]",bloc);
         return htmlContent;
     }
 
