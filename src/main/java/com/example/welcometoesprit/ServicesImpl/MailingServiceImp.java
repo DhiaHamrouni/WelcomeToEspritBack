@@ -94,7 +94,7 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
             javaMailSender.send(mimeMessage);
         }
         catch (MessagingException e)  {
-            throw new IllegalStateException("failed to send emaill");
+            throw new IllegalStateException("failed to send email");
         }
     }
 }
