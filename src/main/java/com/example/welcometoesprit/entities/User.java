@@ -72,7 +72,8 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-
+  @OneToMany(mappedBy = "user")
+  private List<Rating> ratings;
   @ManyToOne
   Event event;
   @ManyToOne
