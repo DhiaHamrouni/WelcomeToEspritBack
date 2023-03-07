@@ -7,6 +7,7 @@ import com.example.welcometoesprit.entities.Rating;
 import com.sun.mail.imap.protocol.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +22,9 @@ public class RatingController extends BaseController<Rating, Integer> {
     private RatingServiceInterface ratingService;
 
     @PostMapping("addRating/{idUser}/{idpublication}")
-    public ResponseEntity<Rating> addRating(@PathVariable Integer idUser, @PathVariable Integer idpublication, @RequestBody Rating rating) {
+    public Rating addRating(@PathVariable Integer idUser, @PathVariable Integer idpublication, @RequestBody Rating rating) {
         ratingService.addRating(rating,idpublication,idUser);
-        return new ResponseEntity<>(rating, HttpStatus.OK);
+        return rating;
     }
 
     @GetMapping("getAllRating")
