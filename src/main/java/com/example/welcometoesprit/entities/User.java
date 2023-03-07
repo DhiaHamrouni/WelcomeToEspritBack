@@ -33,6 +33,11 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @Enumerated(EnumType.STRING)
+  private NiveauActuel niveauActuel;
+  @Enumerated(EnumType.STRING)
+  private NiveauSuivant niveauSuivant;
+
   public User(String firstname, String lastname, String email, String password, Role role) {
     this.firstname = firstname;
     this.lastname = lastname;
@@ -47,23 +52,7 @@ public class User implements UserDetails {
             "id=" + id +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
-            ", username='" + username + '\'' +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            ", locked=" + locked +
-            ", enabled=" + enabled +
             ", role=" + role +
-            ", tokens=" + tokens +
-            ", event=" + event +
-            ", event2=" + event2 +
-            ", listOfComplaints=" + listOfComplaints +
-            ", listOfPublication=" + listOfPublication +
-            ", listPublicationLikee=" + listPublicationLikee +
-            ", realisation=" + realisation +
-            ", interviewStudent=" + interviewStudent +
-            ", InterviewEvaluators=" + InterviewEvaluators +
-            ", files=" + files +
-            ", classroom=" + classroomSet +
             '}';
   }
 
@@ -72,7 +61,8 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-
+  @OneToMany(mappedBy = "user")
+  private List<Rating> ratings;
   @ManyToOne
   Event event;
   @ManyToOne
