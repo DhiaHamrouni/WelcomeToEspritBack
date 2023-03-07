@@ -32,4 +32,6 @@ public class RDV_offre implements Serializable {
 
     @ManyToMany(mappedBy = "rdvOffreList",cascade = CascadeType.ALL)
     private List<Jury> juries;
+    @ManyToOne
+    private Offre offre;
 }

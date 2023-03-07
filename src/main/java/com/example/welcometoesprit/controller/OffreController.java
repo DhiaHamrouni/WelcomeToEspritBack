@@ -4,12 +4,15 @@ import com.example.welcometoesprit.ServicesImpl.OffreServiceImp;
 import com.example.welcometoesprit.entities.Comment;
 import com.example.welcometoesprit.entities.CondidatOffre;
 import com.example.welcometoesprit.entities.Offre;
+import com.example.welcometoesprit.repository.OffreRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,4 +26,5 @@ public class OffreController extends BaseController<Offre,Integer>{
     public String stats(){
         return offreServiceImp.statsoffers();
     }
+
 }

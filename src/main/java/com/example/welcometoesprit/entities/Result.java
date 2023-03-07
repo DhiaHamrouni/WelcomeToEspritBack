@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,14 +19,9 @@ public class Result implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idResult")
     private Integer idResult; // Clé primaire
-    private Integer Criteria1;
-    private Integer Criteria2;
-    private Integer Criteria3;
     private natija result;
-
     @OneToOne
     CondidatOffre condidatOffreResult;
-    @OneToOne
-    Jury jury;
-
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Jury> juries;
 }

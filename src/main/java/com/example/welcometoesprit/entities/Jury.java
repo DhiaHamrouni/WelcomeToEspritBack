@@ -22,14 +22,12 @@ public class Jury implements Serializable{
     private String First_Name;
     private String Last_Name;
     private String position;
+    private String notification;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<RDV_offre> rdvOffreList;
-    @OneToOne
-    private FileEntity CriteriaGrid;
-    @OneToOne(mappedBy = "jury")
-    Result result;
+
 
 
 }

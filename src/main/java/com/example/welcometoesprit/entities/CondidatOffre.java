@@ -23,6 +23,7 @@ public class CondidatOffre implements Serializable {
     private String FirstName;
     private String LastName;
     private String email;
+    private String Notification;
     private boolean enableCondidatOffre = false;
     @OneToOne
     private FileEntity CV_motiv;

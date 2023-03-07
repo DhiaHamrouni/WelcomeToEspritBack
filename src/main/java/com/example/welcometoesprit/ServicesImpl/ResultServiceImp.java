@@ -46,4 +46,7 @@ public class ResultServiceImp extends BaseServiceImp<Result,Integer> implements 
             return ("Sorry , Your Application was denied better luck next time");
         }
     }
+    /*public String addandnotify(Result result,Integer id_offre){
+
+    }*/
 }

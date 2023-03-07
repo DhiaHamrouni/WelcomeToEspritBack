@@ -37,6 +37,7 @@ public class Offre implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Result> resultList;
-
+    @OneToMany(cascade = CascadeType.ALL)
+    List<RDV_offre> rdvOffreList;
 
     }

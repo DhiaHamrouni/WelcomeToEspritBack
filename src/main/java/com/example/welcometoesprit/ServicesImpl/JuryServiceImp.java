@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.ServicesImpl;
 
+import com.example.welcometoesprit.entities.Criteria;
 import com.example.welcometoesprit.entities.Jury;
 import com.example.welcometoesprit.entities.RDV_offre;
 import com.example.welcometoesprit.repository.JuryRepository;
@@ -24,7 +25,7 @@ public class JuryServiceImp extends BaseServiceImp<Jury,Integer> {
             throw new IllegalStateException("juror already assigned to this appointment");
         }
         if (juries.size()>=3){
-            throw new IllegalStateException("this RDV already has a jury");
+            throw new IllegalStateException("this RDV already has enough jurors");
         }
         else {
             for (RDV_offre element:rdvOffreList) {
@@ -39,4 +40,5 @@ public class JuryServiceImp extends BaseServiceImp<Jury,Integer> {
             return jury;
         }
     }
+
 }

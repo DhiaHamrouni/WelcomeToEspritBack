@@ -53,7 +53,7 @@ public class ExcelUploadService {
                         }
                     }
                     cellIndex++;
-                mails.add(user.getEmail());
+                //mails.add(user.getEmail());
                 }
                 if (user.getEmail()!=null){
                 user.setPassword(passwordEncoder.encode(user.getPassword()));

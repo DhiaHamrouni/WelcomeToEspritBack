@@ -1,6 +1,7 @@
 package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.OffreServiceInterface;
+import com.example.welcometoesprit.entities.CondidatOffre;
 import com.example.welcometoesprit.entities.Offre;
 import com.example.welcometoesprit.entities.Type;
 import com.example.welcometoesprit.repository.OffreRepository;
@@ -29,6 +30,10 @@ public class OffreServiceImp extends BaseServiceImp<Offre,Integer> implements Of
             }
         }
         return "The number of teaching offers available for now makes up for "+(teach/both)*100+"% of the total existing offers \n and the number of adiministratif offers is "+(agent/both)*100+"%";
+    }
+
+    public String numberofApplicationperOffre(Offre offre){
+        return "the number of applications to the offre "+offre.getTitle()+" is "+offre.getCondidatOffres().size();
     }
 
 }
