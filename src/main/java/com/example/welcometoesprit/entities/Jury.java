@@ -27,7 +27,8 @@ public class Jury implements Serializable{
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<RDV_offre> rdvOffreList;
-
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "jury")
+    private List<Criteria> criteriaList;
 
 
 }

@@ -34,4 +34,6 @@ public class RDV_offre implements Serializable {
     private List<Jury> juries;
     @ManyToOne
     private Offre offre;
+    @OneToOne
+    private Result result;
 }

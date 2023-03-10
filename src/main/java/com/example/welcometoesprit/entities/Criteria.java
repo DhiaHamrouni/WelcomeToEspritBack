@@ -17,6 +17,9 @@ public class Criteria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCriteria")
     private Integer idCriteria; // Clé primaire
-    private String Question;
+    private Questions Question;
     private Integer Value;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    Jury jury;
 }

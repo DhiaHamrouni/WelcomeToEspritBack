@@ -24,4 +24,7 @@ public class Result implements Serializable {
     CondidatOffre condidatOffreResult;
     @OneToMany(cascade = CascadeType.ALL)
     List<Jury> juries;
+
+    @OneToOne(mappedBy = "result")
+    private RDV_offre rdv_offre;
 }

@@ -26,5 +26,14 @@ public class OffreController extends BaseController<Offre,Integer>{
     public String stats(){
         return offreServiceImp.statsoffers();
     }
-
+    @GetMapping("/getAll")
+    public List<Offre> getAll(){
+        List<Offre> offreList=new ArrayList<>();
+        for (Offre element: offreServiceImp.retrieveAll()){
+            if (element.getCapacity()>0){
+                offreList.add(element);
+            }
+        }
+        return offreList;
+    }
 }

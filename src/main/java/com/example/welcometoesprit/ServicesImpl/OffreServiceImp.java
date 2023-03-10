@@ -1,9 +1,7 @@
 package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.OffreServiceInterface;
-import com.example.welcometoesprit.entities.CondidatOffre;
-import com.example.welcometoesprit.entities.Offre;
-import com.example.welcometoesprit.entities.Type;
+import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.OffreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,5 +33,4 @@ public class OffreServiceImp extends BaseServiceImp<Offre,Integer> implements Of
     public String numberofApplicationperOffre(Offre offre){
         return "the number of applications to the offre "+offre.getTitle()+" is "+offre.getCondidatOffres().size();
     }
-
 }
