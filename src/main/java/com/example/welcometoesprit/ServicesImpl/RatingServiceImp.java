@@ -31,13 +31,11 @@ public class RatingServiceImp implements RatingServiceInterface {
     @Autowired
     PublicationRepository pubRepo;
     @Override
-    public Rating addRating(Rating rating ,Integer IdPub , Integer IdUser ) {
-        User u = userRepo.findById(IdUser).get();
-        Publication p = pubRepo.findById(IdPub).get();
-        rating.setUser(u);
-        rating.setPublication(p);
+    public Rating addRating(Rating rating ) {
 
-        return ratingRepo.save(rating);
+
+        ratingRepo.save(rating);
+        return rating;
     }
 
 

@@ -1,7 +1,6 @@
 package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServiceInterface.RatingServiceInterface;
-import com.example.welcometoesprit.ServicesImpl.RatingServiceImp;
 
 import com.example.welcometoesprit.entities.Rating;
 import com.sun.mail.imap.protocol.Status;
@@ -16,15 +15,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/ratings")
-public class RatingController extends BaseController<Rating, Integer> {
+public class RatingController {
 
     @Autowired
     private RatingServiceInterface ratingService;
+    @PostMapping("addRating")
+    public Rating addRating( @RequestBody Rating rating) {
 
-    @PostMapping("addRating/{idUser}/{idpublication}")
-    public Rating addRating(@PathVariable Integer idUser, @PathVariable Integer idpublication, @RequestBody Rating rating) {
-        ratingService.addRating(rating,idpublication,idUser);
-        return rating;
+        return  ratingService.addRating(rating);
     }
 
     @GetMapping("getAllRating")

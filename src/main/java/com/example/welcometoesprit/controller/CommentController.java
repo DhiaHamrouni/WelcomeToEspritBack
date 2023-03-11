@@ -1,7 +1,6 @@
 package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.CommentServiceImp;
-import com.example.welcometoesprit.entities.Bloc;
 import com.example.welcometoesprit.entities.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
