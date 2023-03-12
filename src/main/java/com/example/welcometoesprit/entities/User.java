@@ -38,6 +38,8 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private NiveauSuivant niveauSuivant;
 
+  private String numTel;
+
   public User(String firstname, String lastname, String email, String password, Role role) {
     this.firstname = firstname;
     this.lastname = lastname;
@@ -82,7 +84,7 @@ public class User implements UserDetails {
   @OneToOne
   Interview interviewStudent;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)
