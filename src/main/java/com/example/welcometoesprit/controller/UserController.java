@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.controller;
 
+import com.example.welcometoesprit.ServicesImpl.PDFGeneratorService;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
 import com.example.welcometoesprit.entities.NiveauActuel;
 import com.example.welcometoesprit.entities.NiveauSuivant;
@@ -14,16 +15,27 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
 public class UserController extends BaseController<User,Integer>   {
+    private final PDFGeneratorService pdfGeneratorService;
+
     @Autowired
     private UserServiceImp userService;
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+
+    public UserController(PDFGeneratorService pdfGeneratorService,
+                          UserRepository userRepository) {
+        this.pdfGeneratorService = pdfGeneratorService;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping("/upload-users-data")
     public ResponseEntity<?> uploadUsersData(@RequestParam("file") MultipartFile file){
@@ -66,8 +78,28 @@ public class UserController extends BaseController<User,Integer>   {
         return ResponseEntity.ok(levelCountMap);
     }
 
+    @GetMapping("/certificate/generate/{id_user}")
+    @ResponseBody
+    public void exportCertificate(HttpServletResponse response,@PathVariable("id_user")  Integer id_user) throws IOException {
+        response.setContentType("application/pdf");
+        User user =userRepository.getReferenceById(id_user);
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=certificattion_" + user.getFirstname()+"_"+user.getLastname() + ".pdf";
+        response.setHeader(headerKey, headerValue);
 
-
-
+        this.userService.exportCertificate(response, id_user);
+    }
+    @GetMapping("/export-to-excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Users_Information.xlsx";
+        response.setHeader(headerKey, headerValue);
+        userService.exportUserToExcel(response);
+    }
+    @PostMapping("/assignEventToUser/{id_user}/{id_event}")
+    public void assignEventToUser(@PathVariable("id_user") Integer id_user,@PathVariable("id_event") Integer id_event){
+        userService.assignEventToUser(id_user,id_event);
+    }
 
 }

@@ -14,8 +14,7 @@ import java.io.IOException;
 @RestController
 public class GenerateQRCode {
 
-    @GetMapping("/admin/qrcode")
-    @ResponseBody
+    @GetMapping("/generate/qrcode")
     public void generateQRCode(String link, HttpServletResponse response) throws IOException {
         link="https://www.linkedin.com/in/mahdi-fersi-349577215/";
         ByteArrayOutputStream out = QRCode.from(link).to(ImageType.PNG).stream();
