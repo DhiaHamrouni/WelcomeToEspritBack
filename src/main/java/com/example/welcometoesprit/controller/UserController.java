@@ -30,6 +30,7 @@ public class UserController extends BaseController<User,Integer>   {
 
     @Autowired
     private UserServiceImp userService;
+
     private final UserRepository userRepository;
 
     public UserController(PDFGeneratorService pdfGeneratorService,
@@ -103,6 +104,7 @@ public class UserController extends BaseController<User,Integer>   {
     public void assignEventToUser(@PathVariable("id_user") Integer id_user,@PathVariable("id_event") Integer id_event){
         userService.assignEventToUser(id_user,id_event);
     }
+    
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generatePdf() {
         try {
@@ -113,6 +115,7 @@ public class UserController extends BaseController<User,Integer>   {
             return ResponseEntity.status(500).build();
         }
     }
+
 
 
 }
