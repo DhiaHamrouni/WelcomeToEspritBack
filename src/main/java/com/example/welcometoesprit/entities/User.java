@@ -1,13 +1,16 @@
 package com.example.welcometoesprit.entities;
 
 import com.example.welcometoesprit.token.Token;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +30,17 @@ public class User implements UserDetails {
   private String lastname;
   private String username;
   private String email;
+  @Enumerated(EnumType.STRING)
+  private Sexe sexe;
+  @Enumerated(EnumType.STRING)
+  private Nationality nationality;
+  @Enumerated(EnumType.STRING)
+  private TypeCours typeCours;
   private String password;
+  private String identifiant;
+
+  private LocalDateTime registrationDate;
+  private String cin;
   private Boolean locked=false;
   private Boolean enabled=false;
   @Enumerated(EnumType.STRING)
@@ -46,14 +59,26 @@ public class User implements UserDetails {
     this.role = role;
   }
 
+  public User(String firstname, String lastname, String email,String cin, String password, Nationality nationality, TypeCours typeCours, Sexe sexe, NiveauActuel niveauActuel,  Role role,LocalDateTime registrationDate) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.sexe = sexe;
+    this.nationality = nationality;
+    this.typeCours = typeCours;
+    this.password = password;
+    this.cin = cin;
+    this.role = role;
+    this.niveauActuel = niveauActuel;
+    this.registrationDate=registrationDate;
+  }
+
   @Override
   public String toString() {
-    return "User{" +
-            "id=" + id +
-            ", firstname='" + firstname + '\'' +
-            ", lastname='" + lastname + '\'' +
-            ", role=" + role +
-            '}';
+    return "Student : \n" +
+            ", firstname='" + firstname + '\n' +
+            ", lastname='" + lastname + '\n'
+            ;
   }
 
 

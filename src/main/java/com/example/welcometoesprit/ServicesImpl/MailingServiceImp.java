@@ -6,10 +6,13 @@ import com.example.welcometoesprit.entities.NiveauSuivant;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.MailingRepository;
 import com.example.welcometoesprit.repository.UserRepository;
+import com.lowagie.text.Document;
+import jakarta.activation.DataSource;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -127,16 +130,32 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
             throw new IllegalStateException("failed to send emaill");
         }
     }
+    @Override
+    @Async
+    public void sendEmailpdf(String to, InputStreamSource document) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+            message.setTo(to);
+            message.setSubject(" Registration Confirmation mail ");
+            message.setText("certification de participation a l'evenement de l'APP0");
+            message.setFrom("mahdi.fersi@esprit.tn");
+            message.addAttachment("certification",document);
+            javaMailSender.send(mimeMessage);
+        }
+        catch (MessagingException e)  {
+            throw new IllegalStateException("failed to send emaill");
+        }
+    }
 
-    public void sendWelcomeEmail(String to, String subject, String message) throws MessagingException {
+    public void sendWelcomeEmail(String to, String subject, User user) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
         messageHelper.setSubject(subject);
         messageHelper.setTo(to);
 
         Context context = new Context();
-        context.setVariable("subject", subject);
-        context.setVariable("message", message);
+        context.setVariable("user", user);
         String content = templateEngine.process("welcomeMail", context);
 
         messageHelper.setText(content, true);
