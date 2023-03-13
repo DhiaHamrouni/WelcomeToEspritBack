@@ -18,11 +18,6 @@ public class EventController extends BaseController<Event,Integer> {
     @Autowired
     EventServiceImp eventServiceImp;
 
-  /*  @GetMapping("/search")
-    public ResponseEntity<List<Event>> search(@RequestParam("event") String event) {
-        List<Event> results = eventServiceImp.searchByName(event);
-        return ResponseEntity.ok(results);
-    }*/
 
     @GetMapping("get-All")
     public List<Event> getAll(){
@@ -34,14 +29,5 @@ public class EventController extends BaseController<Event,Integer> {
         return new ResponseEntity<>(eventServiceImp.addEvent(event), HttpStatusCode.valueOf(200));
     }
 
-    /*@PutMapping("/updateEvent/{id}")
-    public ResponseEntity<?> updateEvent(@RequestBody Event event,@PathVariable("id") Integer idEvent ) {
-        Event e =new Event();
-        if (e==null)
-        {
-            return  ResponseEntity.notFound().build();
-        }
 
-        return new ResponseEntity<>(eventServiceImp.updateEvent(event), HttpStatusCode.valueOf(200));
-    }*/
 }
