@@ -2,8 +2,10 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.PDFGeneratorService;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
+
 import com.example.welcometoesprit.dto.TeacherDto;
 import com.example.welcometoesprit.dto.UserDTO;
+
 import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -91,10 +93,20 @@ public class UserController extends BaseController<User,Integer>   {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=certificattion_" + user.getFirstname()+"_"+user.getLastname() + ".pdf";
         response.setHeader(headerKey, headerValue);
-
         this.userService.exportCertificate(response, id_user);
-
     }
+
+    @GetMapping("/badge/generate/{id_user}")
+    @ResponseBody
+    public void exportBadge(HttpServletResponse response,@PathVariable("id_user")  Integer id_user) throws IOException {
+        response.setContentType("application/pdf");
+        User user =userRepository.getReferenceById(id_user);
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=badge" + user.getFirstname()+"_"+user.getLastname() + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        this.userService.badgePdf(response, id_user);
+    }
+
     @GetMapping("/export-to-excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
@@ -107,7 +119,17 @@ public class UserController extends BaseController<User,Integer>   {
     public void assignEventToUser(@PathVariable("id_user") Integer id_user,@PathVariable("id_event") Integer id_event){
         userService.assignEventToUser(id_user,id_event);
     }
-    
+//    @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+//    public ResponseEntity<byte[]> generatePdf() {
+//        try {
+//            byte[] pdfBytes = UserServiceImp.PdfGenerator.generatePdf();
+//            return ResponseEntity.ok(pdfBytes);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(500).build();
+//        }
+//    }
+
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generatePdf() {
         try {
@@ -120,6 +142,10 @@ public class UserController extends BaseController<User,Integer>   {
     }
 
 
+    @GetMapping("/statistique/{role}/{cretetria}")
+    public String statistique(@PathVariable("role") String role,@PathVariable("cretetria") String cretetria) {
+        return userService.statistique(role,cretetria);
+    }
 
     @PutMapping("assignInterviewToStudent/{idStudent}")
     public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){

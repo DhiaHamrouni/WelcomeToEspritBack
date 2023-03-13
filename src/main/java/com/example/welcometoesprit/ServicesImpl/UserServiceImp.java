@@ -14,6 +14,7 @@ import com.example.welcometoesprit.repository.UserRepository;
 
 import com.itextpdf.text.BaseColor;
 import com.lowagie.text.*;
+import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
@@ -25,7 +26,6 @@ import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -405,6 +405,113 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     }
 
 
+
+    ///// Badge
+    public void badgePdf(HttpServletResponse response,Integer id_user) throws IOException {
+        User user =usersRepository.getReferenceById(id_user);
+
+        String link=user.toString();
+        ByteArrayOutputStream out = QRCode.from(link).to(ImageType.PNG).stream();
+
+        Document document = new Document(PageSize.B7);
+        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+
+        document.open();
+        // Get the PdfContentByte object
+        PdfContentByte canvas = writer.getDirectContent();
+        // Set the color and thickness of the border
+        BaseColor baseColor = new BaseColor(0, 0, 255);
+        Color color = new Color(baseColor.getRGB());
+        canvas.setColorStroke(color);
+        canvas.setLineWidth(2);
+        // Get the size of the PDF document
+        Rectangle pageSize = document.getPageSize();
+        float x = pageSize.getLeft() + 10;
+        float y = pageSize.getBottom() + 10;
+        float width = pageSize.getWidth() - 25;
+        float height = pageSize.getHeight() - 25;
+        // Draw the border
+        canvas.rectangle(x, y, width, height);
+        canvas.stroke();
+        // Add the Logo's img
+        Image logo = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\logo.png").getAbsolutePath());
+        logo.setAlignment(Element.ALIGN_LEFT);
+        logo.getTransparency();
+        logo.scaleToFit(50f, 50f);
+        document.add(logo);
+
+        // Add a title
+        Paragraph title = new Paragraph("Badge User");
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setFont(new Font(Font.BOLD,Font.ITALIC));
+        document.add(title);
+
+        // Add the recipient's name
+
+        Paragraph name = new Paragraph("NOM : "+user.getLastname()+" "+ user.getFirstname());
+        name.setAlignment(Element.ALIGN_JUSTIFIED);
+        name.setSpacingBefore(20f);
+        document.add(name);
+
+        // Add a message
+        Paragraph identifiant = new Paragraph("ID : "+user.getIdentifiant());
+        identifiant.setAlignment(Element.ALIGN_JUSTIFIED);
+        identifiant.setSpacingBefore(20f);
+        document.add(identifiant);
+        // Add a message
+        Paragraph cin = new Paragraph("CIN : "+user.getCin());
+        cin.setAlignment(Element.ALIGN_JUSTIFIED);
+        cin.setSpacingBefore(20f);
+        document.add(cin);
+        //Add a Qr code
+        Image QRcode = Image.getInstance(out.toByteArray());
+        QRcode.setAlignment(Element.ALIGN_CENTER);
+        QRcode.scaleToFit(75f, 75f);
+        document.add(QRcode);
+        ////end document
+        document.close();
+    }
+
+     public String statistique(String role,String cretetria) {
+         Role roleEnum = Role.valueOf(role.toUpperCase());
+         switch (cretetria) {
+             case "sexe":
+                 switch (roleEnum) {
+                     case STUDENT:
+                         return "le nombre des etudiants feminine: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.FEMININE)+"\n"+
+                                 "le nombre des etudiants MASCULIN: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.MASCULIN);
+                     case ADMIN:
+                         return "le nombre des admins feminine: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.FEMININE)+"\n"+
+                                 "le nombre des admins MASCULIN: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.MASCULIN);
+                     case TEACHER:
+                         return "le nombre des enseignants feminine: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.FEMININE)+"\n"+
+                                 "le nombre des enseignants MASCULIN: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.MASCULIN);
+                 }
+             case "nationalite":
+                 switch (roleEnum) {
+                     case STUDENT:
+                         return "le nombre des etudiants ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.TUNISIENNE)+"\n"+
+                                 "le nombre des etudiants ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.ETRANGER);
+                     case ADMIN:
+                         return "le nombre des admins ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.TUNISIENNE)+"\n"+
+                                 "le nombre des admins ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.ETRANGER);
+                     case TEACHER:
+                         return "le nombre des enseignants ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.TUNISIENNE)+"\n"+
+                                 "le nombre des enseignants ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.ETRANGER);
+                 }
+             case "annee_inscription":
+                 switch (roleEnum) {
+                     case STUDENT:
+                         return "le nombre des etudiants inscrit en 2023 : " + usersRepository.UserByRoleAndRegistDate(Role.STUDENT,LocalDateTime.now().getYear());
+                     case ADMIN:
+                         return "le nombre des admins  inscrit en 2023: " + usersRepository.UserByRoleAndRegistDate(Role.ADMIN, LocalDateTime.now().getYear());
+                     case TEACHER:
+                         return "le nombre des enseignants inscrit en 2023: " + usersRepository.UserByRoleAndRegistDate(Role.TEACHER,LocalDateTime.now().getYear());
+                 }
+         }
+         return "verifier le critere ou le role";
+     }
+
     @Transactional
     public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
         User student = usersRepository.findById(idStudent).get();
@@ -470,8 +577,5 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         }
         return teacherDtoList;
     }
-
-
-
 
 }
