@@ -23,6 +23,7 @@ public class CondidatOffre implements Serializable {
     private String FirstName;
     private String LastName;
     private String email;
+    private String Notification;
     private boolean enableCondidatOffre = false;
     @OneToOne
     private FileEntity CV_motiv;
@@ -32,4 +33,7 @@ public class CondidatOffre implements Serializable {
     private RDV_offre rdv_offre;
     @OneToMany(mappedBy = "condidatOffre")
     private List<Token> tokens;
+    @OneToOne(mappedBy = "condidatOffreResult")
+    Result result;
+
 }

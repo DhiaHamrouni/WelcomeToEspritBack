@@ -6,6 +6,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +29,11 @@ public class RDV_offre implements Serializable {
 
     @OneToOne(mappedBy = "rdv_offre")
     private CondidatOffre condidatOffre;
+
+    @ManyToMany(mappedBy = "rdvOffreList",cascade = CascadeType.ALL)
+    private List<Jury> juries;
+    @ManyToOne
+    private Offre offre;
+    @OneToOne
+    private Result result;
 }

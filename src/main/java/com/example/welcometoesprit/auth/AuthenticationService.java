@@ -6,6 +6,8 @@ import com.example.welcometoesprit.ServicesImpl.MailingServiceImp;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
 import com.example.welcometoesprit.config.JwtService;
 import com.example.welcometoesprit.entities.ConfirmationToken;
+import com.example.welcometoesprit.entities.Offre;
+import com.example.welcometoesprit.repository.OffreRepository;
 import com.example.welcometoesprit.token.Token;
 import com.example.welcometoesprit.token.TokenRepository;
 import com.example.welcometoesprit.token.TokenType;
@@ -33,6 +35,10 @@ public class AuthenticationService {
   private final MailingServiceImp emailSenderr;
   private final ConfirmationTokenService confirmationTokenService;
   private final UserServiceImp appUserService;
+
+  private final JavaMailSender emailSender;
+
+  private OffreRepository offreRepository;
 
   private final List<String> liste=new ArrayList<>(Arrays.asList("Your account is not yet registered, Create an Account or verify your email first"));
 
@@ -88,6 +94,7 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
       }
+
     return AuthenticationResponse.builder().errors(liste).build();
   }
 

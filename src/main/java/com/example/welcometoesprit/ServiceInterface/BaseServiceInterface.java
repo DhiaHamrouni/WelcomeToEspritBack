@@ -11,6 +11,4 @@ public interface BaseServiceInterface<T, id> {
     public T retrieve (id id);
     public void remove(id id);
 
-
-
 }
