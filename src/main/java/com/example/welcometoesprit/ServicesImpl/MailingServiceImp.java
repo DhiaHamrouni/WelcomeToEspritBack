@@ -121,6 +121,12 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
             throw new IllegalStateException("failed to send emaill");
         }
     }
+
+    @Override
+    public void sendMailInterviewDetailsToStudent(Integer idStudent) {
+
+    }
+
     @Override
     @Async
     public void sendEmailpdf(String to, InputStreamSource document) {
