@@ -549,8 +549,8 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
                     //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
 
                     Classroom classroom = classroomRepository.findById(1).get();
-                    student.getInterviewStudent().setClassroom(classroom);
-                    interview1.setClassroom(classroom);
+                    student.getInterviewStudent().setClassroomInterview(classroom);
+                    interview1.setClassroomInterview(classroom);
 
                     usersRepository.save(student);
                     usersRepository.save(teacher);

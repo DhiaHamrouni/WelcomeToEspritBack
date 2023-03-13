@@ -28,10 +28,12 @@ public class ComplaintServiceImp extends BaseServiceImp<Complaint,Integer> imple
     @Override
     public Complaint AddComplaint(Complaint e, Integer id) throws Exception {
         User user = userRepository.getReferenceById(id);
-        List<Complaint> complaints =getComplaintsByUser(id);
-        complaints.add(e);
-        user.setListOfComplaints(complaints);
-        userRepository.save(user);
+        e.setComplaintPar(user);
+        complaintRepository.save(e);
+//        List<Complaint> complaints =getComplaintsByUser(id);
+//        complaints.add(e);
+//        user.setListOfComplaints(complaints);
+//        userRepository.save(user);
         return e;
 
 

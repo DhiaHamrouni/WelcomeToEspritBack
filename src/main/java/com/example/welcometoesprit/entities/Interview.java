@@ -48,11 +48,8 @@ public class Interview  implements Serializable {
 
     @OneToOne
     private MCQ mcqInterview;
-    @ManyToOne
-    private User evaluator;
 
-    @ManyToOne
-    private Classroom classroom;
+
 
     public Interview(Date dateInterview,Integer heureInterview, User student, User evaluator) {
         this.dateInterview = dateInterview;

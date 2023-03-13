@@ -1,12 +1,16 @@
 package com.example.welcometoesprit.controller.Chatgbt;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public record CompletionResponse(Usage usage, List<Choice> choices) {
-	
-	public String firstAnswer() {
+
+	@NotNull
+	public String firstAnswer()
+	{
 		if (choices == null || choices.isEmpty())
-			return null;
+			return "no response";
 		return choices.get(0).text;
 	}
 	
