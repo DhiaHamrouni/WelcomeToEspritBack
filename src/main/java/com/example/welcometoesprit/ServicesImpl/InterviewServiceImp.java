@@ -48,6 +48,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
     @Autowired
     private JavaMailSender javaMailSender;
 
+
     public void assignInterviewToEvaluator(Integer interviewId, Integer evaluatorId) throws Exception {
         
         Interview interview = interviewRepository.findById(interviewId)
@@ -176,7 +177,8 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
             Interview interview = user.getInterviewStudent();
             Date input = interview.getScheduledTime();
             LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
-            String interviewTime = String.valueOf(interview.getScheduledTime().getTime());
+
+            String interviewTime = String.valueOf(interview.getHeureInterview());
             Integer classroom = (interview.getClassroomInterview().getNumero()+interview.getClassroomInterview().getEtage()*100);
             String bloc = interview.getClassroomInterview().getBloc().getNomBloc();
             String interviewClass = classroom.toString();
