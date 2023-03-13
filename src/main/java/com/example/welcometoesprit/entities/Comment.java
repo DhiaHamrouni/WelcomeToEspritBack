@@ -7,6 +7,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +26,9 @@ public class Comment implements Serializable {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date datePublication;
     private Integer nbrLike;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<React> reacts;
 
     @JsonIgnore
     @ManyToOne
