@@ -30,6 +30,7 @@ public class ExcelUploadService {
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
             XSSFSheet sheet = workbook.getSheet("users");
             int rowIndex =0;
+            List<String> mails=new ArrayList<>();
             for (Row row : sheet){
                 if (rowIndex ==0){
                     rowIndex++;
@@ -52,17 +53,16 @@ public class ExcelUploadService {
                         }
                     }
                     cellIndex++;
+                //mails.add(user.getEmail());
                 }
                 if (user.getEmail()!=null){
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 users.add(user);}
-                else {
-                    break;
-                }
             }
         } catch (IOException e) {
             e.getStackTrace();
         }
         return users;
     }
+
 }

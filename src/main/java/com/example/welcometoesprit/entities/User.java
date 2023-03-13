@@ -85,8 +85,15 @@ public class User implements UserDetails {
 
 
 
+  @Enumerated(EnumType.STRING)
+  private Status status=Status.Active;
+
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+
+  private Integer warnings=0;
+
 
   @OneToMany(mappedBy = "user")
   private List<Rating> ratings;
@@ -100,14 +107,20 @@ public class User implements UserDetails {
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "publierPar")
   List<Publication> listOfPublication;
 
+  @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
+  List<SignalPost> signalPosts;
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
   private Set<Publication> listPublicationLikee;
+
+  @OneToMany(mappedBy = "CommentPar",cascade = CascadeType.ALL)
+  private Set<Comment> comments;
 
   @ManyToOne
   Realisation realisation;
 
   @OneToOne
   Interview interviewStudent;
+
 
   @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
   private Set<Interview> InterviewEvaluators;

@@ -33,6 +33,8 @@ public class RegisterRequest {
   private TypeCours typeCours;
   private NiveauActuel niveauActuel;
   private String password;
+
+
   private LocalDateTime registrationDate= LocalDateTime.now();
   private Role role=Role.STUDENT;
 

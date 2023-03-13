@@ -27,6 +27,9 @@ public class Classroom implements Serializable {
     @ManyToMany(cascade= CascadeType.ALL, mappedBy = "classroomSet")
     List<User> listOfStudent;
 
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "classroomInterview")
+    private List<Interview> interviews ;
+
     @ManyToOne
     Bloc bloc;
 

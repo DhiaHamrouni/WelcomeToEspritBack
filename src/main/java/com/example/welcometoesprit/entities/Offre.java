@@ -28,6 +28,8 @@ public class Offre implements Serializable {
     @Enumerated(EnumType.STRING)
     private Type type;
     private String Description;
+    @Column(nullable = false)
+    private Integer capacity;
     @OneToOne
     private FileEntity Doc;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -35,5 +37,9 @@ public class Offre implements Serializable {
     @ManyToOne
     Departement departement;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Result> resultList;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<RDV_offre> rdvOffreList;
 
     }
