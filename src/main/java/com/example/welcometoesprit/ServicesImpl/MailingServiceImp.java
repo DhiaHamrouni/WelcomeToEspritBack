@@ -155,9 +155,9 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
         javaMailSender.send(mimeMessage);
     }
 
-    @Override
+    /*@Override
     public void sendMailInterviewDetailsToStudent(Integer idStudent) {
 
-    }
+    }*/
 
 }

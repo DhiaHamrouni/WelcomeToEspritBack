@@ -1,6 +1,8 @@
 package com.example.welcometoesprit.repository;
 
 import com.example.welcometoesprit.entities.Nationality;
+import com.example.welcometoesprit.dto.UserDTO;
+
 import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.Sexe;
 import com.example.welcometoesprit.entities.User;
@@ -35,4 +37,9 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int countUserByRoleAndNationality(Role role, Nationality nationality);
   @Query("SELECT COUNT(u) FROM User u WHERE u.role =?1 AND YEAR(u.registrationDate) = ?2")
   int UserByRoleAndRegistDate(Role role, int year);
+  List<User> findByFirstnameAndRole(String firstName, Role role);
+
+  List<User> findByFirstnameAndLastnameAndRole(String firstName, String lastName, Role role);
+
+
 }

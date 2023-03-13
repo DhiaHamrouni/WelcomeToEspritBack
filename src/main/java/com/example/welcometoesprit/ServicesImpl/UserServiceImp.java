@@ -1,11 +1,14 @@
 package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.UserServiceInterface;
+import com.example.welcometoesprit.dto.TeacherDto;
+import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.ConfirmationToken;
 import com.example.welcometoesprit.entities.Event;
 import com.example.welcometoesprit.entities.User;
-import com.example.welcometoesprit.repository.EventRepository;
+import com.example.welcometoesprit.repository.*;
 import com.example.welcometoesprit.entities.*;
+
 import com.example.welcometoesprit.repository.MailingRepository;
 import com.example.welcometoesprit.repository.UserRepository;
 
@@ -16,6 +19,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.glxn.qrgen.QRCode;
@@ -39,10 +43,17 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
+import java.util.stream.Collectors;
+
+
 @Service
 @Slf4j
 @AllArgsConstructor
 public class UserServiceImp extends BaseServiceImp<User,Integer>  implements UserDetailsService,UserServiceInterface {
+    @Autowired
+    private ClassroomRepository classroomRepository;
+    @Autowired
+    private InterviewRepository interviewRepository;
     private final static  String USER_NOT_FOUND_MSG ="user with email %s not found";
 
     private JavaMailSender javaMailSender;
@@ -392,6 +403,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     }
 
 
+
     ///// Badge
     public void badgePdf(HttpServletResponse response,Integer id_user) throws IOException {
         User user =usersRepository.getReferenceById(id_user);
@@ -497,5 +509,68 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
          }
          return "verifier le critere ou le role";
      }
+
+    @Transactional
+    public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
+        User student = usersRepository.findById(idStudent).get();
+        List<User> teachers = usersRepository.findByRole(Role.TEACHER);
+        String test="interview not validated";
+        for ( User teacher : teachers){
+            Set<Interview> interviews = teacher.getInterviewEvaluators();
+            for (Interview interview : interviews){
+                if((interview.getDateInterview()!=dateInterview)&&(!Objects.equals(interview.getHeureInterview(), heureInterview))){
+                    Interview interview1 = new Interview(dateInterview,heureInterview,student,teacher);
+                    interviewRepository.save(interview1);
+                    student.setInterviewStudent(interview1);
+                    teacher.getInterviewEvaluators().add(interview1);
+                    //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
+                    //student.getInterviewStudent().setClassroom(classroom);
+                    //interview1.setClassroom(classroom);
+                    //sendInterviewDetails(idStudent);
+                    usersRepository.save(student);
+                    usersRepository.save(teacher);
+
+                    test="interview validated";
+                    break;
+                }else{
+                    continue;
+                }
+            }
+        }
+        return test;
+    }
+
+
+    @Override
+    public List<UserDTO> findStudentsByFirstName(UserDTO userDto) {
+        List<User> studentList = usersRepository.findByFirstnameAndRole(userDto.getFirstName(), Role.STUDENT);
+        //log.info("la liste des etudiant du repository est " + studentList);
+        List<UserDTO> studentDtoList = new ArrayList<>();
+        //log.info("la list des etudiants vide est " + studentDtoList);
+        for (User student : studentList) {
+            UserDTO studentDto = new UserDTO();
+            studentDto.setFirstName(student.getFirstname());
+            studentDto.setLastName(student.getLastname());
+            studentDto.setNiveauSuivant(student.getNiveauSuivant());
+            studentDtoList.add(studentDto);
+            //log.info("la list des etudiants avec un seul estudiant est " + studentDtoList);
+        }
+        //log.info("la list des etudiants finale est " + studentDtoList);
+        return studentDtoList;
+    }
+
+    @Override
+    public List<TeacherDto> findTeachersByFirstNameAndLastName(String firstName, String lastName) {
+        List<User> teacherList = usersRepository.findByFirstnameAndLastnameAndRole(firstName, lastName, Role.TEACHER);
+        List<TeacherDto> teacherDtoList = new ArrayList<>();
+        for (User teacher : teacherList) {
+            TeacherDto teacherDto = new TeacherDto();
+            teacherDto.setFirstName(teacher.getFirstname());
+            teacherDto.setLastName(teacher.getLastname());
+            teacherDto.setEmail(teacher.getEmail());
+            teacherDtoList.add(teacherDto);
+        }
+        return teacherDtoList;
+    }
 
 }
