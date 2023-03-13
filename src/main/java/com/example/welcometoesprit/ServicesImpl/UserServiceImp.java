@@ -1,6 +1,7 @@
 package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.UserServiceInterface;
+import com.example.welcometoesprit.dto.TeacherDto;
 import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.ConfirmationToken;
 import com.example.welcometoesprit.entities.Event;
@@ -311,28 +312,38 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         return test;
     }
 
-    public List<UserDTO> getUsersByFirstNameAndRoleAndNiveauSuivant(String firstName) {
-        List<User> users = usersRepository.findByFirstNameAndRoleAndNiveauSuivant(firstName);
-        return users.stream().map(u -> new UserDTO(u.getFirstname(), u.getLastname(), u.getNiveauSuivant())).collect(Collectors.toList());
-    }
 
+    @Override
     public List<UserDTO> findStudentsByFirstName(UserDTO userDto) {
         List<User> studentList = usersRepository.findByFirstnameAndRole(userDto.getFirstName(), Role.STUDENT);
-        log.info("la liste des etudiant du repository est " + studentList);
+        //log.info("la liste des etudiant du repository est " + studentList);
         List<UserDTO> studentDtoList = new ArrayList<>();
-        log.info("la list des etudiants vide est " + studentDtoList);
+        //log.info("la list des etudiants vide est " + studentDtoList);
         for (User student : studentList) {
             UserDTO studentDto = new UserDTO();
             studentDto.setFirstName(student.getFirstname());
             studentDto.setLastName(student.getLastname());
             studentDto.setNiveauSuivant(student.getNiveauSuivant());
             studentDtoList.add(studentDto);
-            log.info("la list des etudiants avec un seul estudiant est " + studentDtoList);
+            //log.info("la list des etudiants avec un seul estudiant est " + studentDtoList);
         }
-        log.info("la list des etudiants finale est " + studentDtoList);
+        //log.info("la list des etudiants finale est " + studentDtoList);
         return studentDtoList;
     }
 
+    @Override
+    public List<TeacherDto> findTeachersByFirstNameAndLastName(String firstName, String lastName) {
+        List<User> teacherList = usersRepository.findByFirstnameAndLastnameAndRole(firstName, lastName, Role.TEACHER);
+        List<TeacherDto> teacherDtoList = new ArrayList<>();
+        for (User teacher : teacherList) {
+            TeacherDto teacherDto = new TeacherDto();
+            teacherDto.setFirstName(teacher.getFirstname());
+            teacherDto.setLastName(teacher.getLastname());
+            teacherDto.setEmail(teacher.getEmail());
+            teacherDtoList.add(teacherDto);
+        }
+        return teacherDtoList;
+    }
 
 
 

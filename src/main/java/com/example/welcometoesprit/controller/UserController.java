@@ -2,6 +2,7 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.PDFGeneratorService;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
+import com.example.welcometoesprit.dto.TeacherDto;
 import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.UserRepository;
@@ -111,17 +112,27 @@ public class UserController extends BaseController<User,Integer>   {
         return userService.assignInterviewToStudent(idStudent,dateInterview,heureInterview);
     }
 
-    @GetMapping("getUsersByFirstNameAndRoleAndNiveauSuivant/{firstName}")
-    public List<UserDTO> getUsersByFirstNameAndRoleAndNiveauSuivant(@PathVariable String firstName) {
-        return userService.getUsersByFirstNameAndRoleAndNiveauSuivant(firstName);
-    }
 
     @GetMapping("/getStudentsByFirstName")
     public List<UserDTO> getStudentsByFirstName(@RequestParam String firstName) {
         UserDTO userDto = new UserDTO();
         userDto.setFirstName(firstName);
-        log.info("le firstName de letudiant est "+userDto.getFirstName());
+        //log.info("le firstName de letudiant est "+userDto.getFirstName());
         return userService.findStudentsByFirstName(userDto);
 
     }
+
+    @GetMapping("/getTeachersByFirstNameAndLastName")
+    public ResponseEntity<List<TeacherDto>> getTeachersByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
+        List<TeacherDto> teacherDtoList = userService.findTeachersByFirstNameAndLastName(firstName, lastName);
+        return ResponseEntity.ok(teacherDtoList);
+    }
+
+
+
+
+
+
+
+
 }

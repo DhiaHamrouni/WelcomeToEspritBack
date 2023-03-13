@@ -28,9 +28,9 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int enableAppUser(String email);
 
   List<User> findByRole(Role role);
-  @Query("SELECT new com.example.welcometoesprit.dto.UserDTO(u.firstname, u.lastname, u.niveauSuivant) FROM User u WHERE u.role = 'STUDENT' AND u.firstname = :firstName")
-  List<User> findByFirstNameAndRoleAndNiveauSuivant(String firstName);
 
   List<User> findByFirstnameAndRole(String firstName, Role role);
+
+  List<User> findByFirstnameAndLastnameAndRole(String firstName, String lastName, Role role);
 
 }

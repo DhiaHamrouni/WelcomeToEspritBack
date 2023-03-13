@@ -1,5 +1,7 @@
 package com.example.welcometoesprit.ServiceInterface;
 
+import com.example.welcometoesprit.dto.TeacherDto;
+import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.NiveauActuel;
 import com.example.welcometoesprit.entities.NiveauSuivant;
 import com.example.welcometoesprit.entities.User;
@@ -26,6 +28,8 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
     public List<User> getStudents();
 
     public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview);
+    public List<UserDTO> findStudentsByFirstName(UserDTO userDto);
+    public List<TeacherDto> findTeachersByFirstNameAndLastName(String firstName, String lastName);
 
 
 
