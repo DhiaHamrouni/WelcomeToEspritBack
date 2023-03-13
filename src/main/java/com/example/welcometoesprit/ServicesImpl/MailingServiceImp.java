@@ -67,7 +67,7 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
     @Override
     public void sendMailToAdministrationLevel(Integer idUser, NiveauSuivant niveauSuivant) {
         User user = appUserRepository.findById(idUser).get();
-        String toEmail="nour.ajimi.2000@gmail.com";
+        String toEmail=user.getEmail();
         String Subject="Next level to study";
         String body="Hi , I am "+ user.getFirstname()+" " +user.getLastname()+"i am currently studying at " + user.getNiveauActuel()
                 +" i want to choose a next level according " +
