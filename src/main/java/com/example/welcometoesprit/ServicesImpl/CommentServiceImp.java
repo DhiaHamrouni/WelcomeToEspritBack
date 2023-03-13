@@ -2,7 +2,9 @@ package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.CommentServiceInterface;
 import com.example.welcometoesprit.entities.Comment;
+import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.CommentRepository;
+import com.example.welcometoesprit.repository.UserRepository;
 import com.pidev.phset.services.BadWordImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class CommentServiceImp extends BaseServiceImp<Comment,Integer> implement
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public List<Comment> getAllComments() {
         return null;
@@ -27,7 +32,9 @@ public class CommentServiceImp extends BaseServiceImp<Comment,Integer> implement
     }
 
     @Override
-    public String addComment(Comment comment) {
+    public String addComment(Comment comment , Integer IdUser) {
+        User usr = userRepository.findById(IdUser).orElseThrow(null);
+        comment.setCommentPar(usr);
         com.pidev.phset.services.BadWordImpl badWord= new BadWordImpl();
         if(  badWord.filterText(comment.getContent()).equals("This post contain bad word"))
         return "This post contain bad word";
