@@ -85,8 +85,15 @@ public class User implements UserDetails {
 
 
 
+  @Enumerated(EnumType.STRING)
+  private Status status=Status.Active;
+
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+
+  private Integer warnings=0;
+
 
   @OneToMany(mappedBy = "user")
   private List<Rating> ratings;
@@ -113,6 +120,7 @@ public class User implements UserDetails {
 
   @OneToOne
   Interview interviewStudent;
+
 
   @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
   private Set<Interview> InterviewEvaluators;
