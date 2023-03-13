@@ -2,6 +2,7 @@ package com.example.welcometoesprit.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import jakarta.persistence.*;
@@ -16,7 +17,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table( name = "Interview")
@@ -37,21 +37,24 @@ public class Interview  implements Serializable {
     private Integer InterviewScore;
     private String Deliberation; // not sure if string
 
+
     @OneToOne(mappedBy = "interviewStudent",cascade = CascadeType.ALL)
+    @JsonIgnore
     private User student;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private User evaluator;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Classroom classroomInterview;
 
     @OneToOne
     private MCQ mcqInterview;
 
 
-
-    public Interview(Date dateInterview,Integer heureInterview, User student, User evaluator) {
+    public Interview(Date dateInterview, User student, User evaluator,Integer heureInterview) {
         this.dateInterview = dateInterview;
         this.heureInterview=heureInterview;
         this.student = student;
