@@ -47,10 +47,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
 
     @Autowired
     private JavaMailSender javaMailSender;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ClassroomRepository classroomRepository;
+
 
     public void assignInterviewToEvaluator(Integer interviewId, Integer evaluatorId) throws Exception {
         
@@ -142,7 +139,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
 
 
 
-        if (student.getRole() != Role.USER) {
+        if (student.getRole() != Role.STUDENT) {
             throw new Exception("Only Students can be assigned to interviews");
         }
         interview.setStudent(student);
@@ -181,8 +178,8 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
             Date input = interview.getDateInterview();
             LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
             String interviewTime = String.valueOf(interview.getHeureInterview());
-            Integer classroom = (interview.getClassroom().getNumero()+interview.getClassroom().getEtage()*100);
-            String bloc = interview.getClassroom().getBloc().getNomBloc();
+            Integer classroom = (interview.getClassroomInterview().getNumero()+interview.getClassroomInterview().getEtage()*100);
+            String bloc = interview.getClassroomInterview().getBloc().getNomBloc();
             String interviewClass = classroom.toString();
             String userEmail = user.getEmail();
             String userName = user.getFirstname();

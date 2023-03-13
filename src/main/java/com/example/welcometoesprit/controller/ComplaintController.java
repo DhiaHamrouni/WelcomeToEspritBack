@@ -45,14 +45,14 @@ public class ComplaintController extends BaseController<Complaint,Integer>{
 
     @PostMapping("/addComplaint/{userId}")
     public ResponseEntity<Complaint> addComplaint(@RequestBody Complaint e, @PathVariable("userId") Integer id) throws Exception {
-        return ResponseEntity.ok(this.complaintServiceImp.AddComplaint(e, id));
-
+        complaintServiceImp.AddComplaint(e, id);
+        return ResponseEntity.ok(e);
 
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Complaint> updateComplaint(@RequestBody Complaint e, @PathVariable("id") Integer id) throws Exception {
-
-        return ResponseEntity.ok(this.complaintServiceImp.updateComplaint(e,id));
+        complaintServiceImp.updateComplaint(e,id);
+        return ResponseEntity.ok(e);
 
 
     }
@@ -110,8 +110,8 @@ public class ComplaintController extends BaseController<Complaint,Integer>{
     }
 
 
-    @PutMapping("/updateStatus/{id}")
-    public ResponseEntity<Complaint> updateComplaintStatus(@RequestBody StatusComplaint e, @PathVariable("id") Integer id) throws Exception {
+    @PutMapping("/updateStatus/{id}/{status}")
+    public ResponseEntity<Complaint> updateComplaintStatus(@PathVariable("id") Integer id, @PathVariable("status") StatusComplaint e) throws Exception {
 
         return ResponseEntity.ok(this.complaintServiceImp.UpdateStatusComplaint(e, id));
 

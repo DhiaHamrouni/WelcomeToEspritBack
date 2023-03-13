@@ -33,7 +33,5 @@ public class Classroom implements Serializable {
     @ManyToOne
     Bloc bloc;
 
-    @OneToMany(mappedBy = "classroom")
-    private Set<Interview> interviews;
 
 }

@@ -19,7 +19,7 @@ public class OpenAiApiClient {
 		DALL_E, GPT_3;
 	}
 
-	@Value("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")
+	@Value("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")
 	private String openaiApiKey;
 
 	private final HttpClient client = HttpClient.newHttpClient();

@@ -6,5 +6,6 @@ public enum Role {
   ADMIN,
   TEACHER,
   AGENT,
-  JURY
+  JURY,
+  USER
 }
