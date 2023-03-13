@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+
 import java.util.List;
 
 @Repository
@@ -17,5 +18,6 @@ public interface InterviewRepository extends BaseRepository<Interview,Integer> {
 
     List<Interview> findByClassroomInterviewAndScheduledTimeBetween(Classroom classroom, Date scheduledTime, Date nextThirtyMinutes);
 
+    List<Interview> findByDateInterviewIsBetween(LocalDateTime start, LocalDateTime end);
 
 }

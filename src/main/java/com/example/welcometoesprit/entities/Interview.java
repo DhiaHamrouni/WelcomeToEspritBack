@@ -31,11 +31,13 @@ public class Interview  implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date scheduledTime ;
 
+    private Date dateInterview ;
+    private Integer heureInterview;
     private Integer TotalScore;
     private Integer InterviewScore;
     private String Deliberation; // not sure if string
 
-    @OneToOne
+    @OneToOne(mappedBy = "interviewStudent",cascade = CascadeType.ALL)
     private User student;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -46,5 +48,16 @@ public class Interview  implements Serializable {
 
     @OneToOne
     private MCQ mcqInterview;
+    @ManyToOne
+    private User evaluator;
 
+    @ManyToOne
+    private Classroom classroom;
+
+    public Interview(Date dateInterview,Integer heureInterview, User student, User evaluator) {
+        this.dateInterview = dateInterview;
+        this.heureInterview=heureInterview;
+        this.student = student;
+        this.evaluator = evaluator;
+    }
 }

@@ -2,9 +2,16 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.InterviewServiceImp;
 import com.example.welcometoesprit.entities.Interview;
+import com.example.welcometoesprit.entities.Role;
+import com.example.welcometoesprit.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/interview")
@@ -47,6 +54,15 @@ public class InterviewController extends BaseController<Interview,Integer>{
     }
 
 
+
+
+
+    @GetMapping("/sendMailToStudent/{idUser}")
+    public String sendMailInterviewDetails(@PathVariable Integer idUser){
+        interviewServiceImp.sendInterviewDetails(idUser);
+        return "Interview email sent!";
+
+    }
 
 
 }

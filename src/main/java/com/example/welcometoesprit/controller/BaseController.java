@@ -2,6 +2,7 @@ package com.example.welcometoesprit.controller;
 
 
 import com.example.welcometoesprit.ServiceInterface.BaseServiceInterface;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +12,12 @@ import java.util.List;
 
 public abstract class BaseController<T, id> {
 
-
     @Autowired
     BaseServiceInterface<T, id> baseService;
 
-    @GetMapping()
+    @GetMapping("/getAll")
     public List<T> getAll(){
-
         return baseService.retrieveAll();
-
     }
 
 
@@ -27,8 +25,6 @@ public abstract class BaseController<T, id> {
     public ResponseEntity<T> add(@RequestBody T e){
         System.out.println(e);
         return ResponseEntity.ok(this.baseService.add(e));
-
-
     }
 
 

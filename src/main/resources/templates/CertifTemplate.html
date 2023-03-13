@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Certification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+            font-weight: normal;
+            line-height: 1.2;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Certificate of Completion</h1>
+    <p>This is to certify that</p>
+    <h2 th:text="${user}"> </h2>
+    <p>has successfully completed the course</p>
+    <h3 th:text="${event}"></h3>
+    <p>on <Span th:text="${event.endDate}"></Span></p>
+    <div class="content">
+        <p>Congratulations on your achievement!</p>
+    </div>
+</div>
+</body>
+</html>

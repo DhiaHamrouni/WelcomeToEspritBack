@@ -25,7 +25,7 @@ public class FileEntity implements Serializable {
     private String contentType;
 
     @Lob
-    @Column(name = "data")
+    @Column(name = "data", columnDefinition = "LONGBLOB")
     private byte[] data;
 
     // les getters et les setters

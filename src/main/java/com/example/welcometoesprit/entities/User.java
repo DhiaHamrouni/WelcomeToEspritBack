@@ -1,24 +1,25 @@
 package com.example.welcometoesprit.entities;
 
 import com.example.welcometoesprit.token.Token;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "_user")
 public class User implements UserDetails {
 
@@ -29,9 +30,28 @@ public class User implements UserDetails {
   private String lastname;
   private String username;
   private String email;
+  @Enumerated(EnumType.STRING)
+  private Sexe sexe;
+  @Enumerated(EnumType.STRING)
+  private Nationality nationality;
+  @Enumerated(EnumType.STRING)
+  private TypeCours typeCours;
   private String password;
+  private String identifiant;
+
+  private LocalDateTime registrationDate;
+  private String cin;
   private Boolean locked=false;
   private Boolean enabled=false;
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
+  @Enumerated(EnumType.STRING)
+  private NiveauActuel niveauActuel;
+  @Enumerated(EnumType.STRING)
+  private NiveauSuivant niveauSuivant;
+
+  private String numTel;
 
   public User(String firstname, String lastname, String email, String password, Role role) {
     this.firstname = firstname;
@@ -41,8 +61,29 @@ public class User implements UserDetails {
     this.role = role;
   }
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
+  public User(String firstname, String lastname, String email,String cin, String password, Nationality nationality, TypeCours typeCours, Sexe sexe, NiveauActuel niveauActuel,  Role role,LocalDateTime registrationDate) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.sexe = sexe;
+    this.nationality = nationality;
+    this.typeCours = typeCours;
+    this.password = password;
+    this.cin = cin;
+    this.role = role;
+    this.niveauActuel = niveauActuel;
+    this.registrationDate=registrationDate;
+  }
+
+  @Override
+  public String toString() {
+    return "Student : \n" +
+            ", firstname='" + firstname + '\n' +
+            ", lastname='" + lastname + '\n'
+            ;
+  }
+
+
 
   @Enumerated(EnumType.STRING)
   private Status status=Status.Active;
@@ -53,6 +94,9 @@ public class User implements UserDetails {
 
   private Integer warnings=0;
 
+
+  @OneToMany(mappedBy = "user")
+  private List<Rating> ratings;
   @ManyToOne
   Event event;
   @ManyToOne
@@ -63,8 +107,13 @@ public class User implements UserDetails {
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "publierPar")
   List<Publication> listOfPublication;
 
+  @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
+  List<SignalPost> signalPosts;
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
   private Set<Publication> listPublicationLikee;
+
+  @OneToMany(mappedBy = "CommentPar",cascade = CascadeType.ALL)
+  private Set<Comment> comments;
 
   @ManyToOne
   Realisation realisation;
@@ -72,15 +121,15 @@ public class User implements UserDetails {
   @OneToOne
   Interview interviewStudent;
 
-  @OneToMany(cascade = CascadeType.ALL , mappedBy="evaluator")
+
+  @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)
   private Set<FileEntity> files;
 
-  @ManyToOne
-  Classroom classroom;
-
+  @ManyToMany(cascade= CascadeType.ALL)
+  private Set<Classroom> classroomSet;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority(role.name()));

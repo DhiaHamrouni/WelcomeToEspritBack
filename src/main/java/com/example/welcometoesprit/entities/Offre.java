@@ -4,6 +4,7 @@ import lombok.*;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,17 +19,27 @@ public class Offre implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idOffre")
     private Integer idOffre; // Clé primaire
-    private String JuryAppreciation;
+    /*private String JuryAppreciation;
     private String Result;
     private String titre;
     private String description;
-    private String Jury;
-
-
+    private String Jury;*/
+    private String Title;
+    @Enumerated(EnumType.STRING)
+    private Type type;
+    private String Description;
+    @Column(nullable = false)
+    private Integer capacity;
     @OneToOne
     private FileEntity Doc;
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<CondidatOffre> condidatOffres;
+    private List<CondidatOffre> condidatOffres;
     @ManyToOne
     Departement departement;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Result> resultList;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<RDV_offre> rdvOffreList;
+
     }

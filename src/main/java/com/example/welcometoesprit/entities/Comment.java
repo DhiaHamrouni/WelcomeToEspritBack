@@ -1,6 +1,7 @@
 package com.example.welcometoesprit.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import jakarta.persistence.*;
@@ -24,4 +25,12 @@ public class Comment implements Serializable {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date datePublication;
     private Integer nbrLike;
+
+    @JsonIgnore
+    @ManyToOne
+    User CommentPar;
+
+    public boolean containsBadWords() {
+        return false;
+    }
 }

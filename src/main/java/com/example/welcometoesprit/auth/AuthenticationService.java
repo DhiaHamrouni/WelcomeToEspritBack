@@ -6,32 +6,30 @@ import com.example.welcometoesprit.ServicesImpl.MailingServiceImp;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
 import com.example.welcometoesprit.config.JwtService;
 import com.example.welcometoesprit.entities.ConfirmationToken;
+import com.example.welcometoesprit.entities.Offre;
+import com.example.welcometoesprit.repository.OffreRepository;
 import com.example.welcometoesprit.token.Token;
 import com.example.welcometoesprit.token.TokenRepository;
 import com.example.welcometoesprit.token.TokenType;
-import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
   private final UserRepository repository;
   private final TokenRepository tokenRepository;
-  private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final MailingServiceImp emailSenderr;
@@ -40,16 +38,26 @@ public class AuthenticationService {
 
   private final JavaMailSender emailSender;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  private OffreRepository offreRepository;
+
+  private final List<String> liste=new ArrayList<>(Arrays.asList("Your account is not yet registered, Create an Account or verify your email first"));
+
+  public AuthenticationResponse  register(RegisterRequest request) {
     User user =            new User(
             request.getFirstname(),
             request.getLastname(),
             request.getEmail(),
-            request.getPassword(),
-            Role.STUDENT
-    );
+            request.getCin(),
+            request.getCin(),
+            request.getNationality(),
+            request.getTypeCours(),
+            request.getSexe(),
+            request.getNiveauActuel(),
+            request.getRole(),
+            request.getRegistrationDate()
+            );
     String confirmToken = appUserService.signUpUser(user);
-
+    appUserService.generateIdentifiant(user);
 //    var user = User.builder()
 //        .firstname(request.getFirstname())
 //        .lastname(request.getLastname())
@@ -62,9 +70,9 @@ public class AuthenticationService {
     saveUserToken(savedUser, jwtToken);
     String link = "http://localhost:9090/api/v1/auth/registration/confirm?token=" + confirmToken;
       emailSenderr.sendEmailTemplate(request.getEmail(),buildEmail(request.getFirstname(), link));
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+    return  AuthenticationResponse.builder()
+            .token(jwtToken)
+            .build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -76,12 +84,18 @@ public class AuthenticationService {
     );
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
-    var jwtToken = jwtService.generateToken(user);
-    revokeAllUserTokens(user);
-    saveUserToken(user, jwtToken);
-    return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+
+      var jwtToken = jwtService.generateToken(user);
+      revokeAllUserTokens(user);
+      saveUserToken(user, jwtToken);
+      if (user.getEnabled()) {
+        System.out.println(user.getRole());
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+      }
+
+    return AuthenticationResponse.builder().errors(liste).build();
   }
 
   private void saveUserToken(User user, String jwtToken) {
@@ -120,12 +134,18 @@ public class AuthenticationService {
     LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
     if (expiredAt.isBefore(LocalDateTime.now())) {
+      confirmationTokenService.expiredAt(confirmationToken);
       throw new IllegalStateException("token expired");
     }
 
     confirmationTokenService.setConfirmedAt(token);
     appUserService.enableAppUser(
             confirmationToken.getAppUser().getEmail());
+    try {
+      emailSenderr.sendWelcomeEmail(confirmationToken.getAppUser().getEmail(),"Welcome Mail",confirmationToken.getAppUser());
+    } catch (MessagingException e) {
+      throw new RuntimeException(e);
+    }
     return "confirmed";
   }
 
@@ -196,5 +216,8 @@ public class AuthenticationService {
             "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
             "\n" +
             "</div></div>";
+  }
+  private String buildWelcomeEmail() {
+    return "ahla \n wa sahla \n w ya marhaba ";
   }
 }
