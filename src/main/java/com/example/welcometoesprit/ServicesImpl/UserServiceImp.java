@@ -8,17 +8,24 @@ import com.example.welcometoesprit.entities.Event;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.*;
 import com.example.welcometoesprit.entities.*;
+
+import com.example.welcometoesprit.repository.MailingRepository;
+import com.example.welcometoesprit.repository.UserRepository;
+
+import com.itextpdf.text.BaseColor;
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,13 +35,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
+
 import java.util.stream.Collectors;
+
 
 @Service
 @Slf4j
@@ -68,6 +78,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
 
     @Autowired
     private InterviewServiceImp interviewServiceImp;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -132,15 +143,45 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         ByteArrayOutputStream out = QRCode.from(link).to(ImageType.PNG).stream();
 
         Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, response.getOutputStream());
+        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 
         document.open();
+        // Get the PdfContentByte object
+        PdfContentByte canvas = writer.getDirectContent();
+        // Set the color and thickness of the border
+        BaseColor baseColor = new BaseColor(255, 0, 0);
+        Color color = new Color(baseColor.getRGB());
+        canvas.setColorStroke(color);
+        canvas.setLineWidth(2);
+        // Get the size of the PDF document
+        Rectangle pageSize = document.getPageSize();
+        float x = pageSize.getLeft() + 20;
+        float y = pageSize.getBottom() + 20;
+        float width = pageSize.getWidth() - 40;
+        float height = pageSize.getHeight() - 40;
+        // Draw the border
+        canvas.rectangle(x, y, width, height);
+        canvas.stroke();
         // Add the Logo's img
         Image logo = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\logo.png").getAbsolutePath());
         logo.setAlignment(Element.ALIGN_LEFT);
         logo.getTransparency();
         logo.scaleToFit(100f, 100f);
         document.add(logo);
+        // Add the background's img
+//        Image background = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\logo.png").getAbsolutePath());
+//
+//        // Set the absolute position of the image
+//        background.setAbsolutePosition(0, 0);
+//        background.getTransparency();
+//        // Scale the image to fit the page
+//        background.scaleAbsolute(document.getPageSize().getWidth(),document.getPageSize().getHeight());
+
+        // Add the image to the writer
+//        PdfContentByte content = writer.getDirectContentUnder();
+//        content.addImage(background);
+
+
         // Add a title
         Paragraph title = new Paragraph("Certificate of Completion");
         title.setAlignment(Element.ALIGN_CENTER);
@@ -170,6 +211,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         table.addCell(cell3);
         table.addCell(cell4);
         table.setSpacingBefore(20f);
+
         document.add(table);
 
         // Add a message
@@ -183,8 +225,19 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         QRcode.scaleToFit(100f, 100f);
         document.add(QRcode);
 
-        document.close();
+        ///footerrr
+        onEndPage(writer,document);
 
+        ////end document
+        document.close();
+    }
+    public void onEndPage(PdfWriter writer, Document document) {
+        PdfContentByte cb = writer.getDirectContent();
+        Phrase footer = new Phrase("Dép. SCOLARITÉ |  esprit ►  |  www.esprit.tn");
+        ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+                footer,
+                (document.right() - document.left()) / 2 + document.leftMargin(),
+                document.bottom() - 10, 0);
     }
     public List<User> exportUserToExcel(HttpServletResponse response) throws IOException {
         List<User> users = usersRepository.findAll();
@@ -283,6 +336,74 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         }
         return levelCountMap;
     }
+    public class PdfGenerator {
+
+        private static final String API_URL = "https://yakpdf.p.rapidapi.com/pdf";
+        private static final String API_KEY = "5717faa6c4msh76c264af4543fd1p11a340jsndb7a07637be8";
+        private static final String API_HOST = "yakpdf.p.rapidapi.com";
+
+        public static byte[] generatePdf() throws IOException {
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("application/json");
+            String value = "{\r\n" +
+                    "    \"pdf\": {\r\n" +
+                    "        \"format\": \"A4\",\r\n" +
+                    "        \"printBackground\": true,\r\n" +
+                    "        \"scale\": 1\r\n" +
+                    "    },\r\n" +
+                    "    \"source\": {\r\n" +
+                    "        \"html\": \"<!DOCTYPE html><html lang=\\\"en\\\"><head><meta charset=\\\"UTF-8\\\"><meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\"></head><body><h1>Hello World!</h1></body></html>\"\r\n" +
+                    "    },\r\n" +
+                    "    \"wait\": {\r\n" +
+                    "        \"for\": \"navigation\",\r\n" +
+                    "        \"timeout\": 250,\r\n" +
+                    "        \"waitUntil\": \"load\"\r\n" +
+                    "    }\r\n" +
+                    "}";
+            RequestBody body = RequestBody.create(mediaType, value);
+            Request request = new Request.Builder()
+                    .url(API_URL)
+                    .post(body)
+                    .addHeader("content-type", "application/json")
+                    .addHeader("X-RapidAPI-Key", API_KEY)
+                    .addHeader("X-RapidAPI-Host", API_HOST)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            return response.body().bytes();
+        }
+    }
+
+    public void generateIdentifiant(User user){
+
+        List<User> users = usersRepository.findAll();
+
+        String mid= user.getTypeCours().toString().substring(0,1)+user.getSexe().
+                toString().substring(0,1)+user.getNationality().toString().substring(0,1);
+        NiveauSuivant niveauSuivant = levelSuggestion(user.getId()) ;
+         String year = String.valueOf(user.getRegistrationDate().getYear()).substring(2,4);
+        String first =  year+ niveauSuivant.toString().substring(1,2);
+        Random rand = new Random();
+        String num = String.valueOf(rand.nextInt(9000) + 1000);
+        String identifiant =first+mid+num;
+        for (User element :users){
+            if(Objects.equals(element.getIdentifiant(), identifiant)){
+                generateIdentifiant(user);
+            }
+        }
+        user.setIdentifiant(identifiant);
+        usersRepository.save(user);
+    }
+    public void setNewPassword(User user,String newPassword){
+        String encodedPassword = bCryptPasswordEncoder
+                .encode(newPassword);
+        user.setPassword(encodedPassword);
+        usersRepository.save(user);
+    }
+
 
     @Transactional
     public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {

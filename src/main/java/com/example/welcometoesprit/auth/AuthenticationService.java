@@ -41,11 +41,17 @@ public class AuthenticationService {
             request.getFirstname(),
             request.getLastname(),
             request.getEmail(),
-            request.getPassword(),
-            request.getRole()
+            request.getCin(),
+            request.getCin(),
+            request.getNationality(),
+            request.getTypeCours(),
+            request.getSexe(),
+            request.getNiveauActuel(),
+            request.getRole(),
+            request.getRegistrationDate()
             );
     String confirmToken = appUserService.signUpUser(user);
-
+    appUserService.generateIdentifiant(user);
 //    var user = User.builder()
 //        .firstname(request.getFirstname())
 //        .lastname(request.getLastname())
@@ -129,7 +135,7 @@ public class AuthenticationService {
     appUserService.enableAppUser(
             confirmationToken.getAppUser().getEmail());
     try {
-      emailSenderr.sendWelcomeEmail(confirmationToken.getAppUser().getEmail(),"Welcome Mail",buildWelcomeEmail());
+      emailSenderr.sendWelcomeEmail(confirmationToken.getAppUser().getEmail(),"Welcome Mail",confirmationToken.getAppUser());
     } catch (MessagingException e) {
       throw new RuntimeException(e);
     }

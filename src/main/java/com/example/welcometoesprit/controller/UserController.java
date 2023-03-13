@@ -9,7 +9,9 @@ import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,6 +93,7 @@ public class UserController extends BaseController<User,Integer>   {
         response.setHeader(headerKey, headerValue);
 
         this.userService.exportCertificate(response, id_user);
+
     }
     @GetMapping("/export-to-excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
@@ -104,6 +107,19 @@ public class UserController extends BaseController<User,Integer>   {
     public void assignEventToUser(@PathVariable("id_user") Integer id_user,@PathVariable("id_event") Integer id_event){
         userService.assignEventToUser(id_user,id_event);
     }
+    
+    @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> generatePdf() {
+        try {
+            byte[] pdfBytes = UserServiceImp.PdfGenerator.generatePdf();
+            return ResponseEntity.ok(pdfBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
 
     @PutMapping("assignInterviewToStudent/{idStudent}")
     public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
