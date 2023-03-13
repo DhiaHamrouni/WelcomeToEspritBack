@@ -1,10 +1,10 @@
 package com.example.welcometoesprit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,13 +35,17 @@ public class Publication implements Serializable {
                 ", listOfComments=" + listOfComments +
                 '}';
     }
-
+    @JsonIgnore
     @ManyToOne
     User publierPar;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "publication")
+    List<SignalPost> signalPosts;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<User> likerPar;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     List<Comment> listOfComments;
 
