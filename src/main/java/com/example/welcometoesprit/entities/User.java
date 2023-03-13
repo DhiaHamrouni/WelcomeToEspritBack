@@ -34,9 +34,14 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @Enumerated(EnumType.STRING)
+  private Status status=Status.Active;
+
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
+
+  private Integer warnings=0;
 
   @ManyToOne
   Event event;
@@ -57,7 +62,7 @@ public class User implements UserDetails {
   @OneToOne
   Interview interviewStudent;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL , mappedBy="evaluator")
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)
