@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.repository;
 
+import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,9 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int enableAppUser(String email);
 
   List<User> findByRole(Role role);
-  List<User> findByFirstNameContainingIgnoreCase(String search);
+  @Query("SELECT new com.example.welcometoesprit.dto.UserDTO(u.firstname, u.lastname, u.niveauSuivant) FROM User u WHERE u.role = 'STUDENT' AND u.firstname = :firstName")
+  List<User> findByFirstNameAndRoleAndNiveauSuivant(String firstName);
+
+  List<User> findByFirstnameAndRole(String firstName, Role role);
 
 }

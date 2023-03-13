@@ -2,9 +2,11 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.PDFGeneratorService;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
+import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
+@Slf4j
 public class UserController extends BaseController<User,Integer>   {
     private final PDFGeneratorService pdfGeneratorService;
 
@@ -107,4 +111,17 @@ public class UserController extends BaseController<User,Integer>   {
         return userService.assignInterviewToStudent(idStudent,dateInterview,heureInterview);
     }
 
+    @GetMapping("getUsersByFirstNameAndRoleAndNiveauSuivant/{firstName}")
+    public List<UserDTO> getUsersByFirstNameAndRoleAndNiveauSuivant(@PathVariable String firstName) {
+        return userService.getUsersByFirstNameAndRoleAndNiveauSuivant(firstName);
+    }
+
+    @GetMapping("/getStudentsByFirstName")
+    public List<UserDTO> getStudentsByFirstName(@RequestParam String firstName) {
+        UserDTO userDto = new UserDTO();
+        userDto.setFirstName(firstName);
+        log.info("le firstName de letudiant est "+userDto.getFirstName());
+        return userService.findStudentsByFirstName(userDto);
+
+    }
 }
