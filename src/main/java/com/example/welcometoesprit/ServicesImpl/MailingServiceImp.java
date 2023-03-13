@@ -92,15 +92,6 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
         mailingRepository.save(mailingcontent);
     }
 
-    /*@Override
-    public void sendMailStudentConfirmation(User user) {
-        String toEmail= user.getEmail();
-        String Subject = "Confirmation Mail";
-        String body = " Welcome to Esprit , " +
-                "this is an automatic confirmation mail for your account registration ";
-        sendEmail(toEmail,Subject,body);
-    }
-    */
     @Override
     public void sendEmaill(SimpleMailMessage message) {
 
@@ -148,7 +139,9 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
         }
     }
 
+
     public void sendWelcomeEmail(String to, String subject, User user) throws MessagingException {
+
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
         messageHelper.setSubject(subject);
@@ -166,4 +159,5 @@ public class MailingServiceImp extends BaseServiceImp<Mailingcontent, Integer> i
     public void sendMailInterviewDetailsToStudent(Integer idStudent) {
 
     }
+
 }

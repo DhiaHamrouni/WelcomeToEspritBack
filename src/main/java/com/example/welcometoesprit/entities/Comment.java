@@ -24,4 +24,8 @@ public class Comment implements Serializable {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private Date datePublication;
     private Integer nbrLike;
+
+    public boolean containsBadWords() {
+        return false;
+    }
 }

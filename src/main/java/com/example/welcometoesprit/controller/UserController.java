@@ -27,6 +27,7 @@ public class UserController extends BaseController<User,Integer>   {
 
     @Autowired
     private UserServiceImp userService;
+
     private final UserRepository userRepository;
 
     public UserController(PDFGeneratorService pdfGeneratorService,
@@ -121,8 +122,21 @@ public class UserController extends BaseController<User,Integer>   {
 //        }
 //    }
 
+    @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> generatePdf() {
+        try {
+            byte[] pdfBytes = UserServiceImp.PdfGenerator.generatePdf();
+            return ResponseEntity.ok(pdfBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
     @GetMapping("/statistique/{role}/{cretetria}")
     public String statistique(@PathVariable("role") String role,@PathVariable("cretetria") String cretetria) {
         return userService.statistique(role,cretetria);
     }
+
 }

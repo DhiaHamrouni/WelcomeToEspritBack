@@ -21,6 +21,7 @@ public interface MailingServiceInterface extends BaseServiceInterface<Mailingcon
     public void sendMailToAdministrationLevel(Integer idUser, NiveauSuivant niveauSuivant);
     public void sendEmaill(SimpleMailMessage message);
     void sendEmailTemplate (String to ,String email);
+
     public void sendMailInterviewDetailsToStudent(Integer idStudent);
     public void sendEmailpdf(String to, InputStreamSource document);
 
