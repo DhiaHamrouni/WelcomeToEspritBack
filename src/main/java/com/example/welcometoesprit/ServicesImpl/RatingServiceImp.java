@@ -31,9 +31,11 @@ public class RatingServiceImp implements RatingServiceInterface {
     @Autowired
     PublicationRepository pubRepo;
     @Override
-    public Rating addRating(Rating rating ) {
-
-
+    public Rating addRating(Rating rating , Integer idUsr , Integer idPost ) {
+User u = userRepo.findById(idUsr).orElse(null);
+Publication pub = pubRepo.findById(idPost).orElse(null);
+        rating.setUser(u);
+        rating.setPublication(pub);
         ratingRepo.save(rating);
         return rating;
     }
@@ -43,6 +45,7 @@ public class RatingServiceImp implements RatingServiceInterface {
 
     @Override
     public Rating updateRating(Rating rating ,Integer idRating) {
+
         Rating r = ratingRepo.findById(idRating).get();
         r.setScore(rating.getScore());
         return ratingRepo.saveAndFlush(r);
@@ -90,11 +93,34 @@ public class RatingServiceImp implements RatingServiceInterface {
         int sc = 0;
         int x = 0;
         Publication pub = pubRepo.findById(idPub).get();
-        for (Rating r : pub.getRatings()){
+
+
+        for (Rating r : getRatingsByPublicationId(idPub)){
             sc = sc + r.getScore();
              x++;
 
         }
-        return sc/x;
+        if(x != 0)
+        return (Integer) sc/x;
+        else
+        return 0;
+    }
+
+
+
+    public String Stat()
+    {
+        int positifrate =0;
+        int negativeRate =0;
+
+        for (Rating r : ratingRepo.findAll()
+             ) {
+            if(r.getScore()<3)
+                positifrate++;
+            else negativeRate++;
+
+
+        }
+        return ("il y a " + positifrate +" Postive Rate et " + negativeRate + " negative rate");
     }
 }

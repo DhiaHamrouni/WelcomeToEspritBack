@@ -12,15 +12,18 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Rating")
+@ToString
 public class Rating implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRating;
 
     private Integer score;
+    @JsonIgnore
 
     @ManyToOne
     private Publication publication;
+    @JsonIgnore
 
     @ManyToOne
     private User user;

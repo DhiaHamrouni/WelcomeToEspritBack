@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RatingServiceInterface  {
 
-        public Rating addRating(Rating rating  ) ;
+        public Rating addRating(Rating rating , Integer idUsr , Integer idPb  ) ;
         public Rating updateRating(Rating rating ,Integer idRating);
         void deleteRating(Integer id);
         List<Rating> getAllRatings();
@@ -18,7 +18,7 @@ public interface RatingServiceInterface  {
         public int CalculeScorePublication(Integer idPub);
 
 
-
+        public String Stat();
 
 
         }

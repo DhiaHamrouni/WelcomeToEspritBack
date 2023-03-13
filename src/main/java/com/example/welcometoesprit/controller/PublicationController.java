@@ -18,8 +18,11 @@ public class PublicationController extends BaseController<Publication,Integer>{
     @Autowired
     PublicationServiceImp publicationServiceImp;
 
-    @PostMapping("/addPub")
-    public ResponseEntity<?> addPublication(@RequestBody Publication publication) {
-        return new ResponseEntity<>(publicationServiceImp.add(publication), HttpStatusCode.valueOf(200));
+    @PostMapping("/addPub/{IdUser}")
+    public ResponseEntity<?> addPublication(@RequestBody Publication publication ,@PathVariable  Integer IdUser) {
+        return new ResponseEntity<>(publicationServiceImp.addPublication(publication , IdUser), HttpStatusCode.valueOf(200));
     }
+
+
+
 }

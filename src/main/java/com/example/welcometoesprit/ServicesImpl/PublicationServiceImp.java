@@ -25,6 +25,5 @@ public class PublicationServiceImp extends BaseServiceImp<Publication,Integer> i
         User u = userRepo.findById(IdUser).get();
         publication.setPublierPar(u);
         return publicationRepository.save(publication);
-
     }
 }

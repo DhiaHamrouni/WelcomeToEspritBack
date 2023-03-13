@@ -73,8 +73,13 @@ public class User implements UserDetails {
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "publierPar")
   List<Publication> listOfPublication;
 
+  @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
+  List<SignalPost> signalPosts;
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
   private Set<Publication> listPublicationLikee;
+
+  @OneToMany(mappedBy = "CommentPar",cascade = CascadeType.ALL)
+  private Set<Comment> comments;
 
   @ManyToOne
   Realisation realisation;
