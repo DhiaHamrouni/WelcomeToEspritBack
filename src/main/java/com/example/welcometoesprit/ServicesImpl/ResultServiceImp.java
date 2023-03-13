@@ -15,4 +15,5 @@ public class ResultServiceImp extends BaseServiceImp<Result,Integer> implements 
 
     @Autowired
     ResultRepository resultRepository;
+
 }
