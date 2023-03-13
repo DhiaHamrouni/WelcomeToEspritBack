@@ -516,13 +516,20 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
         User student = usersRepository.findById(idStudent).get();
         List<User> teachers = usersRepository.findByRole(Role.TEACHER);
+
+        log.info("la liste des teachers est "+teachers);
+
         String test="interview not validated";
         for ( User teacher : teachers){
             Set<Interview> interviews = teacher.getInterviewEvaluators();
+
+            log.info("la liste des interview du teacher est "+interviews);
+
             for (Interview interview : interviews){
                 if((interview.getDateInterview()!=dateInterview)&&(!Objects.equals(interview.getHeureInterview(), heureInterview))){
                     Interview interview1 = new Interview(dateInterview,heureInterview,student,teacher);
                     interviewRepository.save(interview1);
+
                     student.setInterviewStudent(interview1);
                     teacher.getInterviewEvaluators().add(interview1);
                     //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();

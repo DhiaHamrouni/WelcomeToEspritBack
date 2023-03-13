@@ -147,7 +147,7 @@ public class UserController extends BaseController<User,Integer>   {
         return userService.statistique(role,cretetria);
     }
 
-    @PutMapping("assignInterviewToStudent/{idStudent}")
+    @PostMapping("assignInterviewToStudent/{idStudent}")
     public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
         Date dateInterview = interview.getDateInterview();
         Integer heureInterview =interview.getHeureInterview();
