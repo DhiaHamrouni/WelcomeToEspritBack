@@ -76,6 +76,8 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private InterviewServiceImp interviewServiceImp;
 
 
     @Override
@@ -524,12 +526,15 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
                     student.setInterviewStudent(interview1);
                     teacher.getInterviewEvaluators().add(interview1);
                     //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
-                    //student.getInterviewStudent().setClassroom(classroom);
-                    //interview1.setClassroom(classroom);
-                    //sendInterviewDetails(idStudent);
+
+                    Classroom classroom = classroomRepository.findById(1).get();
+                    student.getInterviewStudent().setClassroom(classroom);
+                    interview1.setClassroom(classroom);
+
                     usersRepository.save(student);
                     usersRepository.save(teacher);
 
+                    interviewServiceImp.sendInterviewDetails(idStudent);
                     test="interview validated";
                     break;
                 }else{
