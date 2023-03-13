@@ -27,4 +27,6 @@ public class Ads extends Publication{
     private Float adPrice;
 
 
+
+
 }

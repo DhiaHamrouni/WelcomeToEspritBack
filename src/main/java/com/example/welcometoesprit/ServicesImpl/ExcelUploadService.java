@@ -48,7 +48,7 @@ public class ExcelUploadService {
                         case 2 -> user.setEmail(cell.getStringCellValue());
                         case 3 -> user.setPassword(cell.getStringCellValue());
                         case 4 -> user.setRole(Role.valueOf(cell.getStringCellValue()));
-                        case 5 -> user.setEnabled(cell.getBooleanCellValue());
+                        case 5 -> user.setEnabled(true);
                         default -> {
                         }
                     }
