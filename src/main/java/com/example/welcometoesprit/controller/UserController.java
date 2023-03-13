@@ -154,6 +154,11 @@ public class UserController extends BaseController<User,Integer>   {
         return userService.addInterviewAndAssignToStudent(idStudent,dateInterview,heureInterview);
     }
 
+    @PutMapping("/assignInterviewToTeacher/{idStudent}")
+    public void assignInterviewToteacher(@PathVariable Integer idStudent){
+         userService.assignInterviewToTeacher(idStudent);
+    }
+
 
     @GetMapping("/getStudentsByFirstName")
     public List<UserDTO> getStudentsByFirstName(@RequestParam String firstName) {

@@ -31,6 +31,7 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
     public List<UserDTO> findStudentsByFirstName(UserDTO userDto);
     public List<TeacherDto> findTeachersByFirstNameAndLastName(String firstName, String lastName);
 
+    public void assignInterviewToTeacher(Integer idStudent);
 
 
 

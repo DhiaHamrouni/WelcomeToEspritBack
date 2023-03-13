@@ -571,6 +571,15 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         return test;
     }
 
+    @Override
+    public void assignInterviewToTeacher(Integer idStudent){
+        User student = usersRepository.findById(idStudent).get();
+        User teacher = student.getInterviewStudent().getEvaluator();
+        Interview interview = student.getInterviewStudent();
+        teacher.getInterviewEvaluators().add(interview);
+        usersRepository.save(teacher);
+
+    }
 
     @Override
     public List<UserDTO> findStudentsByFirstName(UserDTO userDto) {
