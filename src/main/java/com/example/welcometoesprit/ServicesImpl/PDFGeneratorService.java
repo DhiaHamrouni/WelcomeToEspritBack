@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.ServicesImpl;
 
+import com.example.welcometoesprit.entities.User;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -19,6 +20,12 @@ public class PDFGeneratorService {
         PdfWriter.getInstance(document, response.getOutputStream());
 
         document.open();
+        // Add the Logo's img
+        Image img = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\logo.png").getAbsolutePath());
+        img.setAlignment(Element.ALIGN_LEFT);
+        img.getTransparency();
+        img.scaleToFit(100f, 100f);
+        document.add(img);
         // Add a title
         Paragraph title = new Paragraph("Certificate of Completion");
         title.setAlignment(Element.ALIGN_CENTER);
@@ -31,10 +38,10 @@ public class PDFGeneratorService {
         document.add(subtitle);
 
         // Add the recipient's name
-        Image img = Image.getInstance(new File("C:\\Users\\noura\\Downloads\\qrcode.png").getAbsolutePath());
-        img.setAlignment(Element.ALIGN_CENTER);
-        img.scaleToFit(100f, 100f);
-        document.add(img);
+        Image logo = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\qrcode.png").getAbsolutePath());
+        logo.setAlignment(Element.ALIGN_CENTER);
+        logo.scaleToFit(100f, 100f);
+        document.add(logo);
         Paragraph name = new Paragraph("John Doe");
         name.setAlignment(Element.ALIGN_CENTER);
         name.setSpacingBefore(20f);

@@ -4,6 +4,7 @@ import lombok.*;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,12 +22,14 @@ public class Publication implements Serializable {
     private String sujet ;
     private  String contenu;
 
+    private double rating;
     @Override
     public String toString() {
         return "Publication{" +
                 "idPublication=" + idPublication +
                 ", sujet='" + sujet + '\'' +
                 ", contenu='" + contenu + '\'' +
+                ", rating='" + rating + '\'' +
                 ", publierPar=" + publierPar +
                 ", likerPar=" + likerPar +
                 ", listOfComments=" + listOfComments +
@@ -41,4 +44,9 @@ public class Publication implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Comment> listOfComments;
+
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
+    private List<Rating> ratings;
+
+
 }

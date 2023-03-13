@@ -11,23 +11,15 @@ import com.example.welcometoesprit.repository.OffreRepository;
 import com.example.welcometoesprit.token.Token;
 import com.example.welcometoesprit.token.TokenRepository;
 import com.example.welcometoesprit.token.TokenType;
-import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.net.ssl.SSLEngineResult;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +30,6 @@ import java.util.List;
 public class AuthenticationService {
   private final UserRepository repository;
   private final TokenRepository tokenRepository;
-  private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final MailingServiceImp emailSenderr;
@@ -50,18 +41,23 @@ public class AuthenticationService {
   private OffreRepository offreRepository;
 
   private final List<String> liste=new ArrayList<>(Arrays.asList("Your account is not yet registered, Create an Account or verify your email first"));
-  private final List<String> liste2=new ArrayList<>(Arrays.asList("Account Created!"));
 
   public AuthenticationResponse  register(RegisterRequest request) {
     User user =            new User(
             request.getFirstname(),
             request.getLastname(),
             request.getEmail(),
-            request.getPassword(),
-            request.getRole()
+            request.getCin(),
+            request.getCin(),
+            request.getNationality(),
+            request.getTypeCours(),
+            request.getSexe(),
+            request.getNiveauActuel(),
+            request.getRole(),
+            request.getRegistrationDate()
             );
     String confirmToken = appUserService.signUpUser(user);
-
+    appUserService.generateIdentifiant(user);
 //    var user = User.builder()
 //        .firstname(request.getFirstname())
 //        .lastname(request.getLastname())
@@ -145,6 +141,11 @@ public class AuthenticationService {
     confirmationTokenService.setConfirmedAt(token);
     appUserService.enableAppUser(
             confirmationToken.getAppUser().getEmail());
+    try {
+      emailSenderr.sendWelcomeEmail(confirmationToken.getAppUser().getEmail(),"Welcome Mail",confirmationToken.getAppUser());
+    } catch (MessagingException e) {
+      throw new RuntimeException(e);
+    }
     return "confirmed";
   }
 
@@ -215,5 +216,8 @@ public class AuthenticationService {
             "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
             "\n" +
             "</div></div>";
+  }
+  private String buildWelcomeEmail() {
+    return "ahla \n wa sahla \n w ya marhaba ";
   }
 }

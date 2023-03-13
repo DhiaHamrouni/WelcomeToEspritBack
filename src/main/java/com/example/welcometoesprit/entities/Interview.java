@@ -6,6 +6,7 @@ import lombok.*;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -21,18 +22,26 @@ public class Interview  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idInterview;
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private Date dateInterview ;
+    private Integer heureInterview;
     private Integer TotalScore;
     private Integer QcmScore;
     private Integer InterviewScore;
     private String Deliberation; // not sure if string
 
-    @OneToOne
+    @OneToOne(mappedBy = "interviewStudent",cascade = CascadeType.ALL)
     private User student;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<User> evaluators;
+    @ManyToOne
+    private User evaluator;
 
+    @ManyToOne
+    private Classroom classroom;
+
+    public Interview(Date dateInterview,Integer heureInterview, User student, User evaluator) {
+        this.dateInterview = dateInterview;
+        this.heureInterview=heureInterview;
+        this.student = student;
+        this.evaluator = evaluator;
+    }
 }
