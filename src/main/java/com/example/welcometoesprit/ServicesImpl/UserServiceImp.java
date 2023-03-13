@@ -4,15 +4,14 @@ import com.example.welcometoesprit.ServiceInterface.UserServiceInterface;
 import com.example.welcometoesprit.entities.ConfirmationToken;
 import com.example.welcometoesprit.entities.Event;
 import com.example.welcometoesprit.entities.User;
-import com.example.welcometoesprit.repository.EventRepository;
+import com.example.welcometoesprit.repository.*;
 import com.example.welcometoesprit.entities.*;
-import com.example.welcometoesprit.repository.MailingRepository;
-import com.example.welcometoesprit.repository.UserRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.glxn.qrgen.QRCode;
@@ -32,16 +31,17 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class UserServiceImp extends BaseServiceImp<User,Integer>  implements UserDetailsService,UserServiceInterface {
+    @Autowired
+    private ClassroomRepository classroomRepository;
+    @Autowired
+    private InterviewRepository interviewRepository;
     private final static  String USER_NOT_FOUND_MSG ="user with email %s not found";
 
     private JavaMailSender javaMailSender;
@@ -279,5 +279,42 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         }
         return levelCountMap;
     }
+
+    @Transactional
+    public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
+        User student = usersRepository.findById(idStudent).get();
+        List<User> teachers = usersRepository.findByRole(Role.TEACHER);
+        String test="interview not validated";
+        for ( User teacher : teachers){
+            Set<Interview> interviews = teacher.getInterviewEvaluators();
+            for (Interview interview : interviews){
+                if((interview.getDateInterview()!=dateInterview)&&(!Objects.equals(interview.getHeureInterview(), heureInterview))){
+                    Interview interview1 = new Interview(dateInterview,heureInterview,student,teacher);
+                    interviewRepository.save(interview1);
+                    student.setInterviewStudent(interview1);
+                    teacher.getInterviewEvaluators().add(interview1);
+                    //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
+                    //student.getInterviewStudent().setClassroom(classroom);
+                    //interview1.setClassroom(classroom);
+                    //sendInterviewDetails(idStudent);
+                    usersRepository.save(student);
+                    usersRepository.save(teacher);
+
+                    test="interview validated";
+                    break;
+                }else{
+                    continue;
+                }
+            }
+        }
+        return test;
+    }
+
+
+
+
+
+
+
 
 }

@@ -27,5 +27,6 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int enableAppUser(String email);
 
   List<User> findByRole(Role role);
+  List<User> findByFirstNameContainingIgnoreCase(String search);
 
 }

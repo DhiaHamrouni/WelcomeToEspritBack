@@ -2,10 +2,7 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.PDFGeneratorService;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
-import com.example.welcometoesprit.entities.NiveauActuel;
-import com.example.welcometoesprit.entities.NiveauSuivant;
-import com.example.welcometoesprit.entities.ResponseMessage;
-import com.example.welcometoesprit.entities.User;
+import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -100,6 +98,13 @@ public class UserController extends BaseController<User,Integer>   {
     @PostMapping("/assignEventToUser/{id_user}/{id_event}")
     public void assignEventToUser(@PathVariable("id_user") Integer id_user,@PathVariable("id_event") Integer id_event){
         userService.assignEventToUser(id_user,id_event);
+    }
+
+    @PutMapping("assignInterviewToStudent/{idStudent}")
+    public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
+        Date dateInterview = interview.getDateInterview();
+        Integer heureInterview =interview.getHeureInterview();
+        return userService.assignInterviewToStudent(idStudent,dateInterview,heureInterview);
     }
 
 }
