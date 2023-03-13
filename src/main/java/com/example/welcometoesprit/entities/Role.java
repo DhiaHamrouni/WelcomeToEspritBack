@@ -2,7 +2,8 @@ package com.example.welcometoesprit.entities;
 
 public enum Role {
 
-  USER,
-  ADMIN,
-  TEACHER
+  STUDENT,
+  AGENT_ADMIN,
+  TEACHER,
+  CONDIDAT
 }
