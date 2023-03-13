@@ -534,7 +534,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
      }
 
     @Transactional
-    public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
+    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
         User student = usersRepository.findById(idStudent).get();
         List<User> teachers = usersRepository.findByRole(Role.TEACHER);
 
@@ -548,21 +548,19 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
 
             for (Interview interview : interviews){
                 if((interview.getDateInterview()!=dateInterview)&&(!Objects.equals(interview.getHeureInterview(), heureInterview))){
-                    Interview interview1 = new Interview(dateInterview,heureInterview,student,teacher);
+                    Interview interview1 = new Interview(dateInterview,student,teacher,heureInterview);
                     interviewRepository.save(interview1);
 
                     student.setInterviewStudent(interview1);
-                    teacher.getInterviewEvaluators().add(interview1);
-                    //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
 
                     Classroom classroom = classroomRepository.findById(1).get();
-                    student.getInterviewStudent().setClassroom(classroom);
-                    interview1.setClassroom(classroom);
-
+                    student.getInterviewStudent().setClassroomInterview(classroom);
+                    interview1.setClassroomInterview(classroom);
                     usersRepository.save(student);
-                    usersRepository.save(teacher);
+                    interviewRepository.save(interview1);
 
-                    interviewServiceImp.sendInterviewDetails(idStudent);
+
+                    //interviewServiceImp.sendInterviewDetails(idStudent);
                     test="interview validated";
                     break;
                 }else{
