@@ -41,7 +41,7 @@
                                             MODALITES D’INSCRIPTION
                                           </h1>
                                           <p align="center" style="text-align:center;color:navy">
-                                            <strong>&nbsp;&nbsp; &nbsp; </strong>
+                                            <strong th:text="${user.getFirstname() }">   &nbsp;&nbsp; &nbsp; </strong><strong> </strong> <strong th:text="${user.getLastname() }"> &nbsp;&nbsp; &nbsp; </strong>
                                           </p>
                                         </div>
                                         <p class="MsoNormal">
@@ -119,7 +119,7 @@
 
                                         <p class="MsoNormal">
 																					<span style="font-size:10.0pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#222222">
-																						- Versement d'espèces en Banque : cette opération pourrait être effectué auprès de toutes les agences AMEN BANK en se présentant muni de cette lettre et en indiquant votre nom et votre identifiant E 213JMT8462 sur l'ordre de versement
+                                                                                        - Versement d'espèces en Banque : cette opération pourrait être effectué auprès de toutes les agences AMEN BANK en se présentant muni de cette lettre et en indiquant votre nom et votre identifiant E</span> <span th:text="${user.getIdentifiant() }"> </span> <span>sur l'ordre de versement
 
 
 
@@ -148,7 +148,7 @@
                                             <u>
 																							<span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;background:white;color:darkviolet">
 
-																								NB : Il faut prendre soin d'indiquer le nom et l'identifiant E213JMT8462  sur l'ordre de versement.
+                                                                                                NB : Il faut prendre soin d'indiquer le nom et l'identifiant E</span><span th:text="${user.getIdentifiant() }"></span><span>  sur l'ordre de versement.
 
 																							</span><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;color:red;background:white">
 																							</span>
@@ -182,16 +182,16 @@
 																					<span style="font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif">
 																						Identifiant :<span>&nbsp;</span>
 																					</span><span style="font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:red">
-																						<span>
+																						<span th:text="${user.getIdentifiant() }">
 																							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																							213JMT8462&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<wbr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<wbr>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 																						</span>
 																					</span>
                                         </p>
                                         <p>
                                           <span style="font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif">Votre mot de passe :&nbsp;&nbsp;</span><span>
 																						<span style="font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:red">&nbsp;</span>
-																					</span><span style="font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:red"></span><span><u></u>11137946<u></u></span>
+																					</span><span style="font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:red"></span><span th:text="${user.getCin() }"><u></u><u></u></span>
                                         </p>
 
 
