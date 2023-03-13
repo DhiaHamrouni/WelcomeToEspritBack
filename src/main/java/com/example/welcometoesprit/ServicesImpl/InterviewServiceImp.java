@@ -10,7 +10,6 @@ import com.example.welcometoesprit.repository.InterviewRepository;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.hibernate.validator.constraints.ModCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -42,15 +43,16 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         User user = userRepository.findById(idUser).get();
         if ((user.getRole() == Role.STUDENT)&&(user.getInterviewStudent().getIdInterview()!=null)) {
             Interview interview = user.getInterviewStudent();
-            LocalDate interviewDate = interview.getDateInterview().toLocalDate();
-            String interviewTime = String.valueOf(interview.getDateInterview().getHour());
+            Date input = interview.getDateInterview();
+            LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
+            String interviewTime = String.valueOf(interview.getHeureInterview());
             Integer classroom = (interview.getClassroom().getNumero()+interview.getClassroom().getEtage()*100);
             String bloc = interview.getClassroom().getBloc().getNomBloc();
             String interviewClass = classroom.toString();
             String userEmail = user.getEmail();
             String userName = user.getFirstname();
 
-            String emailContent = getEmailContent(userName, interviewDate,interviewTime,interviewClass,bloc);
+            String emailContent = getEmailContent(userName, date,interviewTime,interviewClass,bloc);
 
             try {
                 MimeMessage message = javaMailSender.createMimeMessage();
@@ -85,29 +87,6 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
     }
 
 
-    @Override
-    public String assignInterviewToStudent(Integer idStudent, LocalDateTime dateInterview) {
-        User student = userRepository.findById(idStudent).get();
-        List<User> teachers = userRepository.findByRole(Role.TEACHER);
-        for ( User teacher : teachers){
-            Set<Interview> interviews = teacher.getInterviewEvaluators();
-            for (Interview interview : interviews){
-                if((interview.getDateInterview()!=dateInterview)&&(interview.getDateInterview().getHour()!=dateInterview.getHour())){
-                    student.setInterviewStudent(interview);
-                    teacher.setInterviewStudent(interview);
-                    Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
-                    student.getInterviewStudent().setClassroom(classroom);
-                    interview.setEvaluator(teacher);
-                    sendInterviewDetails(idStudent);
-                    userRepository.save(student);
-                    userRepository.save(teacher);
-                    interviewRepository.save(interview);
-                    return "interview validated";
 
-                }
-            }
-        }
-        return "interview not validated";
-    }
 
 }

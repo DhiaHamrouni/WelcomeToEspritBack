@@ -26,9 +26,5 @@ public class InterviewController extends BaseController<Interview,Integer>{
 
     }
 
-    @PutMapping("assignInterviewToStudent/{idStudent}")
-    public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
-        LocalDateTime localDateTime = interview.getDateInterview();
-        return interviewServiceImp.assignInterviewToStudent(idStudent,localDateTime);
-    }
+
 }

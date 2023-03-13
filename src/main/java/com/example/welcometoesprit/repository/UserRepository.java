@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.repository;
 
+import com.example.welcometoesprit.dto.UserDTO;
 import com.example.welcometoesprit.entities.Role;
 import com.example.welcometoesprit.entities.User;
 import jakarta.transaction.Transactional;
@@ -27,5 +28,9 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int enableAppUser(String email);
 
   List<User> findByRole(Role role);
+
+  List<User> findByFirstnameAndRole(String firstName, Role role);
+
+  List<User> findByFirstnameAndLastnameAndRole(String firstName, String lastName, Role role);
 
 }

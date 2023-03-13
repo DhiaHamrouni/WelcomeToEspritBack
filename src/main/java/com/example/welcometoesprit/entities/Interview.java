@@ -22,13 +22,14 @@ public class Interview  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idInterview;
-    private LocalDateTime dateInterview ;
+    private Date dateInterview ;
+    private Integer heureInterview;
     private Integer TotalScore;
     private Integer QcmScore;
     private Integer InterviewScore;
     private String Deliberation; // not sure if string
 
-    @OneToOne(mappedBy = "interviewStudent")
+    @OneToOne(mappedBy = "interviewStudent",cascade = CascadeType.ALL)
     private User student;
 
     @ManyToOne
@@ -37,4 +38,10 @@ public class Interview  implements Serializable {
     @ManyToOne
     private Classroom classroom;
 
+    public Interview(Date dateInterview,Integer heureInterview, User student, User evaluator) {
+        this.dateInterview = dateInterview;
+        this.heureInterview=heureInterview;
+        this.student = student;
+        this.evaluator = evaluator;
+    }
 }

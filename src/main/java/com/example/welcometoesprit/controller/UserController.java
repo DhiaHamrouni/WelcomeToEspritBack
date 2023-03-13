@@ -2,12 +2,12 @@ package com.example.welcometoesprit.controller;
 
 import com.example.welcometoesprit.ServicesImpl.PDFGeneratorService;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
-import com.example.welcometoesprit.entities.NiveauActuel;
-import com.example.welcometoesprit.entities.NiveauSuivant;
-import com.example.welcometoesprit.entities.ResponseMessage;
-import com.example.welcometoesprit.entities.User;
+import com.example.welcometoesprit.dto.TeacherDto;
+import com.example.welcometoesprit.dto.UserDTO;
+import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
+@Slf4j
 public class UserController extends BaseController<User,Integer>   {
     private final PDFGeneratorService pdfGeneratorService;
 
@@ -115,6 +118,36 @@ public class UserController extends BaseController<User,Integer>   {
             return ResponseEntity.status(500).build();
         }
     }
+
+
+
+    @PutMapping("assignInterviewToStudent/{idStudent}")
+    public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
+        Date dateInterview = interview.getDateInterview();
+        Integer heureInterview =interview.getHeureInterview();
+        return userService.assignInterviewToStudent(idStudent,dateInterview,heureInterview);
+    }
+
+
+    @GetMapping("/getStudentsByFirstName")
+    public List<UserDTO> getStudentsByFirstName(@RequestParam String firstName) {
+        UserDTO userDto = new UserDTO();
+        userDto.setFirstName(firstName);
+        //log.info("le firstName de letudiant est "+userDto.getFirstName());
+        return userService.findStudentsByFirstName(userDto);
+
+    }
+
+    @GetMapping("/getTeachersByFirstNameAndLastName")
+    public ResponseEntity<List<TeacherDto>> getTeachersByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
+        List<TeacherDto> teacherDtoList = userService.findTeachersByFirstNameAndLastName(firstName, lastName);
+        return ResponseEntity.ok(teacherDtoList);
+    }
+
+
+
+
+
 
 
 
