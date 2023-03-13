@@ -455,7 +455,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         canvas.rectangle(x, y, width, height);
         canvas.stroke();
         // Add the Logo's img
-        Image logo = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\logo.png").getAbsolutePath());
+        Image logo = Image.getInstance(new File("src\\main\\resources\\Assets\\logo.png").getAbsolutePath());
         logo.setAlignment(Element.ALIGN_LEFT);
         logo.getTransparency();
         logo.scaleToFit(50f, 50f);
@@ -469,7 +469,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
 
         // Add the recipient's name
 
-        Paragraph name = new Paragraph("NOM : "+user.getLastname()+" "+ user.getFirstname());
+        Paragraph name = new Paragraph("NAME : "+user.getLastname()+" "+ user.getFirstname());
         name.setAlignment(Element.ALIGN_JUSTIFIED);
         name.setSpacingBefore(20f);
         document.add(name);
@@ -499,14 +499,14 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
              case "sexe":
                  switch (roleEnum) {
                      case STUDENT:
-                         return "le nombre des etudiants feminine: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.FEMININE)+"\n"+
-                                 "le nombre des etudiants MASCULIN: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.MASCULIN);
+                         return "The number of Female Students : " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.FEMININE)+"\n"+
+                                 "The number of Male Students: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.MASCULIN);
                      case ADMIN:
-                         return "le nombre des admins feminine: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.FEMININE)+"\n"+
-                                 "le nombre des admins MASCULIN: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.MASCULIN);
+                         return "The number of Female Admins: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.FEMININE)+"\n"+
+                                 "The number of Male Admins: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.MASCULIN);
                      case TEACHER:
-                         return "le nombre des enseignants feminine: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.FEMININE)+"\n"+
-                                 "le nombre des enseignants MASCULIN: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.MASCULIN);
+                         return "The number of Female Teachers: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.FEMININE)+"\n"+
+                                 "The number of Male Teachers: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.MASCULIN);
                  }
              case "nationalite":
                  switch (roleEnum) {
@@ -534,28 +534,34 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
      }
 
     @Transactional
-    public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
+    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
         User student = usersRepository.findById(idStudent).get();
         List<User> teachers = usersRepository.findByRole(Role.TEACHER);
+
+        log.info("la liste des teachers est "+teachers);
+
         String test="interview not validated";
         for ( User teacher : teachers){
             Set<Interview> interviews = teacher.getInterviewEvaluators();
+
+            log.info("la liste des interview du teacher est "+interviews);
+
             for (Interview interview : interviews){
                 if((interview.getDateInterview()!=dateInterview)&&(!Objects.equals(interview.getHeureInterview(), heureInterview))){
-                    Interview interview1 = new Interview(dateInterview,heureInterview,student,teacher);
+                    Interview interview1 = new Interview(dateInterview,student,teacher,heureInterview);
                     interviewRepository.save(interview1);
+
                     student.setInterviewStudent(interview1);
-                    teacher.getInterviewEvaluators().add(interview1);
-                    //Classroom classroom = classroomRepository.findById(interview.getClassroom().getIdClassroom()).get();
 
                     Classroom classroom = classroomRepository.findById(1).get();
-                    student.getInterviewStudent().setClassroom(classroom);
-                    interview1.setClassroom(classroom);
+                    student.getInterviewStudent().setClassroomInterview(classroom);
+                    interview1.setClassroomInterview(classroom);
 
                     usersRepository.save(student);
-                    usersRepository.save(teacher);
+                    interviewRepository.save(interview1);
 
-                    interviewServiceImp.sendInterviewDetails(idStudent);
+
+                    //interviewServiceImp.sendInterviewDetails(idStudent);
                     test="interview validated";
                     break;
                 }else{
@@ -566,6 +572,15 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         return test;
     }
 
+    @Override
+    public void assignInterviewToTeacher(Integer idStudent){
+        User student = usersRepository.findById(idStudent).get();
+        User teacher = student.getInterviewStudent().getEvaluator();
+        Interview interview = student.getInterviewStudent();
+        teacher.getInterviewEvaluators().add(interview);
+        usersRepository.save(teacher);
+
+    }
 
     @Override
     public List<UserDTO> findStudentsByFirstName(UserDTO userDto) {

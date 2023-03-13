@@ -2,6 +2,7 @@ package com.example.welcometoesprit.entities;
 
 import com.example.welcometoesprit.token.Token;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -109,6 +110,9 @@ public class User implements UserDetails {
 
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
   List<SignalPost> signalPosts;
+
+  @OneToMany(cascade= CascadeType.ALL, mappedBy = "user")
+  List<React> reacts;
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
   private Set<Publication> listPublicationLikee;
 
@@ -119,10 +123,12 @@ public class User implements UserDetails {
   Realisation realisation;
 
   @OneToOne
+  @JsonIgnore
   Interview interviewStudent;
 
 
   @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
+  @JsonIgnore
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)

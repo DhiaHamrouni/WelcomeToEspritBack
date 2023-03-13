@@ -6,7 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
 
 public class OpenAIChatBot {  private static final String OPENAI_API_URL = "https://api.openai.com/v1/engines/davinci-codex/completions";
-        private static final String OPENAI_API_KEY = "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";
+        private static final String OPENAI_API_KEY = "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";
 
         public static void main(String[] args) {
             RestTemplate restTemplate = new RestTemplate();

@@ -147,11 +147,16 @@ public class UserController extends BaseController<User,Integer>   {
         return userService.statistique(role,cretetria);
     }
 
-    @PutMapping("assignInterviewToStudent/{idStudent}")
+    @PostMapping("assignInterviewToStudent/{idStudent}")
     public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
         Date dateInterview = interview.getDateInterview();
-        Integer heureInterview =interview.getHeureInterview();
-        return userService.assignInterviewToStudent(idStudent,dateInterview,heureInterview);
+        Integer heureInterview = interview.getHeureInterview();
+        return userService.addInterviewAndAssignToStudent(idStudent,dateInterview,heureInterview);
+    }
+
+    @PutMapping("/assignInterviewToTeacher/{idStudent}")
+    public void assignInterviewToteacher(@PathVariable Integer idStudent){
+         userService.assignInterviewToTeacher(idStudent);
     }
 
 

@@ -27,10 +27,11 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
 
     public List<User> getStudents();
 
-    public String assignInterviewToStudent(Integer idStudent, Date dateInterview,Integer heureInterview);
+    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview,Integer heureInterview);
     public List<UserDTO> findStudentsByFirstName(UserDTO userDto);
     public List<TeacherDto> findTeachersByFirstNameAndLastName(String firstName, String lastName);
 
+    public void assignInterviewToTeacher(Integer idStudent);
 
 
 
