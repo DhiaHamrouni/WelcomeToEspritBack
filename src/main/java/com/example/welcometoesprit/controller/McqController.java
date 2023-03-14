@@ -21,38 +21,44 @@ import static com.example.welcometoesprit.entities.Category.LANGUAGE;
 @CrossOrigin("*")
 
 public class McqController  extends BaseController<MCQ,Integer> {
-//
-//    @Autowired
-//    McqServiceImp mcqServiceImp;
-//    @Autowired
-//
-//    QuestionRepository questionRepository;
-//
-//
-//
-//    @GetMapping("/showCultureQs")
-//    public List<Question>  show() throws Exception {
-//
-//        return questionRepository.findByCategory(CULTURE);
-//
-//
-//    }
-//
-//
-//    @PostMapping("/generateQSAndAssignToStudent/{id-student}")
-//    public ResponseEntity<String> generateQsAndAssignToStudent(@PathVariable("id-student") Integer id) throws Exception {
-//
-//        mcqServiceImp.GenerateMcqAndAssignToUser(id);
-//            return ResponseEntity.ok("MCQ generated");
-//
-//
-//        }
-//
-//    // calculate score and assign to user .
-//    @PutMapping("/{id}/takeMCQ")
-//    public int calculateScore(@RequestBody List<Integer> answers,@PathVariable("id") Integer id) throws Exception {
-//        return mcqServiceImp.TakeMcqAndCalculateScore(id,answers);
-//    }
-//
 
+    @Autowired
+    McqServiceImp mcqServiceImp;
+    @Autowired
+
+    QuestionRepository questionRepository;
+
+
+
+    @GetMapping("/showCultureQs")
+    public List<Question>  show() throws Exception {
+
+        return questionRepository.findByCategory(CULTURE);
+
+
+    }
+
+
+    @PostMapping("/generateQSAndAssignToStudent/{id-student}")
+    public ResponseEntity<String> generateQsAndAssignToStudent(@PathVariable("id-student") Integer id) throws Exception {
+
+        mcqServiceImp.GenerateMcqAndAssignToUser(id);
+            return ResponseEntity.ok("MCQ generated");
+
+
+        }
+
+    // calculate score and assign to user .
+    @PutMapping("/{id}/takeMCQ")
+    public int calculateScore(@RequestBody List<Integer> answers,@PathVariable("id") Integer id) throws Exception {
+        return mcqServiceImp.TakeMcqAndCalculateScore(id,answers);
+    }
+
+    @GetMapping("/showLanguageQs")
+    public List<Question>  showL() throws Exception {
+
+        return questionRepository.findByCategory(LANGUAGE);
+
+
+    }
 }

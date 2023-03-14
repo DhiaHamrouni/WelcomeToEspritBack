@@ -40,5 +40,8 @@ public class JuryServiceImp extends BaseServiceImp<Jury,Integer> {
             return jury;
         }
     }
-
+    public List<Criteria> criteriaList(Integer id){
+        Jury jury=juryRepository.getReferenceById(id);
+        return jury.getCriteriaList();
+    }
 }

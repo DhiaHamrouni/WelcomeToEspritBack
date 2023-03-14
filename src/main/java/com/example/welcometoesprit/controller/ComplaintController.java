@@ -44,15 +44,15 @@ public class ComplaintController extends BaseController<Complaint,Integer>{
     // User related ( update , delete within 3 hours only )
 
     @PostMapping("/addComplaint/{userId}")
-    public ResponseEntity<Complaint> addComplaint(@RequestBody Complaint e, @PathVariable("userId") Integer id) throws Exception {
+    public ResponseEntity<String> addComplaint(@RequestBody Complaint e, @PathVariable("userId") Integer id) throws Exception {
         complaintServiceImp.AddComplaint(e, id);
-        return ResponseEntity.ok(e);
+        return ResponseEntity.ok("complaint added");
 
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Complaint> updateComplaint(@RequestBody Complaint e, @PathVariable("id") Integer id) throws Exception {
+    public ResponseEntity<String> updateComplaint(@RequestBody Complaint e, @PathVariable("id") Integer id) throws Exception {
         complaintServiceImp.updateComplaint(e,id);
-        return ResponseEntity.ok(e);
+        return ResponseEntity.ok("complaint updated");
 
 
     }
@@ -111,9 +111,9 @@ public class ComplaintController extends BaseController<Complaint,Integer>{
 
 
     @PutMapping("/updateStatus/{id}/{status}")
-    public ResponseEntity<Complaint> updateComplaintStatus(@PathVariable("id") Integer id, @PathVariable("status") StatusComplaint e) throws Exception {
-
-        return ResponseEntity.ok(this.complaintServiceImp.UpdateStatusComplaint(e, id));
+    public ResponseEntity<String> updateComplaintStatus(@PathVariable("id") Integer id, @PathVariable("status") StatusComplaint e) throws Exception {
+        complaintServiceImp.UpdateStatusComplaint(e, id);
+        return ResponseEntity.ok("Status updated");
 
 
     }

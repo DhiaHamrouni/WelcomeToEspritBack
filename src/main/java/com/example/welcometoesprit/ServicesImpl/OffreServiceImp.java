@@ -27,7 +27,7 @@ public class OffreServiceImp extends BaseServiceImp<Offre,Integer> implements Of
                 agent++;
             }
         }
-        return "The number of teaching offers available for now makes up for "+(teach/both)*100+"% of the total existing offers \n and the number of adiministratif offers is "+(agent/both)*100+"%";
+        return "The number of teaching offers available for now makes up for "+teach+" of the total existing offers \n and the number of adiministratif offers is "+agent;
     }
 
     public String numberofApplicationperOffre(Offre offre){
