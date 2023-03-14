@@ -18,6 +18,6 @@ public interface InterviewRepository extends BaseRepository<Interview,Integer> {
 
     List<Interview> findByClassroomInterviewAndScheduledTimeBetween(Classroom classroom, Date scheduledTime, Date nextThirtyMinutes);
 
-    List<Interview> findByDateInterviewIsBetween(LocalDateTime start, LocalDateTime end);
+    List<Interview> findByDateInterviewIsBetween(Date start, Date end);
 
 }

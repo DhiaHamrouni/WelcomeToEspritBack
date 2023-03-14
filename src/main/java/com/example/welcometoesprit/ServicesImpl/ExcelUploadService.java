@@ -2,6 +2,7 @@ package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.entities.Nationality;
 import com.example.welcometoesprit.entities.Role;
+import com.example.welcometoesprit.entities.Sexe;
 import com.example.welcometoesprit.entities.User;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -52,6 +53,7 @@ public class ExcelUploadService {
                         case 5 -> user.setEnabled(true);
                         case 6 -> user.setCin(cell.getStringCellValue().substring(1,9));
                         case 7 -> user.setNationality(Nationality.valueOf(cell.getStringCellValue()));
+                        case 8 -> user.setSexe(Sexe.valueOf(cell.getStringCellValue()));
                         default -> {
                         }
                     }

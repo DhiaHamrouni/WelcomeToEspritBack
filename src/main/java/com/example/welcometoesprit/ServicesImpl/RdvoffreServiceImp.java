@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 public class RdvoffreServiceImp extends BaseServiceImp<RDV_offre,Integer> implements RdvoffreServiceInterface {
         @Autowired
     RdvoffreRepository rdvoffreRepository;
+        @Autowired
         OffreRepository offreRepository;
+        @Autowired
         CandidatoffreRepository candidatoffreRepository;
 
         public RDV_offre AddandAssignRdvtoOffer(RDV_offre rdv_offre,Integer id_offre,Integer id_co){
