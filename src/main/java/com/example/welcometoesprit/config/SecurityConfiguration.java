@@ -1,8 +1,10 @@
 package com.example.welcometoesprit.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,11 +19,14 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
   private final LogoutHandler logoutHandler;
+  @Autowired
+  private JwtAuthenticationEntryPoint unauthorizedHandler;
+
 
   private static final String[] AUTH_WHITELIST = {
           // -- Swagger UI v2
@@ -45,6 +50,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests().requestMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
             .requestMatchers("/api/v1/auth/**","/**")
           .permitAll()
+            .requestMatchers("/api/v1/auth/current-user").permitAll()
             .requestMatchers("/candidatoffre/**").permitAll()
             .requestMatchers("/result/add").hasAuthority("JURY")
             .requestMatchers("/result/update").hasAuthority("JURY")
@@ -56,9 +62,9 @@ public class SecurityConfiguration {
             .anyRequest()
           .authenticated()
         .and()
-          .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+            .and()
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         .logout()
@@ -69,4 +75,5 @@ public class SecurityConfiguration {
 
     return http.build();
   }
+
 }
