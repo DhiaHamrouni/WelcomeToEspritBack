@@ -4,6 +4,7 @@ import com.example.welcometoesprit.Helpers.UserNotFoundException;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
 import com.example.welcometoesprit.config.JwtService;
 import com.example.welcometoesprit.entities.User;
+import com.example.welcometoesprit.repository.UserRepository;
 import com.example.welcometoesprit.token.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -37,6 +39,7 @@ public class AuthenticationController {
 
 
   private final TokenRepository tokenRepository;
+  private final UserRepository userRepository;
 
   @PostMapping("/generate-token")
   public ResponseEntity<?>generateToken(@RequestBody AuthenticationRequest jwtRequest) throws Exception{
@@ -81,8 +84,8 @@ public class AuthenticationController {
     }
   }
   @GetMapping("/current-user")
-  public User getCurrentUser(@RequestBody String token) {
-    return ((User)this.userDetailsService.loadUserByUsername(tokenRepository.getEmailByToken(token)));
+  public Optional<User> getCurrentUser(String email) {
+    return (this.userRepository.findByEmail(email));
   }
 
   @PostMapping("/register")
