@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table( name = "Classroom")
@@ -27,10 +26,12 @@ public class Classroom implements Serializable {
     @ManyToMany(cascade= CascadeType.ALL, mappedBy = "classroomSet")
     List<User> listOfStudent;
 
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "classroomInterview")
+    @JsonIgnore
+    private List<Interview> interviews ;
+
     @ManyToOne
     Bloc bloc;
 
-    @OneToMany(mappedBy = "classroom")
-    private Set<Interview> interviews;
 
 }

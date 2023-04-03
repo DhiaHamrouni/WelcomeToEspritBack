@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class ResultController extends BaseController<Result,Integer> {
     @Autowired
     ResultServiceImp resultServiceImp;
+
     @Autowired
     CandidatoffreServiceImp candidatoffreServiceImp;
     @GetMapping("/{id_candidat}/{id_offre}")

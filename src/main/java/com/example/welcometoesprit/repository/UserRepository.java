@@ -21,6 +21,8 @@ import java.util.Optional;
 public interface UserRepository extends BaseRepository<User, Integer> {
 
   User findByUsername(String Username);
+//  Optional<User> findById(Integer id);
+
   public Optional<User> findById(Integer id);
 
 
@@ -32,6 +34,9 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int enableAppUser(String email);
 
   List<User> findByRole(Role role);
+
+  @Query("SELECT u FROM User u where u.role = :role")
+  User findTeacherByRole(Role role);
 
   int countUserByRoleAndSexe(Role role, Sexe sexe);
   int countUserByRoleAndNationality(Role role, Nationality nationality);

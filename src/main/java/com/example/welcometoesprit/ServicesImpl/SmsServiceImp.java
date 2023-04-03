@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,22 +57,23 @@ public class SmsServiceImp implements SmsServiceInterface {
         return message.getStatus().toString();
     }
 
-    /*@Scheduled(fixedRate = 86400000) // execute once per day
+    @Scheduled(fixedRate = 86400000) // execute once per day
     @Override
     public void sendSmsReminders() {
         List<Interview> upcomingInterviews = interviewRepository.findByDateInterviewIsBetween(
-                LocalDateTime.now(),
-                LocalDateTime.now().plusHours(25)
+               new Date(2023-1900,02,14),
+                new Date(2023-1900,02,15)
         );
         for (Interview interview : upcomingInterviews) {
             User user = userRepository.findById(interview.getStudent().getId()).orElse(null);
 
             if (user.getRole() == Role.STUDENT) {
-                String smsMessage = "Reminder: Your interview is scheduled for " + interview.getDateInterview() +
-                        " in classroom " + interview.getClassroom().getNumero() + "at the "+interview.getClassroom().getEtage()
-                        +" floor , which is in the "+ interview.getClassroom().getBloc().getNomBloc()+" bloc .";
-                sendSms(user.getNumTel(), smsMessage);
+
+                String smsMessage = "Reminder: Your interview is scheduled for " + interview.getDateInterview() ;
+                        //" in classroom " + interview.getClassroomInterview().getNumero() + "at the "+interview.getClassroomInterview().getEtage()
+                        //+" floor , which is in the "+ interview.getClassroomInterview().getBloc().getNomBloc()+" bloc .";
+                sendSms("+21627738774", smsMessage);
             }
         }
-    }*/
+    }
 }
