@@ -6,6 +6,7 @@ import com.example.welcometoesprit.entities.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -28,6 +29,7 @@ public class EventController extends BaseController<Event,Integer> {
     }
 
     @PostMapping("/addEvent")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     public ResponseEntity<?> addEvent(@RequestBody Event event) {
         return new ResponseEntity<>(eventServiceImp.addEvent(event), HttpStatusCode.valueOf(200));
     }
