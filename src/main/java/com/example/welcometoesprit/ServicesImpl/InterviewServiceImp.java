@@ -175,7 +175,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         User user = userRepository.findById(idUser).get();
         if ((user.getRole() == Role.STUDENT)&&(user.getInterviewStudent().getIdInterview()!=null)) {
             Interview interview = user.getInterviewStudent();
-            Date input = interview.getScheduledTime();
+            Date input = interview.getDateInterview();
             LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
 
             String interviewTime = String.valueOf(interview.getHeureInterview());

@@ -561,7 +561,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
                     interviewRepository.save(interview1);
 
 
-                    //interviewServiceImp.sendInterviewDetails(idStudent);
+                    interviewServiceImp.sendInterviewDetails(idStudent);
                     test="interview validated";
                     break;
                 }else{
