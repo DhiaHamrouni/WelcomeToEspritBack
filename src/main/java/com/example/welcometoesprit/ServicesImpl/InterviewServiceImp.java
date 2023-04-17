@@ -3,9 +3,7 @@ package com.example.welcometoesprit.ServicesImpl;
 import com.example.welcometoesprit.ServiceInterface.InterviewServiceInterface;
 
 import com.example.welcometoesprit.entities.*;
-import com.example.welcometoesprit.repository.ClassroomRepository;
-import com.example.welcometoesprit.repository.InterviewRepository;
-import com.example.welcometoesprit.repository.UserRepository;
+import com.example.welcometoesprit.repository.*;
 
 import com.example.welcometoesprit.entities.Classroom;
 import com.example.welcometoesprit.entities.Interview;
@@ -47,6 +45,8 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private BlocRepository blocRepository;
 
 
     public void assignInterviewToEvaluator(Integer interviewId, Integer evaluatorId) throws Exception {
@@ -179,8 +179,10 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
             LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
 
             String interviewTime = String.valueOf(interview.getHeureInterview());
-            Integer classroom = (interview.getClassroomInterview().getNumero()+interview.getClassroomInterview().getEtage()*100);
-            String bloc = interview.getClassroomInterview().getBloc().getNomBloc();
+            Classroom classroom1 = classroomRepository.findById(1).get();
+            Integer classroom = (classroom1.getNumero()+classroom1.getEtage()*100);
+            Bloc bloc1=blocRepository.findById(1).get();
+            String bloc = bloc1.getNomBloc();
             String interviewClass = classroom.toString();
             String userEmail = user.getEmail();
             String userName = user.getFirstname();
@@ -202,7 +204,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
     }
 
     @Override
-    public String getEmailContent(String userName, LocalDate interviewDate, String interviewTime,String interviewClass,String bloc) {
+    public String getEmailContent(String userName, Date interviewDate, String interviewTime,String interviewClass,String bloc) {
         String htmlTemplate = "";
         try {
             Resource resource = new ClassPathResource("templates/mailInterview.html");
@@ -212,7 +214,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         }
         String htmlContent = htmlTemplate
                 .replace("[student name]", userName)
-                .replace("[interview date]", interviewDate.toString() + " at " + interviewTime)
+                .replace("[interview date]", interviewDate.toString() )
                 .replace("[interview time]", interviewTime)
                 .replace("[interview location]", interviewClass)
                 .replace("[interview bloc]",bloc);

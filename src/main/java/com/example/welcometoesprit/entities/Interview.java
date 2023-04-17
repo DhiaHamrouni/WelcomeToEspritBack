@@ -43,7 +43,6 @@ public class Interview  implements Serializable {
     private User student;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     private User evaluator;
 
     @ManyToOne(cascade = CascadeType.ALL)

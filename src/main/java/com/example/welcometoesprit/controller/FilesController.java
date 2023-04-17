@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/file")
 @CrossOrigin("*")
+
 public class FilesController extends BaseController<FileEntity,Long>{
 
     @Autowired

@@ -15,6 +15,7 @@ public class ClassroomServiceImp extends BaseServiceImp<Classroom,Integer> imple
     @Autowired
     private BlocRepository blocRepository;
 
+
     public void assignBlocToClassroom(Integer idClassroom,Integer idBloc){
         Classroom classroom = classroomRepository.findById(idClassroom).get();
         Bloc bloc = blocRepository.findById(idBloc).get();

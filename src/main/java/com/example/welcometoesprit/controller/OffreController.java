@@ -7,6 +7,7 @@ import com.example.welcometoesprit.entities.Offre;
 import com.example.welcometoesprit.repository.OffreRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +21,7 @@ import java.util.List;
 @CrossOrigin("*")
 @AllArgsConstructor
 public class OffreController extends BaseController<Offre,Integer>{
-    
+    @Autowired
     OffreServiceImp offreServiceImp;
     @GetMapping("/stats")
     public String stats(){
