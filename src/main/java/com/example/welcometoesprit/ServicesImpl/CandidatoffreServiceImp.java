@@ -16,6 +16,7 @@ import java.util.List;
 public class CandidatoffreServiceImp extends BaseServiceImp<CondidatOffre,Integer> implements CandidatoffreServiceInterface {
     @Autowired
     CandidatoffreRepository candidatoffreRepository;
+    @Autowired
     OffreRepository offreRepository;
     private final static String ENTITY_ALREADY_EXISTS_MSG = "entity with email already exists";
     private final List<String> liste=new ArrayList<>(Arrays.asList("entity with email %s already exists!"));

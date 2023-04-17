@@ -20,7 +20,9 @@ import java.util.List;
 public class CandidatoffreController extends BaseController<CondidatOffre,Integer>{
     @Autowired
     CandidatoffreServiceImp candidatoffreServiceImp;
+    @Autowired
     OffreRepository offreRepository;
+    @Autowired
     OffreServiceImp offreServiceImp;
     @PostMapping("/assign/{id}")
     public ResponseEntity<CondidatOffre> add(@RequestBody CondidatOffre e,@PathVariable("id") Integer id){

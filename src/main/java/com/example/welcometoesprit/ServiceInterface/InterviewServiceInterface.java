@@ -4,6 +4,7 @@ import com.example.welcometoesprit.entities.Interview;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public interface InterviewServiceInterface extends BaseServiceInterface<Interview,Integer>{
 
@@ -15,7 +16,7 @@ public interface InterviewServiceInterface extends BaseServiceInterface<Intervie
     public Integer SetInterviewScore(Integer interviewId, Integer score) throws Exception;
 
     public void sendInterviewDetails(Integer idUser) ;
-    public String getEmailContent(String userName, LocalDate interviewDate, String interviewTime, String interviewClass, String bloc) ;
+    public String getEmailContent(String userName, Date interviewDate, String interviewTime, String interviewClass, String bloc) ;
 
 
 }

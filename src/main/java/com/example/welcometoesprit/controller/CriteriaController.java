@@ -3,9 +3,8 @@ package com.example.welcometoesprit.controller;
 import com.example.welcometoesprit.ServicesImpl.CriteriaServiceImp;
 import com.example.welcometoesprit.entities.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/criteria")
@@ -13,4 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CriteriaController extends BaseController<Criteria,Integer> {
     @Autowired
     CriteriaServiceImp criteriaServiceImp;
+
+    @PostMapping("/add/{id}")
+    public ResponseEntity<String> addcrit(@RequestBody Criteria crit, @PathVariable("id") Integer id){
+        criteriaServiceImp.JudgeaddCriteria(crit,id);
+        return ResponseEntity.ok("OK");
+    }
+
 }
