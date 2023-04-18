@@ -12,6 +12,8 @@ import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.MailingRepository;
 import com.example.welcometoesprit.repository.UserRepository;
 
+import com.example.welcometoesprit.token.Token;
+import com.example.welcometoesprit.token.TokenRepository;
 import com.itextpdf.text.BaseColor;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
@@ -67,6 +69,8 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
     @Autowired
     private UserRepository usersRepository ;
     @Autowired
+    private TokenRepository   tokenRepository;
+    @Autowired
     private EventRepository eventRepository;
 
     @Autowired
@@ -84,6 +88,9 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         return usersRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG,email)));
     }
 
+    public Optional<User> loadUserByEmail(String email){
+        return usersRepository.findByEmail(email);
+    }
     public String signUpUser(User appUser) {
         boolean userExists = usersRepository
                 .findByEmail(appUser.getEmail())
@@ -620,6 +627,11 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
             teacherDtoList.add(teacherDto);
         }
         return teacherDtoList;
+    }
+
+    public Optional<User> getCurrentUser(Token token){
+        return Optional.ofNullable(token.getUser());
+
     }
 
 }
