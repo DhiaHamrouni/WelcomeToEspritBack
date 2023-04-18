@@ -47,4 +47,5 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   List<User> findByFirstnameAndLastnameAndRole(String firstName, String lastName, Role role);
 
 
+
 }
