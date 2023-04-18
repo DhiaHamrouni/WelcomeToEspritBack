@@ -4,7 +4,7 @@ import com.example.welcometoesprit.Helpers.UserNotFoundException;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
 import com.example.welcometoesprit.config.JwtService;
 import com.example.welcometoesprit.entities.User;
-import com.example.welcometoesprit.repository.UserRepository;
+import com.example.welcometoesprit.token.Token;
 import com.example.welcometoesprit.token.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +38,7 @@ public class AuthenticationController {
 
 
   private final TokenRepository tokenRepository;
-  private final UserRepository userRepository;
+  private final UserServiceImp userServiceImp;
 
   @PostMapping("/generate-token")
   public ResponseEntity<?>generateToken(@RequestBody AuthenticationRequest jwtRequest) throws Exception{
@@ -84,8 +83,15 @@ public class AuthenticationController {
     }
   }
   @GetMapping("/current-user")
+  public Optional<User> getCurrentUser(@RequestBody Token token) {
+    return (this.userServiceImp.getCurrentUser(token));
+  }
+
+  @GetMapping("/current-userr")
   public Optional<User> getCurrentUser(String email) {
-    return (this.userRepository.findByEmail(email));
+
+    return (this.userDetailsService.loadUserByEmail(email));
+
   }
 
   @PostMapping("/register")
