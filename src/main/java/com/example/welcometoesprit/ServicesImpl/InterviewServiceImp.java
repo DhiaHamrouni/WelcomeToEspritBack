@@ -2,6 +2,7 @@ package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.InterviewServiceInterface;
 
+import com.example.welcometoesprit.dto.InterviewDTO;
 import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.*;
 
@@ -175,8 +176,10 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         User user = userRepository.findById(idUser).get();
         if ((user.getRole() == Role.STUDENT)&&(user.getInterviewStudent().getIdInterview()!=null)) {
             Interview interview = user.getInterviewStudent();
-            Date input = interview.getDateInterview();
-            LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
+//            Date input = interview.getDateInterview();
+//            LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
+
+            Date date = new Date();
 
             String interviewTime = String.valueOf(interview.getHeureInterview());
             Classroom classroom1 = classroomRepository.findById(1).get();
@@ -221,7 +224,10 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         return htmlContent;
     }
 
-
+    @Override
+    public List<InterviewDTO> getAllInterviewsWithEvaluatorAndStudentName() {
+        return interviewRepository.findAllInterviewsWithEvaluatorAndStudentName();
+    }
 
 
 }
