@@ -25,6 +25,8 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
   public Optional<User> findById(Integer id);
 
+  @Query("SELECT u.role FROM User u where u.email = :email")
+  Role findRoleByEmail(String email);
 
   Optional<User> findByEmail(String email);
   @Transactional
@@ -34,6 +36,8 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   int enableAppUser(String email);
 
   List<User> findByRole(Role role);
+
+  Optional<User> getUserByEmail(String email);
 
   @Query("SELECT u FROM User u where u.role = :role")
   User findTeacherByRole(Role role);

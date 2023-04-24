@@ -4,6 +4,8 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 
 @Entity
 @Getter
@@ -11,7 +13,7 @@ import jakarta.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Mailingcontent {
+public class Mailingcontent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

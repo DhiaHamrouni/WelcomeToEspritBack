@@ -23,10 +23,20 @@ public class JwtService {
     return extractClaim(token, Claims::getSubject);
   }
 
+  public String getEmailFromToken(String token) {
+    Claims claims = Jwts.parserBuilder()
+            .setSigningKey(SECRET_KEY.getBytes())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+
+    return claims.getSubject();
+  }
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
     final Claims claims = extractAllClaims(token);
     return claimsResolver.apply(claims);
   }
+
 
   public String generateToken(UserDetails userDetails) {
     return generateToken(new HashMap<>(), userDetails);
