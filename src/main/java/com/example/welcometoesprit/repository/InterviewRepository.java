@@ -32,4 +32,5 @@ public interface InterviewRepository extends BaseRepository<Interview,Integer> {
             "JOIN User s ON s.interviewStudent.idInterview = i.idInterview AND s.role = 'STUDENT'" )
     List<InterviewDTO> findAllInterviewsWithEvaluatorAndStudentName();
 
+
 }

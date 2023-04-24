@@ -90,6 +90,7 @@ public class User implements UserDetails {
   private Status status=Status.Active;
 
   @OneToMany(mappedBy = "user")
+  @JsonIgnore
   private List<Token> tokens;
 
 
@@ -97,29 +98,39 @@ public class User implements UserDetails {
 
 
   @OneToMany(mappedBy = "user")
+  @JsonIgnore
   private List<Rating> ratings;
   @ManyToOne
+  @JsonIgnore
   Event event;
   @ManyToOne
+  @JsonIgnore
   Event event2;
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "complaintPar")
+  @JsonIgnore
   List<Complaint> listOfComplaints;
 
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "publierPar")
+  @JsonIgnore
   List<Publication> listOfPublication;
 
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
+  @JsonIgnore
   List<SignalPost> signalPosts;
 
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "user")
+  @JsonIgnore
   List<React> reacts;
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
+  @JsonIgnore
   private Set<Publication> listPublicationLikee;
 
   @OneToMany(mappedBy = "CommentPar",cascade = CascadeType.ALL)
+  @JsonIgnore
   private Set<Comment> comments;
 
   @ManyToOne
+  @JsonIgnore
   Realisation realisation;
 
   @OneToOne
@@ -132,9 +143,11 @@ public class User implements UserDetails {
   private Set<Interview> InterviewEvaluators;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JsonIgnore
   private Set<FileEntity> files;
 
   @ManyToMany(cascade= CascadeType.ALL)
+  @JsonIgnore
   private Set<Classroom> classroomSet;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

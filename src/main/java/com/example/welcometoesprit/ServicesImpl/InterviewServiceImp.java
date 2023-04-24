@@ -229,5 +229,16 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         return interviewRepository.findAllInterviewsWithEvaluatorAndStudentName();
     }
 
+    @Override
+    public void deleteInterviewById(Integer id){
+        Interview interview = interviewRepository.findById(id).get();
+        interviewRepository.delete(interview);
+        User user = userRepository.findUserByIdInterview(id);
+        user.setInterviewStudent(null);
+        userRepository.save(user);
+
+
+    }
+
 
 }

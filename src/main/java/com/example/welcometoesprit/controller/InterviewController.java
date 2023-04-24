@@ -68,5 +68,10 @@ public class InterviewController extends BaseController<Interview,Integer>{
         return interviewServiceImp.getAllInterviewsWithEvaluatorAndStudentName();
     }
 
+    @DeleteMapping("deleteInterviewById/{id}")
+    public void deleteInterviewById(@PathVariable Integer id){
+        interviewServiceImp.deleteInterviewById(id);
+    }
+
 
 }

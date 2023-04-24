@@ -19,4 +19,5 @@ public interface InterviewServiceInterface extends BaseServiceInterface<Intervie
     public void sendInterviewDetails(Integer idUser) ;
     public String getEmailContent(String userName, Date interviewDate, String interviewTime, String interviewClass, String bloc) ;
     public List<InterviewDTO> getAllInterviewsWithEvaluatorAndStudentName();
+    public void deleteInterviewById(Integer id);
 }
