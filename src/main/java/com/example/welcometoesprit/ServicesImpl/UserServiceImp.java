@@ -12,7 +12,6 @@ import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.MailingRepository;
 import com.example.welcometoesprit.repository.UserRepository;
 
-import com.example.welcometoesprit.token.Token;
 import com.example.welcometoesprit.token.TokenRepository;
 import com.itextpdf.text.BaseColor;
 import com.lowagie.text.*;
@@ -628,10 +627,11 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         }
         return teacherDtoList;
     }
-
-    public Optional<User> getCurrentUser(Token token){
-        return Optional.ofNullable(token.getUser());
-
+    public User getCurrentUser(String token) {
+        return tokenRepository.getUserByToken(token);
     }
 
+    public Role findRoleByEmail(String email){
+        return usersRepository.findRoleByEmail(email);
+    }
 }

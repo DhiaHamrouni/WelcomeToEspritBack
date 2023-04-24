@@ -5,13 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class ConfirmationToken {
+public class ConfirmationToken implements Serializable {
 
     @SequenceGenerator(
             name = "confirmation_token_sequence",

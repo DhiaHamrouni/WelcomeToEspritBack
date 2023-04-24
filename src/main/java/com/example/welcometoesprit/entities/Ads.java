@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ads extends Publication{
+public class Ads extends Publication implements Serializable {
     private String adName;
     private String channel;
     @Temporal(TemporalType.DATE)

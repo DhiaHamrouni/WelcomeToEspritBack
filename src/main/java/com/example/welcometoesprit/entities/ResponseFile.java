@@ -1,6 +1,8 @@
 package com.example.welcometoesprit.entities;
 
-public class ResponseFile {
+import java.io.Serializable;
+
+public class ResponseFile implements Serializable {
         private String name;
         private String url;
         private String type;

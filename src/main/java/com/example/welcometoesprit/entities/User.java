@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "_user")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
   @Id
   @GeneratedValue
@@ -40,6 +41,7 @@ public class User implements UserDetails {
   private String password;
   private String identifiant;
 
+  @JsonIgnore
   private LocalDateTime registrationDate;
   private String cin;
   private Boolean locked=false;
@@ -85,40 +87,45 @@ public class User implements UserDetails {
   }
 
 
-
+  @JsonIgnore
   @Enumerated(EnumType.STRING)
   private Status status=Status.Active;
-
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-
+  @JsonIgnore
   private Integer warnings=0;
 
-
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Rating> ratings;
   @ManyToOne
+  @JsonIgnore
   Event event;
+  @JsonIgnore
   @ManyToOne
   Event event2;
+  @JsonIgnore
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "complaintPar")
   List<Complaint> listOfComplaints;
+  @JsonIgnore
 
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "publierPar")
   List<Publication> listOfPublication;
-
+  @JsonIgnore
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
   List<SignalPost> signalPosts;
-
+  @JsonIgnore
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "user")
   List<React> reacts;
+  @JsonIgnore
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
   private Set<Publication> listPublicationLikee;
-
+  @JsonIgnore
   @OneToMany(mappedBy = "CommentPar",cascade = CascadeType.ALL)
   private Set<Comment> comments;
-
+  @JsonIgnore
   @ManyToOne
   Realisation realisation;
 
@@ -130,10 +137,10 @@ public class User implements UserDetails {
   @OneToMany(cascade = CascadeType.ALL,mappedBy = "evaluator")
   @JsonIgnore
   private Set<Interview> InterviewEvaluators;
-
+  @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL)
   private Set<FileEntity> files;
-
+  @JsonIgnore
   @ManyToMany(cascade= CascadeType.ALL)
   private Set<Classroom> classroomSet;
   @Override

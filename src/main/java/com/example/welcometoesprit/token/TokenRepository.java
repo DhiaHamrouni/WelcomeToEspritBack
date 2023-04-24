@@ -23,4 +23,11 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
       where t.token= :token and (t.expired = false or t.revoked = false)\s
       """)
   String getEmailByToken(String token);
+  @Query(value = """
+      select t.user from Token t inner join User u\s
+      on t.user.id = u.id\s
+      where t.token= :token
+      """)
+  User getUserByToken(String token);
 }
+
