@@ -92,6 +92,7 @@ public class User implements UserDetails, Serializable {
   private Status status=Status.Active;
   @JsonIgnore
   @OneToMany(mappedBy = "user")
+  @JsonIgnore
   private List<Token> tokens;
 
   @JsonIgnore
@@ -99,34 +100,43 @@ public class User implements UserDetails, Serializable {
 
   @JsonIgnore
   @OneToMany(mappedBy = "user")
+  @JsonIgnore
   private List<Rating> ratings;
   @ManyToOne
   @JsonIgnore
   Event event;
   @JsonIgnore
   @ManyToOne
+  @JsonIgnore
   Event event2;
   @JsonIgnore
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "complaintPar")
+  @JsonIgnore
   List<Complaint> listOfComplaints;
   @JsonIgnore
 
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "publierPar")
+  @JsonIgnore
   List<Publication> listOfPublication;
   @JsonIgnore
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "signalPar")
+  @JsonIgnore
   List<SignalPost> signalPosts;
   @JsonIgnore
   @OneToMany(cascade= CascadeType.ALL, mappedBy = "user")
+  @JsonIgnore
   List<React> reacts;
   @JsonIgnore
   @ManyToMany(mappedBy = "likerPar",cascade = CascadeType.ALL)
+  @JsonIgnore
   private Set<Publication> listPublicationLikee;
   @JsonIgnore
   @OneToMany(mappedBy = "CommentPar",cascade = CascadeType.ALL)
+  @JsonIgnore
   private Set<Comment> comments;
   @JsonIgnore
   @ManyToOne
+  @JsonIgnore
   Realisation realisation;
 
   @OneToOne
@@ -139,9 +149,11 @@ public class User implements UserDetails, Serializable {
   private Set<Interview> InterviewEvaluators;
   @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL)
+  @JsonIgnore
   private Set<FileEntity> files;
   @JsonIgnore
   @ManyToMany(cascade= CascadeType.ALL)
+  @JsonIgnore
   private Set<Classroom> classroomSet;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -38,14 +38,14 @@ public class Interview  implements Serializable {
     private String Deliberation; // not sure if string
 
 
-    @OneToOne(mappedBy = "interviewStudent",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "interviewStudent")
     @JsonIgnore
     private User student;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User evaluator;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     private Classroom classroomInterview;
 

@@ -23,4 +23,5 @@ public class ClassroomServiceImp extends BaseServiceImp<Classroom,Integer> imple
         classroomRepository.save(classroom);
 
     }
+
 }

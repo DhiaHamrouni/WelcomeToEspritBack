@@ -50,6 +50,10 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
   List<User> findByFirstnameAndLastnameAndRole(String firstName, String lastName, Role role);
 
+  @Query("SELECT u from User u where u.interviewStudent.idInterview = :id")
+  User findUserByIdInterview(Integer id);
+
+
 
 
 }

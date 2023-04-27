@@ -171,10 +171,19 @@ public class UserController extends BaseController<User,Integer>   {
         List<TeacherDto> teacherDtoList = userService.findTeachersByFirstNameAndLastName(firstName, lastName);
         return ResponseEntity.ok(teacherDtoList);
     }
+
+
+    @PutMapping("/updateUser/{id}")
+    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
+        return userService.updateUser(id, updatedUser);
+    }
+
+
 //    @GetMapping("/getUserByEmail/{email}")
 //    public Optional<User> getUserByEmail(@PathVariable("email") String email){
 //        return userService.loadUserByEmail(email);
 //    }
+
 
 
 
