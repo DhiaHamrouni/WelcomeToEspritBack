@@ -18,6 +18,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -620,6 +621,26 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
             teacherDtoList.add(teacherDto);
         }
         return teacherDtoList;
+    }
+
+    @Override
+    public User updateUser(Integer userId, User updatedUser) {
+        Optional<User> optionalUser = usersRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setFirstname(updatedUser.getFirstname());
+            user.setLastname(updatedUser.getLastname());
+            user.setCin(updatedUser.getCin());
+            user.setEmail(updatedUser.getEmail());
+            user.setNumTel(updatedUser.getNumTel());
+            user.setIdentifiant(updatedUser.getIdentifiant());
+            user.setNationality(updatedUser.getNationality());
+            user.setNiveauSuivant(updatedUser.getNiveauSuivant());
+            user.setSexe(updatedUser.getSexe());
+            return usersRepository.save(user);
+        } else {
+            throw new EntityNotFoundException("User with id " + userId + " not found");
+        }
     }
 
 }

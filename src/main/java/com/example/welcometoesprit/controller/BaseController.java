@@ -39,7 +39,6 @@ public abstract class BaseController<T, id> {
     }
 
 
-
     @GetMapping("/{id}")
     public T retrieveById(@PathVariable("id") id id) {
 

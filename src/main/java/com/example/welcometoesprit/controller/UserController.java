@@ -175,6 +175,11 @@ public class UserController extends BaseController<User,Integer>   {
         return ResponseEntity.ok(teacherDtoList);
     }
 
+    @PutMapping("/updateUser/{id}")
+    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
+        return userService.updateUser(id, updatedUser);
+    }
+
 
 
 
