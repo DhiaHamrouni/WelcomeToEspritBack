@@ -11,7 +11,6 @@ import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -175,10 +172,17 @@ public class UserController extends BaseController<User,Integer>   {
         return ResponseEntity.ok(teacherDtoList);
     }
 
+
     @PutMapping("/updateUser/{id}")
     public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
         return userService.updateUser(id, updatedUser);
     }
+
+
+//    @GetMapping("/getUserByEmail/{email}")
+//    public Optional<User> getUserByEmail(@PathVariable("email") String email){
+//        return userService.loadUserByEmail(email);
+//    }
 
 
 

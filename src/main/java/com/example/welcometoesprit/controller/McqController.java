@@ -17,7 +17,7 @@ import static com.example.welcometoesprit.entities.Category.CULTURE;
 import static com.example.welcometoesprit.entities.Category.LANGUAGE;
 
 @RestController
-@RequestMapping("/Mcq")
+@RequestMapping("/mcq")
 @CrossOrigin("*")
 
 public class McqController  extends BaseController<MCQ,Integer> {

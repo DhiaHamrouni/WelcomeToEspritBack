@@ -4,7 +4,6 @@ import com.example.welcometoesprit.Helpers.UserNotFoundException;
 import com.example.welcometoesprit.ServicesImpl.UserServiceImp;
 import com.example.welcometoesprit.config.JwtService;
 import com.example.welcometoesprit.entities.User;
-import com.example.welcometoesprit.repository.UserRepository;
 import com.example.welcometoesprit.token.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +37,7 @@ public class AuthenticationController {
 
 
   private final TokenRepository tokenRepository;
-  private final UserRepository userRepository;
+  private final UserServiceImp userServiceImp;
 
   @PostMapping("/generate-token")
   public ResponseEntity<?>generateToken(@RequestBody AuthenticationRequest jwtRequest) throws Exception{
@@ -84,10 +82,23 @@ public class AuthenticationController {
     }
   }
   @GetMapping("/current-user")
-  public Optional<User> getCurrentUser(String email) {
-    return (this.userRepository.findByEmail(email));
+  public User getCurrentUser(String token) {
+    return (userServiceImp.getCurrentUser(token));
+
   }
 
+  @GetMapping("/getUserByEmail/{email}")
+  public Optional<User> getUserByEmail(@PathVariable("email") String email){
+    return userServiceImp.loadUserByEmail(email);
+  }
+//  @GetMapping("/current-user")
+//  public Optional<User> getCurrentUser(String email){
+//   return  userServiceImp.getCurrentUser(email);}
+
+  @GetMapping("/getRole")
+  public String findRoleByEmail(String email){
+    return String.valueOf(userServiceImp.findRoleByEmail(email));
+  }
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
       @RequestBody RegisterRequest request

@@ -1,6 +1,8 @@
 package com.example.welcometoesprit.entities;
 
-public class ResponseMessage {
+import java.io.Serializable;
+
+public class ResponseMessage implements Serializable {
     private String message;
 
     public ResponseMessage(String message) {
