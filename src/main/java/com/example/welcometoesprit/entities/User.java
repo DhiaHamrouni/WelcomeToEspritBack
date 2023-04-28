@@ -41,7 +41,7 @@ public class User implements UserDetails, Serializable {
   private String password;
   private String identifiant;
 
-  @JsonIgnore
+  @JsonFormat(pattern = "MM/dd/yyyy")
   private LocalDateTime registrationDate;
   private String cin;
   private Boolean locked=false;
