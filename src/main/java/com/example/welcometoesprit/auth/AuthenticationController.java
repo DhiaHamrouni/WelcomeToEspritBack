@@ -81,6 +81,10 @@ public class AuthenticationController {
 
     }
   }
+//  @DeleteMapping("/api/v1/auth/logout")
+//  public void logoutUser(User user){
+//    this.service.logoutUser(user);
+//  }
   @GetMapping("/current-user")
   public User getCurrentUser(String token) {
     return (userServiceImp.getCurrentUser(token));

@@ -29,7 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class UserController extends BaseController<User,Integer>   {
     private final PDFGeneratorService pdfGeneratorService;
@@ -106,6 +106,7 @@ public class UserController extends BaseController<User,Integer>   {
         String headerValue = "attachment; filename=badge" + user.getFirstname()+"_"+user.getLastname() + ".pdf";
         response.setHeader(headerKey, headerValue);
         this.userService.badgePdf(response, id_user);
+
     }
 
     @GetMapping("/export-to-excel")
