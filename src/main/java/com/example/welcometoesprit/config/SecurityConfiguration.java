@@ -15,6 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +50,14 @@ public class SecurityConfiguration{
     http
         .csrf()
         .disable()
-        .authorizeHttpRequests().requestMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
+            .cors()
+            .configurationSource(request -> {
+              CorsConfiguration config = new CorsConfiguration();
+              config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+              config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+              config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+              return config;
+            }).and().authorizeHttpRequests().requestMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
             .requestMatchers("/candidatoffre/**").permitAll()
             .requestMatchers("/result/add").hasAuthority("JURY")
