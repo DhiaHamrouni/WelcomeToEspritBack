@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface UserServiceInterface extends BaseServiceInterface<User,Integer>
 
     public List<User> getStudents();
 
-    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview,Integer heureInterview);
+    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview, LocalTime heureInterview);
     public List<UserDTO> findStudentsByFirstName(UserDTO userDto);
     public List<TeacherDto> findTeachersByFirstNameAndLastName(String firstName, String lastName);
     public void assignInterviewToTeacher(Integer idStudent);

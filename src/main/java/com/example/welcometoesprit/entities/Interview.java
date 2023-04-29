@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -31,8 +32,10 @@ public class Interview  implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date scheduledTime ;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateInterview ;
-    private Integer heureInterview;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime heureInterview;
     private Integer TotalScore;
     private Integer InterviewScore;
     private String Deliberation; // not sure if string
@@ -53,7 +56,7 @@ public class Interview  implements Serializable {
     private MCQ mcqInterview;
 
 
-    public Interview(Date dateInterview, User student, User evaluator,Integer heureInterview) {
+    public Interview(Date dateInterview, User student, User evaluator,LocalTime heureInterview) {
         this.dateInterview = dateInterview;
         this.heureInterview=heureInterview;
         this.student = student;
