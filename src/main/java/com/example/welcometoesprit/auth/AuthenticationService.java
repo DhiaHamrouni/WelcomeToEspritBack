@@ -221,4 +221,10 @@ public class AuthenticationService {
   private String buildWelcomeEmail() {
     return "ahla \n wa sahla \n w ya marhaba ";
   }
+
+  public void logoutUser(User user){
+    Integer idUser=user.getId();
+    tokenRepository.deleteById(idUser);
+
+  }
 }
