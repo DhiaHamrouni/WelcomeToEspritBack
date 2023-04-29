@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -150,7 +151,7 @@ public class UserController extends BaseController<User,Integer>   {
     @PostMapping("assignInterviewToStudent/{idStudent}")
     public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
         Date dateInterview = interview.getDateInterview();
-        Integer heureInterview = interview.getHeureInterview();
+        LocalTime heureInterview = interview.getHeureInterview();
         return userService.addInterviewAndAssignToStudent(idStudent,dateInterview,heureInterview);
     }
 

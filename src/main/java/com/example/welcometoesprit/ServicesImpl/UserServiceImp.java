@@ -41,6 +41,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.*;
 import java.util.List;
@@ -533,7 +534,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
      }
 
     @Transactional
-    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {
+    public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview, LocalTime heureInterview) {
         User student = usersRepository.findById(idStudent).get();
         List<User> teachers = usersRepository.findByRole(Role.TEACHER);
         User teacher = usersRepository.findTeacherByRole(Role.TEACHER);
@@ -642,5 +643,15 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
             throw new EntityNotFoundException("User with id " + userId + " not found");
         }
     }
+
+
+
+
+
+
+
+
+
+
 
 }

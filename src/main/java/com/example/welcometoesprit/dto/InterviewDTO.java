@@ -1,5 +1,6 @@
 package com.example.welcometoesprit.dto;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 public class InterviewDTO {
@@ -9,9 +10,9 @@ public class InterviewDTO {
     private String studentName;
     private String studentLastName;
     private Date interviewDate;
-    private Integer interviewHeure;
+    private LocalTime interviewHeure;
 
-    public InterviewDTO(Integer id, String evaluatorName, String evaluatorLastName, String studentName, String studentLastName,Date interviewDate,Integer interviewHeure) {
+    public InterviewDTO(Integer id, String evaluatorName, String evaluatorLastName, String studentName, String studentLastName,Date interviewDate,LocalTime interviewHeure) {
         this.idInterview = id;
         this.evaluatorName = evaluatorName;
         this.evaluatorLastName = evaluatorLastName;
@@ -45,7 +46,7 @@ public class InterviewDTO {
         this.interviewDate = interviewDate;
     }
 
-    public void setInterviewHeure(Integer interviewHeure) {
+    public void setInterviewHeure(LocalTime interviewHeure) {
         this.interviewHeure = interviewHeure;
     }
 
@@ -73,7 +74,7 @@ public class InterviewDTO {
         return interviewDate;
     }
 
-    public Integer getInterviewHeure() {
+    public LocalTime getInterviewHeure() {
         return interviewHeure;
     }
 }
