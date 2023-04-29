@@ -12,6 +12,7 @@ import com.example.welcometoesprit.entities.*;
 import com.example.welcometoesprit.repository.MailingRepository;
 import com.example.welcometoesprit.repository.UserRepository;
 
+import com.example.welcometoesprit.token.TokenRepository;
 import com.itextpdf.text.BaseColor;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
@@ -52,6 +53,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImp extends BaseServiceImp<User,Integer>  implements UserDetailsService,UserServiceInterface {
     @Autowired
+    private TokenRepository tokenRepository;
+    @Autowired
     private ClassroomRepository classroomRepository;
     @Autowired
     private InterviewRepository interviewRepository;
@@ -86,6 +89,9 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         return usersRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG,email)));
     }
 
+    public Optional<User> loadUserByEmail(String email){
+        return usersRepository.findByEmail(email);
+    }
     public String signUpUser(User appUser) {
         boolean userExists = usersRepository
                 .findByEmail(appUser.getEmail())
@@ -644,7 +650,13 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         }
     }
 
+    public User getCurrentUser(String token) {
+        return tokenRepository.getUserByToken(token);
+    }
 
+    public Role findRoleByEmail(String email){
+        return usersRepository.findRoleByEmail(email);
+    }
 
 
 
