@@ -27,6 +27,8 @@ public class Comment implements Serializable {
     private Date datePublication;
     private Integer nbrLike;
 
+    @JsonIgnore
+
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<React> reacts;
 

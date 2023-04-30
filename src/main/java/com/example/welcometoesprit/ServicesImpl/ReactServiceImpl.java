@@ -25,6 +25,14 @@ public class ReactServiceImpl {
     CommentRepository commentRepository;
 
     public React addReact(React react, Integer idUsr , Integer idPost ) {
+        for (React r:reactrepository.findAll()
+             ) {
+            if(r.getUser().getId() == idUsr && r.getPublication().getIdPublication() == idPost){
+                reactrepository.deleteById(r.getIdReact());
+            }
+        }
+
+
         User u = userRepository.findById(idUsr).orElse(null);
         Publication pub = publicationRepository.findById(idPost).orElse(null);
         react.setUser(u);
@@ -62,7 +70,7 @@ public class ReactServiceImpl {
             if (r.getReactEnum().equals(reactEnum) )
             { i++;}
         }
-        return "this post resive " + i + " " + reactEnum ;
+        return "this post have " + i + " " + reactEnum ;
     }
 
     public void DeleteReact (Integer idReact)

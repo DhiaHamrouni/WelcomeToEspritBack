@@ -28,7 +28,6 @@ public abstract class BaseController<T, id> {
     }
 
 
-    // @PutMapping(path ="{id}")
 
     @PutMapping("/update")
     public ResponseEntity<T>update(@RequestBody T e){

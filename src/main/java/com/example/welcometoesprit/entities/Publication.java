@@ -45,7 +45,6 @@ public class Publication implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<User> likerPar;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     List<Comment> listOfComments;
 

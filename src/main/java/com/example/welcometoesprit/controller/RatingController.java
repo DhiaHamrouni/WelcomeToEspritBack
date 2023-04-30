@@ -6,6 +6,7 @@ import com.example.welcometoesprit.ServicesImpl.RatingServiceImp;
 import com.example.welcometoesprit.entities.Rating;
 import com.example.welcometoesprit.repository.RatingRepository;
 import com.sun.mail.imap.protocol.Status;
+import org.apache.poi.ss.formula.functions.Rate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,6 +16,7 @@ import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
+@CrossOrigin("*")
 
 @RestController
 @RequestMapping("/ratings")
@@ -22,10 +24,13 @@ public class RatingController {
 
     @Autowired
     private RatingServiceInterface ratingService;
-    @PostMapping("/addRating/{idUser}/{idPub}")
-    public Rating addRating( @RequestBody Rating rating  , @PathVariable Integer idUser, @PathVariable Integer idPub) {
+    @PostMapping("/addRating/{idUser}/{idPub}/{rating}")
+    public Rating addRating( @PathVariable Integer rating  , @PathVariable Integer idUser, @PathVariable Integer idPub) {
 
-        return  ratingService.addRating(rating , idUser, idPub );
+
+        Rating  Rate=new Rating();
+      Rate.setScore(rating);
+        return  ratingService.addRating(Rate , idUser, idPub );
     }
 
     @GetMapping("/getAllRating")

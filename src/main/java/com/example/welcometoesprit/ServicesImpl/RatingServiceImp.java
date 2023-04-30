@@ -32,6 +32,20 @@ public class RatingServiceImp implements RatingServiceInterface {
     PublicationRepository pubRepo;
     @Override
     public Rating addRating(Rating rating , Integer idUsr , Integer idPost ) {
+        if(rating.getScore() == 0){
+            for (Rating rr : ratingRepo.findAll()
+            ) {
+                if(rr.getUser().getId() == idUsr && idPost == rr.getPublication().getIdPublication())
+                    ratingRepo.deleteById(rr.getIdRating());
+            }
+            return rating;
+        }
+
+        for (Rating rr : ratingRepo.findAll()
+             ) {
+            if(rr.getUser().getId() == idUsr && idPost == rr.getPublication().getIdPublication())
+                ratingRepo.deleteById(rr.getIdRating());
+        }
 User u = userRepo.findById(idUsr).orElse(null);
 Publication pub = pubRepo.findById(idPost).orElse(null);
         rating.setUser(u);

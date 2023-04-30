@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/react")
-
+@CrossOrigin("*")
 @RestController
 public class ReactController {
 
@@ -18,10 +18,12 @@ public class ReactController {
     ReactServiceImpl reactService;
 
 
-    @PostMapping("/addReact/{IdUser}/{IdPost}")
-    public React AddReact (@RequestBody React react , @PathVariable Integer IdUser , @PathVariable Integer IdPost)
+    @PostMapping("/addReact/{IdUser}/{IdPost}/{react}")
+    public React AddReact (@PathVariable String react , @PathVariable Integer IdUser , @PathVariable Integer IdPost)
     {
-     return    reactService.addReact(react,IdUser,IdPost);
+        React a = new React();
+        a.setReactEnum(ReactEnum.valueOf(react));
+     return    reactService.addReact(a,IdUser,IdPost);
 
     }
 

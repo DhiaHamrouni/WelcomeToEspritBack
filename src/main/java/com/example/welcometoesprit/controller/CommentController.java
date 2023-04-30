@@ -28,13 +28,17 @@ public class CommentController  extends BaseController<Comment,Integer> {
             return commentService.getCommentsWithoutBadWords();
         }
 
-        @PostMapping("/addComment/{idUser}")
-        public ResponseEntity<?> addComment(@RequestBody Comment comment ,@PathVariable Integer idUser) {
-           return new ResponseEntity<>(commentService.addComment(comment , idUser), HttpStatusCode.valueOf(200));
+        @PostMapping("/addComment/{idUser}/{idPost}")
+        public ResponseEntity<?> addComment(@RequestBody Comment comment ,@PathVariable Integer idUser,@PathVariable Integer idPost) {
+           return new ResponseEntity<>(commentService.addComment(comment , idUser , idPost), HttpStatusCode.valueOf(200));
         }
 
-        /*@DeleteMapping("/delete")
-        public ResponseEntity<?>deleteComment(@)*/
+    @PostMapping("/updateComment/{idComment}/{idUser}")
+    public ResponseEntity<?> updateComment(@RequestBody Comment comment ,@PathVariable Integer idComment, @PathVariable Integer idUser) {
+        return new ResponseEntity<>(commentService.updateComment(comment, idComment,idUser), HttpStatusCode.valueOf(200));
+    }
+
+
     }
 
 

@@ -31,13 +31,13 @@ public class SignalServiceImpl implements SignalServiceSignal {
         if (pub.getSignalPosts().size() > 2) {
             publicationRepository.deleteById(IdPub);
             mailingServiceInterface.sendEmail(pub.getPublierPar().getEmail(),"Supprission de post" ,"Votre Publication a Etait Supprimer");
-            return "Cette Post a etait supprimer a cause des plusiers signal";
+            return "Cette Post a etait supprimer a cause des plusieurs signal";
         } else {
 
             signalPost.setPublication(pub);
             signalPost.setSignalPar(u);
             signalRepository.save(signalPost);
-            return "Post Signaler avec suuccse";
+            return "Post Signaler avec succée";
 
 
         }
