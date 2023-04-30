@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -59,6 +60,7 @@ public class SecurityConfiguration{
               return config;
             }).and().authorizeHttpRequests().requestMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
+            .requestMatchers( "/user/**").permitAll()
             .requestMatchers("/candidatoffre/**").permitAll()
             .requestMatchers("/result/add").hasAuthority("JURY")
             .requestMatchers("/result/update").hasAuthority("JURY")
@@ -68,7 +70,7 @@ public class SecurityConfiguration{
             .requestMatchers("/offre/add").hasAuthority("ADMIN")
             .requestMatchers("/offre/delete").hasAuthority("ADMIN")
             .anyRequest()
-          .authenticated()
+            .authenticated()
         .and()
           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)

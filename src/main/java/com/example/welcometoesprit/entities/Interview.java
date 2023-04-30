@@ -62,4 +62,7 @@ public class Interview  implements Serializable {
         this.student = student;
         this.evaluator = evaluator;
     }
+
+
+
 }

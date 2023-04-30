@@ -37,4 +37,5 @@ public interface InterviewRepository extends BaseRepository<Interview,Integer> {
     List<Interview> findByTeacher(@Param("teacher") User teacher);
 
 
-}
+
+    }
