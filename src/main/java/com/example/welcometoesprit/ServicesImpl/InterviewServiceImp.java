@@ -281,6 +281,20 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         }
     }
 
+    @Override
+    public void addInterview(Integer idStudent,Interview interview){
+        User student = userRepository.findById(idStudent).get();
+        if(student.getInterviewStudent()==null){
+            List<User> teachers = userRepository.findUserByRole(Role.TEACHER);
+            Interview interview1 = new Interview(interview.getDateInterview(),student, teachers.get(0),interview.getHeureInterview());
+            interviewRepository.save(interview1);
+            student.setInterviewStudent(interview1);
+            userRepository.save(student);
+        }else {
+            System.out.println("vous avez un rendez vous deja !!");
+        }
+    }
+
 
 
 

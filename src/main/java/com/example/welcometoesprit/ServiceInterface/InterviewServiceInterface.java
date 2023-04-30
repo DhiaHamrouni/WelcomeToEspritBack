@@ -22,5 +22,7 @@ public interface InterviewServiceInterface extends BaseServiceInterface<Intervie
     public void deleteInterviewById(Integer id);
     public Interview getInterviewByStudent(Integer idStudent);
     public Interview updateInterview(Integer id, Interview updatedInterview) ;
+    public void addInterview(Integer idStudent,Interview interview);
 
-    }
+
+}

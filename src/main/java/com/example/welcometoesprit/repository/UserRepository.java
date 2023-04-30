@@ -53,7 +53,7 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   @Query("SELECT u from User u where u.interviewStudent.idInterview = :id")
   User findUserByIdInterview(Integer id);
 
-
+  List<User> findUserByRole(Role role);
 
 
 }
