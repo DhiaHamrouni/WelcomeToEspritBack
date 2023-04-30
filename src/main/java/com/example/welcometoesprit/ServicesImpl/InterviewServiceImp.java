@@ -268,6 +268,19 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         }
     }
 
+    @Override
+    public Interview updateInterview(Integer id, Interview updatedInterview) {
+        Optional<Interview> optionalInterview = interviewRepository.findById(id);
+        if (optionalInterview.isPresent()) {
+            Interview interview = optionalInterview.get();
+            interview.setDateInterview(updatedInterview.getDateInterview());
+            interview.setHeureInterview(updatedInterview.getHeureInterview());
+            return interviewRepository.save(interview);
+        } else {
+            throw new EntityNotFoundException("Interview with id " + id + " not found");
+        }
+    }
+
 
 
 

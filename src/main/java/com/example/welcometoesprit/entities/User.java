@@ -11,10 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Builder
 @NoArgsConstructor
@@ -76,6 +73,18 @@ public class User implements UserDetails, Serializable {
     this.role = role;
     this.niveauActuel = niveauActuel;
     this.registrationDate=registrationDate;
+  }
+
+  public User(String firstname, String lastname, String cin, String email, String numTel, String identifiant, Nationality nationality, NiveauSuivant niveauSuivant, Sexe sexe) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.sexe = sexe;
+    this.nationality = nationality;
+    this.cin = cin;
+    this.numTel = numTel;
+    this.identifiant = identifiant;
+    this.niveauSuivant=niveauSuivant;
   }
 
   @Override
@@ -144,7 +153,7 @@ public class User implements UserDetails, Serializable {
   private Set<Classroom> classroomSet;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
+    return Collections.emptyList();
   }
 
   @Override

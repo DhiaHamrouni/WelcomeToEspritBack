@@ -83,5 +83,10 @@ public class InterviewController extends BaseController<Interview,Integer>{
         return interviewServiceImp.getInterviewByStudent(id);
     }
 
+    @PutMapping("/updateInterview/{id}")
+    public Interview updateInterview(@PathVariable("id") Integer id, @RequestBody Interview updatedInterview) {
+        return interviewServiceImp.updateInterview(id, updatedInterview);
+    }
+
 
 }
