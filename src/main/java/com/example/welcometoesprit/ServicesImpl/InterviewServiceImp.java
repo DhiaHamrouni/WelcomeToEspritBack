@@ -2,10 +2,9 @@ package com.example.welcometoesprit.ServicesImpl;
 
 import com.example.welcometoesprit.ServiceInterface.InterviewServiceInterface;
 
+import com.example.welcometoesprit.dto.InterviewDTO;
 import com.example.welcometoesprit.entities.*;
-import com.example.welcometoesprit.repository.ClassroomRepository;
-import com.example.welcometoesprit.repository.InterviewRepository;
-import com.example.welcometoesprit.repository.UserRepository;
+import com.example.welcometoesprit.repository.*;
 
 import com.example.welcometoesprit.entities.Classroom;
 import com.example.welcometoesprit.entities.Interview;
@@ -17,6 +16,7 @@ import com.example.welcometoesprit.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -24,8 +24,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -33,7 +33,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> implements InterviewServiceInterface {
@@ -47,6 +46,8 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
 
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private BlocRepository blocRepository;
 
 
     public void assignInterviewToEvaluator(Integer interviewId, Integer evaluatorId) throws Exception {
@@ -175,11 +176,16 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         User user = userRepository.findById(idUser).get();
         if ((user.getRole() == Role.STUDENT)&&(user.getInterviewStudent().getIdInterview()!=null)) {
             Interview interview = user.getInterviewStudent();
-            Date input = interview.getDateInterview();
-            LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
+//            Date input = interview.getDateInterview();
+//            LocalDate date = LocalDate.ofInstant(input.toInstant(), ZoneId.systemDefault());
+
+            Date date = new Date();
+
             String interviewTime = String.valueOf(interview.getHeureInterview());
-            Integer classroom = (interview.getClassroomInterview().getNumero()+interview.getClassroomInterview().getEtage()*100);
-            String bloc = interview.getClassroomInterview().getBloc().getNomBloc();
+            Classroom classroom1 = classroomRepository.findById(1).get();
+            Integer classroom = (classroom1.getNumero()+classroom1.getEtage()*100);
+            Bloc bloc1=blocRepository.findById(1).get();
+            String bloc = bloc1.getNomBloc();
             String interviewClass = classroom.toString();
             String userEmail = user.getEmail();
             String userName = user.getFirstname();
@@ -201,7 +207,7 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
     }
 
     @Override
-    public String getEmailContent(String userName, LocalDate interviewDate, String interviewTime,String interviewClass,String bloc) {
+    public String getEmailContent(String userName, Date interviewDate, String interviewTime,String interviewClass,String bloc) {
         String htmlTemplate = "";
         try {
             Resource resource = new ClassPathResource("templates/mailInterview.html");
@@ -211,12 +217,84 @@ public class InterviewServiceImp extends BaseServiceImp<Interview,Integer> imple
         }
         String htmlContent = htmlTemplate
                 .replace("[student name]", userName)
-                .replace("[interview date]", interviewDate.toString() + " at " + interviewTime)
+                .replace("[interview date]", interviewDate.toString() )
                 .replace("[interview time]", interviewTime)
                 .replace("[interview location]", interviewClass)
                 .replace("[interview bloc]",bloc);
         return htmlContent;
     }
+
+    @Override
+    public List<InterviewDTO> getAllInterviewsWithEvaluatorAndStudentName() {
+        return interviewRepository.findAllInterviewsWithEvaluatorAndStudentName();
+    }
+
+    public List<InterviewDTO> getInteviewsForTeacher(Integer teacherId) {
+        User teacher = userRepository.findById(teacherId)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
+        List<Interview> interviews = interviewRepository.findByTeacher(teacher);
+        List<InterviewDTO> interviewDTOs = new ArrayList<>();
+        for (Interview interview : interviews) {
+            String evaluatorName = interview.getEvaluator().getFirstname();
+            String evaluatorLastName = interview.getEvaluator().getLastname();
+            String studentName = interview.getStudent().getFirstname();
+            String studentLastName = interview.getStudent().getLastname();
+            Date interviewDate = interview.getDateInterview();
+            LocalTime interviewHeure = interview.getHeureInterview();
+            InterviewDTO interviewDTO = new InterviewDTO(interview.getIdInterview(), evaluatorName, evaluatorLastName, studentName, studentLastName, interviewDate, interviewHeure);
+            interviewDTOs.add(interviewDTO);
+        }
+        return interviewDTOs;
+    }
+
+    @Override
+    public void deleteInterviewById(Integer id){
+        Interview interview = interviewRepository.findById(id).get();
+        interviewRepository.delete(interview);
+        User user = userRepository.findUserByIdInterview(id);
+        user.setInterviewStudent(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public Interview getInterviewByStudent(Integer idStudent){
+        User student = userRepository.findById(idStudent).orElse(null);
+        assert student != null;
+        if (student.getInterviewStudent()!=null){
+            return student.getInterviewStudent();
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public Interview updateInterview(Integer id, Interview updatedInterview) {
+        Optional<Interview> optionalInterview = interviewRepository.findById(id);
+        if (optionalInterview.isPresent()) {
+            Interview interview = optionalInterview.get();
+            interview.setDateInterview(updatedInterview.getDateInterview());
+            interview.setHeureInterview(updatedInterview.getHeureInterview());
+            return interviewRepository.save(interview);
+        } else {
+            throw new EntityNotFoundException("Interview with id " + id + " not found");
+        }
+    }
+
+    @Override
+    public void addInterview(Integer idStudent,Interview interview){
+        User student = userRepository.findById(idStudent).get();
+        if(student.getInterviewStudent()==null){
+            List<User> teachers = userRepository.findUserByRole(Role.TEACHER);
+            Interview interview1 = new Interview(interview.getDateInterview(),student, teachers.get(0),interview.getHeureInterview());
+            interviewRepository.save(interview1);
+            student.setInterviewStudent(interview1);
+            userRepository.save(student);
+        }else {
+            System.out.println("vous avez un rendez vous deja !!");
+        }
+    }
+
 
 
 

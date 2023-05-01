@@ -1,9 +1,12 @@
 package com.example.welcometoesprit.ServiceInterface;
 
+import com.example.welcometoesprit.dto.InterviewDTO;
 import com.example.welcometoesprit.entities.Interview;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 public interface InterviewServiceInterface extends BaseServiceInterface<Interview,Integer>{
 
@@ -13,9 +16,13 @@ public interface InterviewServiceInterface extends BaseServiceInterface<Intervie
     public void assignInterviewToStudent(Integer interviewId, Integer studentId) throws Exception;
     public Integer ScoreInterview(Integer interviewId) throws Exception;
     public Integer SetInterviewScore(Integer interviewId, Integer score) throws Exception;
-
     public void sendInterviewDetails(Integer idUser) ;
-    public String getEmailContent(String userName, LocalDate interviewDate, String interviewTime, String interviewClass, String bloc) ;
+    public String getEmailContent(String userName, Date interviewDate, String interviewTime, String interviewClass, String bloc) ;
+    public List<InterviewDTO> getAllInterviewsWithEvaluatorAndStudentName();
+    public void deleteInterviewById(Integer id);
+    public Interview getInterviewByStudent(Integer idStudent);
+    public Interview updateInterview(Integer id, Interview updatedInterview) ;
+    public void addInterview(Integer idStudent,Interview interview);
 
 
 }

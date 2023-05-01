@@ -15,4 +15,8 @@ public class AuthenticationResponse {
 
   private String token;
   private List<String> errors;
+
+  public AuthenticationResponse(String token) {
+    this.token = token;
+  }
 }

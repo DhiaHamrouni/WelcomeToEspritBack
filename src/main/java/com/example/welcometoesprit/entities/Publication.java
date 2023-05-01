@@ -52,5 +52,6 @@ public class Publication implements Serializable {
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
     private List<Rating> ratings;
 
-
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
+    private List<React> reacts;
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public class CriteriaServiceImp extends BaseServiceImp<Criteria,Integer> {
     @Autowired
     CriteriaRepository criteriaRepository;
+    @Autowired
     JuryRepository juryRepository;
     public Criteria JudgeaddCriteria(Criteria crit,Integer id_judge){
         Jury jury=juryRepository.getReferenceById(id_judge);
@@ -21,10 +22,9 @@ public class CriteriaServiceImp extends BaseServiceImp<Criteria,Integer> {
                 throw new IllegalStateException("This Criteria is already added");
             }
         }
-        List<Criteria> criteria=jury.getCriteriaList();
-        criteria.add(crit);
-        jury.setCriteriaList(criteria);
+        crit.setJury(jury);
         criteriaRepository.save(crit);
+        juryRepository.save(jury);
         return crit;
     }
 }

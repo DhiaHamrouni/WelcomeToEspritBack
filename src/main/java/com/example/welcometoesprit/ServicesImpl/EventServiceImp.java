@@ -6,6 +6,7 @@ import com.example.welcometoesprit.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,25 @@ public class EventServiceImp extends BaseServiceImp<Event,Integer> implements Ev
     @Override
     public void deletEventById(Integer id) {
          eventRepository.deleteById(id);
+    }
+
+
+    public String  budgetEvents ( Date datestart , Date DateEnd){
+        Double f = 0.0;
+        if(datestart.after(DateEnd))
+            return "erreur dateStart sup a date fin";
+        for (Event e: eventRepository.findAll()
+             ) {
+
+
+            System.out.println(e.getStartDate().after(datestart));
+            System.out.println(e.getEndDate().before(DateEnd));
+            if(e.getStartDate().after(datestart) && e.getEndDate().before(DateEnd))
+            {
+
+                f = f + e.getBudget();}
+        }
+
+        return "budget : " +f;
     }
 }

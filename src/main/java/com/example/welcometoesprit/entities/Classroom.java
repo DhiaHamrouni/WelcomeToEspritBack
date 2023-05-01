@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table( name = "Classroom")
@@ -28,6 +27,7 @@ public class Classroom implements Serializable {
     List<User> listOfStudent;
 
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "classroomInterview")
+    @JsonIgnore
     private List<Interview> interviews ;
 
     @ManyToOne

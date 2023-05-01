@@ -22,13 +22,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class UserController extends BaseController<User,Integer>   {
     private final PDFGeneratorService pdfGeneratorService;
@@ -105,6 +106,7 @@ public class UserController extends BaseController<User,Integer>   {
         String headerValue = "attachment; filename=badge" + user.getFirstname()+"_"+user.getLastname() + ".pdf";
         response.setHeader(headerKey, headerValue);
         this.userService.badgePdf(response, id_user);
+
     }
 
     @GetMapping("/export-to-excel")
@@ -147,11 +149,16 @@ public class UserController extends BaseController<User,Integer>   {
         return userService.statistique(role,cretetria);
     }
 
-    @PutMapping("assignInterviewToStudent/{idStudent}")
+    @PostMapping("assignInterviewToStudent/{idStudent}")
     public String assignInterviewToStudent(@PathVariable Integer idStudent,@RequestBody Interview interview){
         Date dateInterview = interview.getDateInterview();
-        Integer heureInterview =interview.getHeureInterview();
-        return userService.assignInterviewToStudent(idStudent,dateInterview,heureInterview);
+        LocalTime heureInterview = interview.getHeureInterview();
+        return userService.addInterviewAndAssignToStudent(idStudent,dateInterview,heureInterview);
+    }
+
+    @PutMapping("/assignInterviewToTeacher/{idStudent}")
+    public void assignInterviewToteacher(@PathVariable Integer idStudent){
+         userService.assignInterviewToTeacher(idStudent);
     }
 
 
@@ -168,6 +175,11 @@ public class UserController extends BaseController<User,Integer>   {
     public ResponseEntity<List<TeacherDto>> getTeachersByFirstNameAndLastName(@RequestParam String firstName, @RequestParam String lastName) {
         List<TeacherDto> teacherDtoList = userService.findTeachersByFirstNameAndLastName(firstName, lastName);
         return ResponseEntity.ok(teacherDtoList);
+    }
+
+    @PutMapping("/updateUser/{id}")
+    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
+        return userService.updateUser(id, updatedUser);
     }
 
 

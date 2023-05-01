@@ -25,6 +25,8 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
   public Optional<User> findById(Integer id);
 
+  @Query("SELECT u.role FROM User u where u.email = :email")
+  Role findRoleByEmail(String email);
 
   Optional<User> findByEmail(String email);
   @Transactional
@@ -35,6 +37,11 @@ public interface UserRepository extends BaseRepository<User, Integer> {
 
   List<User> findByRole(Role role);
 
+  Optional<User> getUserByEmail(String email);
+
+  @Query("SELECT u FROM User u where u.role = :role")
+  User findTeacherByRole(Role role);
+
   int countUserByRoleAndSexe(Role role, Sexe sexe);
   int countUserByRoleAndNationality(Role role, Nationality nationality);
   @Query("SELECT COUNT(u) FROM User u WHERE u.role =?1 AND YEAR(u.registrationDate) = ?2")
@@ -42,6 +49,11 @@ public interface UserRepository extends BaseRepository<User, Integer> {
   List<User> findByFirstnameAndRole(String firstName, Role role);
 
   List<User> findByFirstnameAndLastnameAndRole(String firstName, String lastName, Role role);
+
+  @Query("SELECT u from User u where u.interviewStudent.idInterview = :id")
+  User findUserByIdInterview(Integer id);
+
+  List<User> findUserByRole(Role role);
 
 
 }
