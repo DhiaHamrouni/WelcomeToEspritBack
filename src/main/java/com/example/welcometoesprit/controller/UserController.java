@@ -141,7 +141,7 @@ public class UserController extends BaseController<User,Integer>   {
 
 
     @GetMapping("/statistique/{role}/{cretetria}")
-    public String statistique(@PathVariable("role") String role,@PathVariable("cretetria") String cretetria) {
+    public int[] statistique(@PathVariable("role") String role,@PathVariable("cretetria") String cretetria) {
         return userService.statistique(role,cretetria);
     }
 

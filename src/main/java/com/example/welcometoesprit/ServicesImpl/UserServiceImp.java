@@ -188,7 +188,7 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         canvas.rectangle(x, y, width, height);
         canvas.stroke();
         // Add the Logo's img
-        Image logo = Image.getInstance(new File("C:\\Users\\GAMING\\Downloads\\logo.png").getAbsolutePath());
+        Image logo = Image.getInstance(new File("src\\main\\resources\\Assets\\logo.png").getAbsolutePath());
         logo.setAlignment(Element.ALIGN_LEFT);
         logo.getTransparency();
         logo.scaleToFit(100f, 100f);
@@ -497,45 +497,102 @@ public class UserServiceImp extends BaseServiceImp<User,Integer>  implements Use
         document.close();
     }
 
-     public String statistique(String role,String cretetria) {
-         Role roleEnum = Role.valueOf(role.toUpperCase());
-         switch (cretetria) {
-             case "sexe":
-                 switch (roleEnum) {
-                     case STUDENT:
-                         return "The number of Female Students : " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.FEMME)+"\n"+
-                                 "The number of Male Students: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.HOMME);
-                     case ADMIN:
-                         return "The number of Female Admins: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.FEMME)+"\n"+
-                                 "The number of Male Admins: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.HOMME);
-                     case TEACHER:
-                         return "The number of Female Teachers: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.FEMME)+"\n"+
-                                 "The number of Male Teachers: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.HOMME);
-                 }
-             case "nationalite":
-                 switch (roleEnum) {
-                     case STUDENT:
-                         return "le nombre des etudiants ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.TUNISIENNE)+"\n"+
-                                 "le nombre des etudiants ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.ETRANGER);
-                     case ADMIN:
-                         return "le nombre des admins ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.TUNISIENNE)+"\n"+
-                                 "le nombre des admins ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.ETRANGER);
-                     case TEACHER:
-                         return "le nombre des enseignants ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.TUNISIENNE)+"\n"+
-                                 "le nombre des enseignants ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.ETRANGER);
-                 }
-             case "annee_inscription":
-                 switch (roleEnum) {
-                     case STUDENT:
-                         return "le nombre des etudiants inscrit en 2023 : " + usersRepository.UserByRoleAndRegistDate(Role.STUDENT,LocalDateTime.now().getYear());
-                     case ADMIN:
-                         return "le nombre des admins  inscrit en 2023: " + usersRepository.UserByRoleAndRegistDate(Role.ADMIN, LocalDateTime.now().getYear());
-                     case TEACHER:
-                         return "le nombre des enseignants inscrit en 2023: " + usersRepository.UserByRoleAndRegistDate(Role.TEACHER,LocalDateTime.now().getYear());
-                 }
-         }
-         return "verifier le critere ou le role";
-     }
+    public int[] statistique(String role, String criteria) {
+        Role roleEnum = Role.valueOf(role.toUpperCase());
+        int[] results = new int[2];
+        switch (criteria) {
+            case "sexe":
+                switch (roleEnum) {
+                    case STUDENT:
+                        results[0] = usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.FEMME);
+                        results[1] = usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.HOMME);
+                        break;
+                    case ADMIN:
+                        results[0] = usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.FEMME);
+                        results[1] = usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.HOMME);
+                        break;
+                    case TEACHER:
+                        results[0] = usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.FEMME);
+                        results[1] = usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.HOMME);
+                        break;
+                }
+                break;
+            case "nationalite":
+                switch (roleEnum) {
+                    case STUDENT:
+                        results[0] = usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.TUNISIENNE);
+                        results[1] = usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.ETRANGER);
+                        break;
+                    case ADMIN:
+                        results[0] = usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.TUNISIENNE);
+                        results[1] = usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.ETRANGER);
+                        break;
+                    case TEACHER:
+                        results[0] = usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.TUNISIENNE);
+                        results[1] = usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.ETRANGER);
+                        break;
+                }
+                break;
+            case "annee_inscription":
+                switch (roleEnum) {
+                    case STUDENT:
+                        results[0] = usersRepository.UserByRoleAndRegistDate(Role.STUDENT, LocalDateTime.now().getYear());
+                        break;
+                    case ADMIN:
+                        results[0] = usersRepository.UserByRoleAndRegistDate(Role.ADMIN, LocalDateTime.now().getYear());
+                        break;
+                    case TEACHER:
+                        results[0] = usersRepository.UserByRoleAndRegistDate(Role.TEACHER, LocalDateTime.now().getYear());
+                        break;
+                }
+                break;
+            default:
+                results[0] = -1;
+                results[1] = -1;
+                break;
+        }
+        return results;
+    }
+
+//     public String statistique(String role,String cretetria) {
+//         Role roleEnum = Role.valueOf(role.toUpperCase());
+//         switch (cretetria) {
+//             case "sexe":
+//                 switch (roleEnum) {
+//                     case STUDENT:
+//                         return "The number of Female Students : " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.FEMME)+"\n"+
+//                                 "The number of Male Students: " + usersRepository.countUserByRoleAndSexe(Role.STUDENT, Sexe.HOMME);
+//                     case ADMIN:
+//                         return "The number of Female Admins: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.FEMME)+"\n"+
+//                                 "The number of Male Admins: " + usersRepository.countUserByRoleAndSexe(Role.ADMIN, Sexe.HOMME);
+//                     case TEACHER:
+//                         return "The number of Female Teachers: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.FEMME)+"\n"+
+//                                 "The number of Male Teachers: " + usersRepository.countUserByRoleAndSexe(Role.TEACHER, Sexe.HOMME);
+//                 }
+//             case "nationalite":
+//                 switch (roleEnum) {
+//                     case STUDENT:
+//                         return "le nombre des etudiants ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.TUNISIENNE)+"\n"+
+//                                 "le nombre des etudiants ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.STUDENT, Nationality.ETRANGER);
+//                     case ADMIN:
+//                         return "le nombre des admins ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.TUNISIENNE)+"\n"+
+//                                 "le nombre des admins ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.ADMIN, Nationality.ETRANGER);
+//                     case TEACHER:
+//                         return "le nombre des enseignants ayant la nationalité tunisienne: " + usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.TUNISIENNE)+"\n"+
+//                                 "le nombre des enseignants ayant la nationalité etrangere: " + usersRepository.countUserByRoleAndNationality(Role.TEACHER, Nationality.ETRANGER);
+//                 }
+//             case "annee_inscription":
+//                 switch (roleEnum) {
+//                     case STUDENT:
+//                         return "le nombre des etudiants inscrit en 2023 : " + usersRepository.UserByRoleAndRegistDate(Role.STUDENT,LocalDateTime.now().getYear());
+//                     case ADMIN:
+//                         return "le nombre des admins  inscrit en 2023: " + usersRepository.UserByRoleAndRegistDate(Role.ADMIN, LocalDateTime.now().getYear());
+//                     case TEACHER:
+//                         return "le nombre des enseignants inscrit en 2023: " + usersRepository.UserByRoleAndRegistDate(Role.TEACHER,LocalDateTime.now().getYear());
+//                 }
+//         }
+//         return "verifier le critere ou le role";
+//     }
 
     @Transactional
     public String addInterviewAndAssignToStudent(Integer idStudent, Date dateInterview,Integer heureInterview) {

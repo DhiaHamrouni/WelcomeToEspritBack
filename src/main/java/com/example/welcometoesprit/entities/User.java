@@ -100,8 +100,8 @@ public class User implements UserDetails, Serializable {
   @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Rating> ratings;
-  @ManyToOne
   @JsonIgnore
+  @ManyToOne
   Event event;
   @JsonIgnore
   @ManyToOne
