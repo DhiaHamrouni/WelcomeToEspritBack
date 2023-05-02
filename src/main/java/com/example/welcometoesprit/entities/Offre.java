@@ -32,7 +32,7 @@ public class Offre implements Serializable {
     private Integer capacity;
     @OneToOne
     private FileEntity Doc;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<CondidatOffre> condidatOffres;
     @ManyToOne
     Departement departement;

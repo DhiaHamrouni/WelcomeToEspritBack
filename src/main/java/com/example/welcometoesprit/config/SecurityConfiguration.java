@@ -60,6 +60,7 @@ public class SecurityConfiguration{
             }).and().authorizeHttpRequests().requestMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
             .requestMatchers("/api/v1/auth/**").permitAll()
             .requestMatchers("/candidatoffre/**").permitAll()
+            .requestMatchers("/candidatoffre/assign/**").permitAll()
             .requestMatchers("/result/add").hasAuthority("JURY")
             .requestMatchers("/result/update").hasAuthority("JURY")
             .requestMatchers("/result/delete").hasAuthority("JURY")
